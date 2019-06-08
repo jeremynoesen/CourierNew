@@ -3,6 +3,9 @@ package me.Jeremaster101.CourierNew;
 import org.bukkit.ChatColor;
 import org.fusesource.jansi.Ansi;
 
+/**
+ * All messages used within the plugin
+ */
 public class Message {
 
     String ERROR_NO_PERMS = ChatColor.RED + "You do not have permission to do this!";
@@ -59,6 +62,11 @@ public class Message {
             ChatColor.GRAY + "----------------------------------------"
     };
 
+    /**
+     * Apply color codes and line breaks to a message
+     * @param message message to format with color codes and line breaks
+     * @return formatted message
+     */
     String format(String message) {
         return message.replace("&0", ChatColor.BLACK + "")
                 .replace("&1", ChatColor.DARK_BLUE + "")
@@ -84,8 +92,13 @@ public class Message {
                 .replace("\\n", ChatColor.RESET + "\n");
     }
 
+    /**
+     * Used to remove all minecraft color codes and line breakes from a message
+     * @param message message to remove all formatting from
+     * @return unformatted message
+     */
     String unformat(String message) {
-        return message.replace("\\n", "")
+        return message.replace("\\n", " ")
                 .replace("&0", "").replace("&1", "").replace("&2", "")
                 .replace("&3", "").replace("&4", "").replace("&5", "")
                 .replace("&6", "").replace("&7", "").replace("&8", "")

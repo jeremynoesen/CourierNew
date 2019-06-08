@@ -1,0 +1,32 @@
+name: CourierNew
+version: 1.2.4
+description: A new form of Courier
+author: Jeremaster101
+main: me.Jeremaster101.CourierNew.Main
+softdepend: [VanishNoPacket, Essentials]
+api-version: 1.13
+commands:
+  letter:
+    description: Create a one-page letter or add pages to an existing letter
+    usage: /<command>
+  post:
+    description: Send a letter to a player
+    usage: /<command>
+  postman:
+    description: Retreive unread mail
+    usage: /<command>
+  courier:
+    description: Courier help command
+    usage: /<command>
+  shred:
+    description: Delete a letter you are holding
+    usage: /<command>
+  shredall:
+    description: Delete all letters in your inventory
+    usage: /<command>
+  unread:
+    description: Retreive unread mail
+    usage: /<command>
+  courierreload:
+    description: Reload the config
+    usage: /<command>

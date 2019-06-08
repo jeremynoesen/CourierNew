@@ -23,8 +23,8 @@ public class CommandExec implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            List<String> modes = new ArrayList<>(Main.plugin.getConfig().getStringList("blocked-gamemodes"));
-            List<String> worlds = new ArrayList<>(Main.plugin.getConfig().getStringList("blocked-worlds"));
+            List<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
+            List<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
             if (!worlds.contains(player.getWorld().getName()) && !modes.contains(player.getGameMode().toString())) {
                 if (label.equalsIgnoreCase("letter")) {
                     if (player.hasPermission("couriernew.letter")) {
@@ -40,7 +40,7 @@ public class CommandExec implements CommandExecutor {
                         player.sendMessage(msg.ERROR_NO_PERMS);
                 } else if (label.equalsIgnoreCase("courierreload")) {
                     if (player.hasPermission("couriernew.reload")) {
-                        Main.plugin.reloadConfig();
+                        CourierNew.plugin.reloadConfig();
                         player.sendMessage(msg.SUCCESS_RELOADED);
                     } else
                         player.sendMessage(msg.ERROR_NO_PERMS);
@@ -79,7 +79,7 @@ public class CommandExec implements CommandExecutor {
 
                 } else if (label.equalsIgnoreCase("unread") || label.equalsIgnoreCase("postman")) {
                     if (player.hasPermission("couriernew.unread")) {
-                        File outgoingyml = new File(Main.plugin.getDataFolder(), "outgoing.yml");
+                        File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
                         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
 
                         if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
@@ -90,7 +90,7 @@ public class CommandExec implements CommandExecutor {
                                     if (player.isOnline())
                                         pl.spawnPostman(player);
                                 }
-                            }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("unread-delay"));
+                            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("unread-delay"));
                         } else {
                             player.sendMessage(msg.ERROR_NO_MAIL);
                         }

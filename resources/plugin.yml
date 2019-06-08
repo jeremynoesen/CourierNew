@@ -2,7 +2,7 @@ name: CourierNew
 version: 1.2.4
 description: A new form of Courier
 author: Jeremaster101
-main: me.Jeremaster101.CourierNew.Main
+main: me.Jeremaster101.CourierNew.CourierNew
 softdepend: [VanishNoPacket, Essentials]
 api-version: 1.13
 commands:

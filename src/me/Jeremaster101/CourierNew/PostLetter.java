@@ -32,7 +32,7 @@ public class PostLetter implements Listener {
     @SuppressWarnings("deprecation")
     void send(Player sender, String recipient) {
         if (il.isHoldingOwnLetter(sender)) {
-            File outgoingyml = new File(Main.plugin.getDataFolder(), "outgoing.yml");
+            File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
             FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
             OfflinePlayer op = Bukkit.getOfflinePlayer(recipient);
             ItemStack letter = sender.getInventory().getItemInMainHand();
@@ -83,7 +83,7 @@ public class PostLetter implements Listener {
                         spawnPostman((Player) recplayer);
                     }
                 }
-            }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("send-recieve-delay"));
+            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("send-recieve-delay"));
 
         } else if (il.isHoldingLetter(sender)) {
             sender.sendMessage(msg.ERROR_NOT_YOUR_LETTER);
@@ -92,7 +92,7 @@ public class PostLetter implements Listener {
     }
 
     void receive(Player recipient) {
-        File outgoingyml = new File(Main.plugin.getDataFolder(), "outgoing.yml");
+        File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
         UUID uuid = recipient.getUniqueId();
 
@@ -139,14 +139,14 @@ public class PostLetter implements Listener {
             return;
         }
 
-        ArrayList<String> worlds = new ArrayList<>(Main.plugin.getConfig().getStringList("blocked-worlds"));
-        ArrayList<String> modes = new ArrayList<>(Main.plugin.getConfig().getStringList("blocked-gamemodes"));
+        ArrayList<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
+        ArrayList<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
         if (worlds.contains(recipient.getWorld().getName()) || modes.contains(recipient.getGameMode().toString())) {
             recipient.sendMessage(msg.ERROR_WORLD);
             return;
         }
 
-        double radius = Main.plugin.getConfig().getDouble("check-before-spawning-postman-radius");
+        double radius = CourierNew.plugin.getConfig().getDouble("check-before-spawning-postman-radius");
         for (Entity all : recipient.getNearbyEntities(radius, radius, radius)) {
             if (all instanceof Villager && all.getCustomName().equals(msg.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()))) {
                 return;
@@ -172,7 +172,7 @@ public class PostLetter implements Listener {
                     postman.teleport(postman.getLocation().setDirection(recipient.getLocation().subtract(postman.getLocation()).toVector()));
                 if (postman.isDead()) this.cancel();
             }
-        }.runTaskTimer(Main.plugin, 0, 1);
+        }.runTaskTimer(CourierNew.plugin, 0, 1);
 
         new BukkitRunnable() {
             @Override
@@ -184,17 +184,17 @@ public class PostLetter implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            File outgoingyml = new File(Main.plugin.getDataFolder(), "outgoing.yml");
+                            File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
                             FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
 
                             if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                                     && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                                 spawnPostman(recipient);
                         }
-                    }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("resend-delay"));
+                    }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("resend-delay"));
                 }
             }
-        }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("remove-postman-ignored-delay"));
+        }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-ignored-delay"));
     }
 
     @EventHandler
@@ -211,7 +211,7 @@ public class PostLetter implements Listener {
                     public void run() {
                         if (!en.isDead()) en.remove();
                     }
-                }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("remove-postman-recieved-delay"));
+                }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
             } else if (en.getCustomName() != null && en.getCustomName().contains(" Postman")) e.setCancelled(true);
             if (en.getCustomName() != null && en.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED))
                 e.setCancelled(true);
@@ -221,7 +221,7 @@ public class PostLetter implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        File outgoingyml = new File(Main.plugin.getDataFolder(), "outgoing.yml");
+        File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
 
         new BukkitRunnable() {
@@ -231,12 +231,12 @@ public class PostLetter implements Listener {
                     spawnPostman(player);
                 }
             }
-        }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("join-recieve-delay"));
+        }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("join-recieve-delay"));
     }
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
-        List<String> worlds = new ArrayList<>(Main.plugin.getConfig().getStringList("blocked-worlds"));
+        List<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
         String to = e.getTo().getWorld().getName();
         String from = e.getFrom().getWorld().getName();
         Player recipient = e.getPlayer();
@@ -245,19 +245,19 @@ public class PostLetter implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    File outgoingyml = new File(Main.plugin.getDataFolder(), "outgoing.yml");
+                    File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
                     FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnPostman(recipient);
                 }
-            }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("resend-from-blocked-delay"));
+            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("resend-from-blocked-delay"));
         }
     }
 
     @EventHandler
     public void onGamemode(PlayerGameModeChangeEvent e) {
-        List<String> modes = new ArrayList<>(Main.plugin.getConfig().getStringList("blocked-gamemodes"));
+        List<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
         GameMode to = e.getNewGameMode();
         GameMode from = e.getPlayer().getGameMode();
         Player recipient = e.getPlayer();
@@ -265,13 +265,13 @@ public class PostLetter implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    File outgoingyml = new File(Main.plugin.getDataFolder(), "outgoing.yml");
+                    File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
                     FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnPostman(recipient);
                 }
-            }.runTaskLater(Main.plugin, Main.plugin.getConfig().getLong("resend-from-blocked-delay"));
+            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("resend-from-blocked-delay"));
         }
     }
 }

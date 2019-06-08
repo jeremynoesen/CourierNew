@@ -24,11 +24,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Send the letters to players
+ */
 public class PostLetter implements Listener {
 
     private IsLetter il = new IsLetter();
     private Message msg = new Message();
 
+    /**
+     * Send a letter to a player. The letter will have the recipient added to the lore, preventing it from being sent
+     * again. It also adds it to a yml file of letters to be recieved. If the player recieving is online, they may
+     * recieve their letter.
+     * @param sender player sending the letter
+     * @param recipient player to recieve the letter
+     */
     @SuppressWarnings("deprecation")
     void send(Player sender, String recipient) {
         if (il.isHoldingOwnLetter(sender)) {
@@ -91,6 +101,12 @@ public class PostLetter implements Listener {
             sender.sendMessage(msg.ERROR_NO_LETTER);
     }
 
+    /**
+     * When clicking the postman, retrieve the letters from the file and give all of them to the player. If they have
+     * space in their inventory, give them all, starting with their hand if they aren't holding anything. Letters not
+     * taken will be delivered later.
+     * @param recipient player recieving the mail
+     */
     void receive(Player recipient) {
         File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
@@ -123,6 +139,10 @@ public class PostLetter implements Listener {
 
     }
 
+    /**
+     * Create the postman entity for a player if they are not vanished or in blocked gamemodes or worlds
+     * @param recipient player recieving letters
+     */
     void spawnPostman(Player recipient) {
 
 
@@ -197,6 +217,9 @@ public class PostLetter implements Listener {
         }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-ignored-delay"));
     }
 
+    /**
+     * Check when a player right clicks their postman entity
+     */
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
@@ -218,6 +241,9 @@ public class PostLetter implements Listener {
         }
     }
 
+    /**
+     * Check when a player joins so they can retrieve unread mail
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
@@ -234,6 +260,9 @@ public class PostLetter implements Listener {
         }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("join-recieve-delay"));
     }
 
+    /**
+     * If a player is coming from a blocked world, they will retrieve their mail
+     */
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
         List<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
@@ -255,6 +284,9 @@ public class PostLetter implements Listener {
         }
     }
 
+    /**
+     * If a player is changing from a blocked gamemode, they will retrieve their mail
+     */
     @EventHandler
     public void onGamemode(PlayerGameModeChangeEvent e) {
         List<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));

@@ -9,6 +9,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * Register permissions, commands, and events, as well as save the default config, load the config, and delete
+ * leftover postmen
+ * @author Jeremy Noesen
+ */
 public class CourierNew extends JavaPlugin {
 
     public static CourierNew plugin;
@@ -21,7 +26,11 @@ public class CourierNew extends JavaPlugin {
     private final Permission unread = new Permission("couriernew.unread");
     private final Permission reload = new Permission("couriernew.reload");
 
+    /**
+     * Runs when plugin is enabled by the server
+     */
     public void onEnable() {
+
         plugin = this;
 
         PluginManager pm = Bukkit.getPluginManager();
@@ -49,9 +58,11 @@ public class CourierNew extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
+
                 int count = 0;
                 Message msg = new Message();
                 Bukkit.getLogger().info(msg.CLEANING);
+
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
                         if (entity instanceof Villager) {
@@ -65,7 +76,9 @@ public class CourierNew extends JavaPlugin {
                         }
                     }
                 }
+
                 Bukkit.getLogger().info(msg.DONE_CLEANING.replace("$COUNT$", Integer.toString(count)));
+
             }
         }.runTaskLater(plugin, 2);
 
@@ -74,6 +87,9 @@ public class CourierNew extends JavaPlugin {
 
     }
 
+    /**
+     * runs when plugin is disabled by server, makes sure no method tries to reference the plugin anymore.
+     */
     public void onDisable() {
         plugin = null;
     }

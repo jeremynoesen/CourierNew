@@ -10,11 +10,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Methods to create, edit, and delete letters
+ */
 class LetterCreation {
 
     private Message msg = new Message();
     private IsLetter il = new IsLetter();
 
+    /**
+     * Create a new letter with a specified message and places it in the player's inventory. Also set's the lore of
+     * the item to a preview of the message
+     * @param player player writing the letter
+     * @param message the message the player is writing to the letter
+     */
     void write(Player player, String message) {
         String finalMessage = msg.format(message);
 
@@ -44,6 +53,8 @@ class LetterCreation {
             i++;
         }
 
+
+
         ArrayList<String> lore = new ArrayList<>();
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss MM/dd/yy");
@@ -67,6 +78,11 @@ class LetterCreation {
         }
     }
 
+    /**
+     * Add a new page to an existing letter that the player is writing. Adds page count to lore
+     * @param player player editing the letter
+     * @param message message player is adding to the letter
+     */
     void edit(Player player, String message) {
         String finalMessage = msg.format(message);
 
@@ -89,6 +105,10 @@ class LetterCreation {
         player.sendMessage(msg.SUCCESS_PAGE_ADDED);
     }
 
+    /**
+     * Delete a letter in the player's hand
+     * @param player player deleting the letter in their hand
+     */
     void delete(Player player) {
         if (il.isHoldingLetter(player)) {
             player.getInventory().getItemInMainHand().setAmount(0);
@@ -97,6 +117,10 @@ class LetterCreation {
             player.sendMessage(msg.ERROR_NO_LETTER);
     }
 
+    /**
+     * Delete all letters in the player's inventory
+     * @param player player deleting the letters in their inventory
+     */
     void deleteAll(Player player) {
         for (ItemStack item : player.getInventory().getContents()) {
             if (il.isLetter(item)) item.setAmount(0);

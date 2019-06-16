@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Register permissions, commands, and events, as well as save the default config, load the config, and delete
  * leftover postmen
+ *
  * @author Jeremy Noesen
  */
 public class CourierNew extends JavaPlugin {
@@ -61,7 +62,7 @@ public class CourierNew extends JavaPlugin {
 
                 int count = 0;
                 Message msg = new Message();
-                Bukkit.getLogger().info(msg.CLEANING);
+                CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
 
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
@@ -77,7 +78,8 @@ public class CourierNew extends JavaPlugin {
                     }
                 }
 
-                Bukkit.getLogger().info(msg.DONE_CLEANING.replace("$COUNT$", Integer.toString(count)));
+                CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
+                        Integer.toString(count)));
 
             }
         }.runTaskLater(plugin, 2);

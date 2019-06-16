@@ -28,10 +28,8 @@ public class Message {
     String SUCCESS_EXTRA_DELIVERIES = ChatColor.GREEN + "The postman will make extra deliveries!";
     String ERROR_NO_MAIL = ChatColor.RED + "There is currently no mail!";
     String ERROR_CANT_HOLD = ChatColor.RED + "You do not have enough space to recieve any more mail! The postman will hold on to this mail for now.";
-    String CLEANING =
-            Ansi.ansi().fg(Ansi.Color.GREEN) + "[CourierNew] Deleting postman entities..." + Ansi.ansi().fg(Ansi.Color.DEFAULT);
-    String DONE_CLEANING = Ansi.ansi().fg(Ansi.Color.GREEN) + "[CourierNew] $COUNT$ postman entities have been " +
-            "deleted from all worlds!" + Ansi.ansi().fg(Ansi.Color.DEFAULT);
+    String CLEANING = ChatColor.GREEN + "[CourierNew] Deleting postman entities...";
+    String DONE_CLEANING = ChatColor.GREEN + "[CourierNew] $COUNT$ postman entities have been deleted from all worlds!";
     String ERROR_VANISHED = ChatColor.RED + "A postman tried to deliver mail, but you are vanished!";
     String SUCCESS_IGNORED = ChatColor.RED + "You didn't get your mail in time! The postman will return shortly.";
     String SUCCESS_RELOADED = ChatColor.GREEN + "Config reloaded!";

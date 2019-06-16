@@ -15,6 +15,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.kitteh.vanish.VanishPlugin;
 
@@ -181,6 +183,7 @@ public class PostLetter implements Listener {
         postman.setCustomNameVisible(false);
         postman.setInvulnerable(true);
         postman.setBreed(false);
+        postman.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 255, true, false));
         postman.setRemoveWhenFarAway(false);
         recipient.sendMessage(msg.SUCCESS_POSTMAN_ARRIVED);
         postman.getWorld().playSound(postman.getLocation(), Sound.ENTITY_VILLAGER_AMBIENT, 1, 1);

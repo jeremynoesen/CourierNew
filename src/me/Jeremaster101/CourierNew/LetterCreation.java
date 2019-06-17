@@ -1,5 +1,6 @@
 package me.Jeremaster101.CourierNew;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -36,32 +37,18 @@ class LetterCreation {
         pages.add(finalMessage);
         bm.setPages(pages);
 
-        StringBuilder line1 = new StringBuilder();
-        StringBuilder line2 = new StringBuilder();
-        StringBuilder line3 = new StringBuilder();
-        int i = 0;
         String plainMessage = msg.unformat(message);
-        String[] words = plainMessage.split("");
-        for (String letter : words) {
-            if (0 <= i && i <= 29) {
-                line1.append(letter);
-            } else if (30 <= i && i <= 59) {
-                line2.append(letter);
-            } else if (60 <= i && i <= 89) {
-                line3.append(letter);
-            }
-            i++;
-        }
 
-
+        String wrapped = WordUtils.wrap(plainMessage, 30, "<split>", true);
+        String[] lines = wrapped.split("<split>");
 
         ArrayList<String> lore = new ArrayList<>();
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss MM/dd/yy");
         String dateNow = formatter.format(currentDate.getTime());
-        lore.add(line1.toString());
-        if (!line2.toString().equals("")) lore.add(line2.toString());
-        if (!line3.toString().equals("")) lore.add(line3.toString());
+        lore.add(lines[0]);
+        if(lines.length >= 2) lore.add(lines[1]);
+        if(lines.length >= 3) lore.add(lines[2]);
         lore.add(ChatColor.DARK_GRAY + dateNow + " (" + bm.getPages().size() + ")");
         bm.setLore(lore);
         book.setItemMeta(bm);

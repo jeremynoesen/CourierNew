@@ -1,11 +1,15 @@
 package me.Jeremaster101.CourierNew;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -54,6 +58,26 @@ public class CommandExec implements CommandExecutor {
 
                     if (player.hasPermission("couriernew.reload")) {
                         CourierNew.plugin.reloadConfig();
+
+                        int count = 0;
+                        CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
+
+                        for (World world : Bukkit.getWorlds()) {
+                            for (Entity entity : world.getEntities()) {
+                                if (entity instanceof Villager) {
+                                    if (entity.getCustomName() != null) {
+                                        if (entity.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED) ||
+                                                entity.getCustomName().contains("Postman")) {
+                                            entity.remove();
+                                            count++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
+                                Integer.toString(count)));
                         player.sendMessage(msg.SUCCESS_RELOADED);
                     } else
                         player.sendMessage(msg.ERROR_NO_PERMS);

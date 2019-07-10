@@ -1,10 +1,8 @@
 package me.Jeremaster101.CourierNew;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Villager;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -62,21 +60,14 @@ public class CourierNew extends JavaPlugin {
 
                 int count = 0;
                 Message msg = new Message();
+                LetterChecking lc = new LetterChecking();
                 CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
 
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
-                        if (entity instanceof Villager) {
-                            if (entity.getCustomName() != null) {
-                                if (((Villager) entity).getInventory().getItem(1) != null &&
-                                        ((Villager) entity).getInventory().getItem(1).getItemMeta().getDisplayName() != null &&
-                                        ((Villager) entity).getInventory().getItem(1).getType().equals(Material.PAPER) &&
-                                        ((Villager) entity).getInventory().getItem(1).getAmount() == 1 &&
-                                        ((Villager) entity).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN")) {
-                                    entity.remove();
-                                    count++;
-                                }
-                            }
+                        if (lc.isPostman(entity)) {
+                            entity.remove();
+                            count++;
                         }
                     }
                 }

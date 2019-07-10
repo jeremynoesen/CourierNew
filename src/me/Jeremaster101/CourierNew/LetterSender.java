@@ -172,11 +172,7 @@ public class LetterSender implements Listener {
         }
 
         double radius = CourierNew.plugin.getConfig().getDouble("check-before-spawning-postman-radius");
-        for (Entity all : recipient.getNearbyEntities(radius, radius, radius)) {
-            if (all instanceof Villager && all.getCustomName().equals(msg.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()))) {
-                return;
-            }
-        }
+        for (Entity all : recipient.getNearbyEntities(radius, radius, radius)) if (il.isPostman(all)) return;
 
         ItemStack identifier = new ItemStack(Material.PAPER, 1);
         ItemMeta identifierMeta = identifier.getItemMeta();
@@ -241,37 +237,23 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
-        if (en instanceof Villager) {
-            if (!CourierNew.plugin.getConfig().getBoolean("protected-postman") ||
-                    ((Villager) en).getInventory().getItem(0) != null &&
-                            ((Villager) en).getInventory().getItem(0).getItemMeta().getDisplayName() != null &&
-                            ((Villager) en).getInventory().getItem(0).getItemMeta().getDisplayName().equals(e.getPlayer().getUniqueId().toString()) &&
-                            ((Villager) en).getInventory().getItem(1) != null &&
-                            ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName() != null &&
-                            ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN")) {
-                e.setCancelled(true);
-                receive(e.getPlayer());
-                en.setCustomName(msg.POSTMAN_NAME_RECEIVED);
-                en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
-                en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, 1, 0), 20, 0.5, 1, 0.5);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (!en.isDead()) en.remove();
-                    }
-                }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
-            } else if (((Villager) en).getInventory().getItem(0) != null &&
-                    ((Villager) en).getInventory().getItem(0).getItemMeta().getDisplayName() != null &&
-                    !((Villager) en).getInventory().getItem(0).getItemMeta().getDisplayName().equals(e.getPlayer().getUniqueId().toString()) &&
-                    ((Villager) en).getInventory().getItem(1) != null &&
-                    ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName() != null &&
-                    ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN")) {
-                e.setCancelled(true);
-                en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-            }
-            if (en.getCustomName() != null && en.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED))
-                e.setCancelled(true);
+        if (!CourierNew.plugin.getConfig().getBoolean("protected-postman") || il.isPlayersPostman(e.getPlayer(), en)) {
+            e.setCancelled(true);
+            receive(e.getPlayer());
+            en.setCustomName(msg.POSTMAN_NAME_RECEIVED);
+            en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
+            en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, 1, 0), 20, 0.5, 1, 0.5);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!en.isDead()) en.remove();
+                }
+            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
+        } else if (il.isOtherPlayersPostman(e.getPlayer(), en)) {
+            e.setCancelled(true);
+            en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
         }
+        if (il.isReceivedPostman(en)) e.setCancelled(true);
     }
 
     /**

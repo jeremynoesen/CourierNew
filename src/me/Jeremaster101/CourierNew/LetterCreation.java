@@ -27,15 +27,15 @@ class LetterCreation {
      * @param message the message the player is writing to the letter
      */
     void write(Player player, String message) {
-        String finalMessage = msg.format(message);
+        String finalMessage = Message.format(message);
 
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK, 1);
         BookMeta bm = (BookMeta) book.getItemMeta();
 
         bm.setAuthor(player.getName());
-        bm.setTitle("Letter from " + player.getName());
+        bm.setTitle("Letter from " + player.getName()); //todo allow customizing of title in message config
         ArrayList<String> pages = new ArrayList<>();
-        String colorWrapped = WordUtils.wrap(finalMessage, 246, "<split>", true);
+        String colorWrapped = WordUtils.wrap(finalMessage, 246, "<split>", true);//todo make \n include in char count
         String[] multiPages = colorWrapped.split("<split>");
         pages.addAll(Arrays.asList(multiPages));
         bm.setPages(pages);
@@ -58,13 +58,13 @@ class LetterCreation {
 
         if (player.getInventory().firstEmpty() < 0) {
             player.getWorld().dropItemNaturally(player.getEyeLocation(), book);
-            player.sendMessage(msg.SUCCESS_CREATED_DROPPED);
+            player.sendMessage(Message.SUCCESS_CREATED_DROPPED);
         } else if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
             player.getInventory().setItemInMainHand(book);
-            player.sendMessage(msg.SUCCESS_CREATED_HAND);
+            player.sendMessage(Message.SUCCESS_CREATED_HAND);
         } else {
             player.getInventory().addItem(book);
-            player.sendMessage(msg.SUCCESS_CREATED_ADDED);
+            player.sendMessage(Message.SUCCESS_CREATED_ADDED);
         }
     }
 
@@ -74,7 +74,7 @@ class LetterCreation {
      * @param message message player is adding to the letter
      */
     void edit(Player player, String message) {
-        String finalMessage = msg.format(message);
+        String finalMessage = Message.format(message);
 
         ItemStack writtenBook = player.getInventory().getItemInMainHand();
         BookMeta wbm = (BookMeta) writtenBook.getItemMeta();
@@ -92,7 +92,7 @@ class LetterCreation {
         writtenBook.setItemMeta(wbm);
 
         player.getInventory().setItemInMainHand(writtenBook);
-        player.sendMessage(msg.SUCCESS_PAGE_ADDED);
+        player.sendMessage(Message.SUCCESS_PAGE_ADDED);
     }
 
     /**
@@ -102,9 +102,9 @@ class LetterCreation {
     void delete(Player player) {
         if (il.isHoldingLetter(player)) {
             player.getInventory().getItemInMainHand().setAmount(0);
-            player.sendMessage(msg.SUCCESS_DELETED);
+            player.sendMessage(Message.SUCCESS_DELETED);
         } else
-            player.sendMessage(msg.ERROR_NO_LETTER);
+            player.sendMessage(Message.ERROR_NO_LETTER);
     }
 
     /**
@@ -115,6 +115,6 @@ class LetterCreation {
         for (ItemStack item : player.getInventory().getContents()) {
             if (il.isLetter(item)) item.setAmount(0);
         }
-        player.sendMessage(msg.SUCCESS_DELETED_ALL);
+        player.sendMessage(Message.SUCCESS_DELETED_ALL);
     }
 }

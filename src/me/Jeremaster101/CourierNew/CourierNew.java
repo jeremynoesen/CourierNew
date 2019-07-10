@@ -19,7 +19,10 @@ public class CourierNew extends JavaPlugin {
     public static CourierNew plugin;
 
     private final Permission letter = new Permission("couriernew.letter");
-    private final Permission post = new Permission("couriernew.post");
+    private final Permission postone = new Permission("couriernew.post.one");
+    private final Permission postmultiple = new Permission("couriernew.post.multiple");
+    private final Permission postallonline = new Permission("couriernew.post.allonline");
+    private final Permission postall = new Permission("couriernew.post.all");
     private final Permission courier = new Permission("couriernew.courier");
     private final Permission shred = new Permission("couriernew.shred");
     private final Permission shredall = new Permission("couriernew.shredall");
@@ -32,6 +35,10 @@ public class CourierNew extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        Message msg = new Message();
+
+        CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.STARTUP);
+
         Message.saveDefaultConfig();
 
         PluginManager pm = Bukkit.getPluginManager();
@@ -39,7 +46,10 @@ public class CourierNew extends JavaPlugin {
         pm.registerEvents(new LetterSender(), this);
 
         pm.addPermission(letter);
-        pm.addPermission(post);
+        pm.addPermission(postone);
+        pm.addPermission(postmultiple);
+        pm.addPermission(postallonline);
+        pm.addPermission(postall);
         pm.addPermission(courier);
         pm.addPermission(shred);
         pm.addPermission(shredall);
@@ -59,7 +69,6 @@ public class CourierNew extends JavaPlugin {
             public void run() {
 
                 int count = 0;
-                Message msg = new Message();
                 LetterChecking lc = new LetterChecking();
                 CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
 

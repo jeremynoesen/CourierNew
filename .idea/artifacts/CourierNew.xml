@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="CourierNew">
+  <artifact type="jar" build-on-make="true" name="CourierNew">
     <output-path>$USER_HOME$/Spigot 1.13/plugins</output-path>
     <root id="archive" name="CourierNew.jar">
       <element id="module-output" name="CourierNew" />

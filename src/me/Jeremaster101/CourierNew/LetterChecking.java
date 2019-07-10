@@ -22,9 +22,7 @@ public class LetterChecking {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getAuthor().equals(player.getName()) &&
-                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().equals("Letter from " + player.getName()) &&
-                !player.getInventory().getItemInMainHand().getItemMeta().getLore().get(player.getInventory().getItemInMainHand()
-                        .getItemMeta().getLore().size() - 1).contains("To ");
+                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().equals("Letter from " + player.getName());
     }
 
     /**
@@ -50,12 +48,26 @@ public class LetterChecking {
                 ((BookMeta) item.getItemMeta()).getTitle().contains("Letter from ");
     }
 
+    boolean wasSent(ItemStack item) {
+        return item.getType() == Material.WRITTEN_BOOK && item.getItemMeta().getLore() != null &&
+                item.getItemMeta().getLore().toString().contains("To ");
+    }
+
+    /**
+     * @param en entity to check
+     * @return true if entity is a postman
+     */
     boolean isPostman(Entity en) {
         return en instanceof Villager && ((Villager) en).getInventory().getItem(1) != null &&
                 ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName() != null &&
                 ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN");
     }
 
+    /**
+     * @param p player to check ownership of the postman
+     * @param en entity to check
+     * @return true if entity is a postman for player p
+     */
     boolean isPlayersPostman(Player p, Entity en) {
         return en instanceof Villager && ((Villager) en).getInventory().getItem(0) != null &&
                 ((Villager) en).getInventory().getItem(0).getItemMeta().getDisplayName() != null &&
@@ -65,6 +77,11 @@ public class LetterChecking {
                 ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN");
     }
 
+    /**
+     * @param p player to check owndership of the postman
+     * @param en entity to check
+     * @return true if entity is a postman but not for player p
+     */
     boolean isOtherPlayersPostman(Player p, Entity en) {
         return en instanceof Villager && ((Villager) en).getInventory().getItem(0) != null &&
                 ((Villager) en).getInventory().getItem(0).getItemMeta().getDisplayName() != null &&
@@ -74,9 +91,13 @@ public class LetterChecking {
                 ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN");
     }
 
+    /**
+     * @param en entity to check
+     * @return true if entity isa postman who already delivered mail
+     */
     boolean isReceivedPostman(Entity en) {
         Message msg = new Message();
-        return en instanceof Villager && en.getCustomName() != null && en.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED) &&
+        return en instanceof Villager && en.getCustomName() != null && en.getCustomName().equals(Message.POSTMAN_NAME_RECEIVED) &&
                 ((Villager) en).getInventory().getItem(1) != null &&
                 ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName() != null &&
                 ((Villager) en).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN");

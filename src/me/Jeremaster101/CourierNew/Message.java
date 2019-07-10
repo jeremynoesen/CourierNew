@@ -21,6 +21,7 @@ public class Message {
     private static YamlConfiguration config = null;
     static String ERROR_SENT_BEFORE = PREFIX + format(getConfig().getString("ERROR_SENT_BEFORE"));
     static String ERROR_NO_MSG = PREFIX + format(getConfig().getString("ERROR_NO_MSG"));
+    static String ERROR_SEND_FAILED = PREFIX + format(getConfig().getString("ERROR_SEND_FAILED"));
     static String ERROR_NO_LETTER = PREFIX + format(getConfig().getString("ERROR_NO_LETTER"));
     static String ERROR_NOT_YOUR_LETTER = PREFIX + format(getConfig().getString("ERROR_NOT_YOUR_LETTER"));
     static String SUCCESS_CREATED_HAND = PREFIX + format(getConfig().getString("SUCCESS_CREATED_HAND"));
@@ -46,12 +47,14 @@ public class Message {
     static String POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
     static String POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
     String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover postman entities...";
-    String DONE_CLEANING = PREFIX + ChatColor.GRAY + "Successfully deleted $COUNT$ postman entities!";
+    String DONE_CLEANING =
+            PREFIX + ChatColor.GRAY + "Successfully deleted " + ChatColor.WHITE + "$COUNT$" + ChatColor.GRAY +
+        " postman entities!";
     String[] HELP = new String[]{
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
             ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player",
-            ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread mail",
+            ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters",
             ChatColor.GRAY + "/courier" + ChatColor.WHITE + ": List all CourierNew commands",
             ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
             ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
@@ -61,7 +64,7 @@ public class Message {
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
             ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player",
-            ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread mail",
+            ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters",
             ChatColor.GRAY + "/courier" + ChatColor.WHITE + ": List all CourierNew commands",
             ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
             ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
@@ -172,4 +175,13 @@ public class Message {
     String unformat(String message) {
         return ChatColor.stripColor(message.replace("\\n", " "));
     }
+
+    public String STARTUP = "\n\n" +
+            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.plugin.getDescription().getVersion() + " " + "has " + "been enabled!\n" +
+            ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
+            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██╔██╗ ██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  may not be modified or redistributed without\n" +
+            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
+            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + "╚██████╗" + ChatColor.DARK_GREEN + "██║ ╚████║" + ChatColor.DARK_GRAY + "███║" + ChatColor.WHITE + "  support discord group: https://discord.gg/WhmQYR\n" +
+            ChatColor.DARK_GRAY + "╚══╝" + ChatColor.GREEN + " ╚═════╝" + ChatColor.DARK_GREEN + "╚═╝  ╚═══╝" + ChatColor.DARK_GRAY + "╚══╝" + ChatColor.WHITE + "  Thank you for choosing CourierNew!\n";
+
 }

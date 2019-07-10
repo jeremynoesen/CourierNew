@@ -43,12 +43,13 @@ public class CommandExec implements CommandExecutor {
                             for (String arg : args) {
                                 sb.append(arg).append(" ");
                             }
-                            if (il.isHoldingOwnLetter(player)) lc.edit(player, sb.toString());
+                            if (il.isHoldingOwnLetter(player) && !il.wasSent(player.getInventory().getItemInMainHand()))
+                            lc.edit(player, sb.toString());
                             else lc.write(player, sb.toString());
                         } else
-                            player.sendMessage(msg.ERROR_NO_MSG);
+                            player.sendMessage(Message.ERROR_NO_MSG);
                     } else
-                        player.sendMessage(msg.ERROR_NO_PERMS);
+                        player.sendMessage(Message.ERROR_NO_PERMS);
 
                 }
 
@@ -73,9 +74,9 @@ public class CommandExec implements CommandExecutor {
 
                         CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
                                 Integer.toString(count)));
-                        player.sendMessage(msg.SUCCESS_RELOADED);
+                        player.sendMessage(Message.SUCCESS_RELOADED);
                     } else
-                        player.sendMessage(msg.ERROR_NO_PERMS);
+                        player.sendMessage(Message.ERROR_NO_PERMS);
 
                 }
 
@@ -83,12 +84,15 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("post")) {
 
                     if (args.length == 1) {
-                        if (player.hasPermission("couriernew.post")) {
+                        if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew" +
+                                ".post.multiple") ||
+                                player.hasPermission("couriernew.post.allonline") || player.hasPermission("couriernew" +
+                                ".post.all")) {
                             pl.send(player, args[0]);
                         } else
-                            player.sendMessage(msg.ERROR_NO_PERMS);
+                            player.sendMessage(Message.ERROR_NO_PERMS);
                     } else
-                        player.sendMessage(msg.ERROR_TOO_MANY_ARGS);
+                        player.sendMessage(Message.ERROR_TOO_MANY_ARGS);
 
                 }
 
@@ -100,7 +104,7 @@ public class CommandExec implements CommandExecutor {
                     } else if (player.hasPermission("couriernew.courier")) {
                         player.sendMessage(msg.HELP);
                     } else
-                        player.sendMessage(msg.ERROR_NO_PERMS);
+                        player.sendMessage(Message.ERROR_NO_PERMS);
 
                 }
 
@@ -110,7 +114,7 @@ public class CommandExec implements CommandExecutor {
                     if (player.hasPermission("couriernew.shred")) {
                         lc.delete(player);
                     } else
-                        player.sendMessage(msg.ERROR_NO_PERMS);
+                        player.sendMessage(Message.ERROR_NO_PERMS);
 
                 }
 
@@ -120,7 +124,7 @@ public class CommandExec implements CommandExecutor {
                     if (player.hasPermission("couriernew.shredall")) {
                         lc.deleteAll(player);
                     } else
-                        player.sendMessage(msg.ERROR_NO_PERMS);
+                        player.sendMessage(Message.ERROR_NO_PERMS);
 
                 }
 
@@ -132,7 +136,7 @@ public class CommandExec implements CommandExecutor {
                         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
 
                         if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
-                            player.sendMessage(msg.SUCCESS_EXTRA_DELIVERIES);
+                            player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -141,16 +145,16 @@ public class CommandExec implements CommandExecutor {
                                 }
                             }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("unread-delay"));
                         } else {
-                            player.sendMessage(msg.ERROR_NO_MAIL);
+                            player.sendMessage(Message.ERROR_NO_MAIL);
                         }
                     } else
-                        player.sendMessage(msg.ERROR_NO_PERMS);
+                        player.sendMessage(Message.ERROR_NO_PERMS);
                 }
                 return true;
 
 
             } else {
-                player.sendMessage(msg.ERROR_WORLD);
+                player.sendMessage(Message.ERROR_WORLD);
                 return true;
             }
         }

@@ -1,6 +1,7 @@
 package me.Jeremaster101.CourierNew;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
@@ -67,8 +68,11 @@ public class CourierNew extends JavaPlugin {
                     for (Entity entity : world.getEntities()) {
                         if (entity instanceof Villager) {
                             if (entity.getCustomName() != null) {
-                                if (entity.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED) ||
-                                        entity.getCustomName().contains("Postman")) {
+                                if (((Villager) entity).getInventory().getItem(1) != null &&
+                                        ((Villager) entity).getInventory().getItem(1).getItemMeta().getDisplayName() != null &&
+                                        ((Villager) entity).getInventory().getItem(1).getType().equals(Material.PAPER) &&
+                                        ((Villager) entity).getInventory().getItem(1).getAmount() == 1 &&
+                                        ((Villager) entity).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN")) {
                                     entity.remove();
                                     count++;
                                 }

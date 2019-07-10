@@ -1,6 +1,9 @@
 package me.Jeremaster101.CourierNew;
 
+import com.mojang.util.UUIDTypeAdapter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Command class, runs commands if not in blocked worlds or gamemodes.
@@ -66,12 +70,13 @@ public class CommandExec implements CommandExecutor {
                         for (World world : Bukkit.getWorlds()) {
                             for (Entity entity : world.getEntities()) {
                                 if (entity instanceof Villager) {
-                                    if (entity.getCustomName() != null) {
-                                        if (entity.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED) ||
-                                                entity.getCustomName().contains("Postman")) {
-                                            entity.remove();
-                                            count++;
-                                        }
+                                    if (((Villager) entity).getInventory().getItem(0) != null &&
+                                            ((Villager) entity).getInventory().getItem(1).getItemMeta().getDisplayName() != null &&
+                                            ((Villager) entity).getInventory().getItem(1).getType().equals(Material.PAPER) &&
+                                            ((Villager) entity).getInventory().getItem(1).getAmount() == 1 &&
+                                            ((Villager) entity).getInventory().getItem(1).getItemMeta().getDisplayName().equals("POSTMAN")) {
+                                        entity.remove();
+                                        count++;
                                     }
                                 }
                             }

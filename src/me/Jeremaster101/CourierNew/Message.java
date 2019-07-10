@@ -172,5 +172,4 @@ public class Message {
     String unformat(String message) {
         return ChatColor.stripColor(message.replace("\\n", " "));
     }
-
 }

@@ -10,6 +10,7 @@ check-before-spawning-postman-radius: 10
 remove-postman-ignored-delay: 200
 remove-postman-recieved-delay: 20
 resend-from-blocked-delay: 100
+protected-postman: true
 blocked-gamemodes:
   - GAMEMODE
 blocked-worlds:

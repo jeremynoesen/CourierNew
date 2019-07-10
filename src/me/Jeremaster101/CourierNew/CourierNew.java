@@ -3,7 +3,6 @@ package me.Jeremaster101.CourierNew;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Villager;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,18 +60,14 @@ public class CourierNew extends JavaPlugin {
 
                 int count = 0;
                 Message msg = new Message();
+                LetterChecking lc = new LetterChecking();
                 CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
 
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
-                        if (entity instanceof Villager) {
-                            if (entity.getCustomName() != null) {
-                                if (entity.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED) ||
-                                        entity.getCustomName().contains("Postman")) {
-                                    entity.remove();
-                                    count++;
-                                }
-                            }
+                        if (lc.isPostman(entity)) {
+                            entity.remove();
+                            count++;
                         }
                     }
                 }

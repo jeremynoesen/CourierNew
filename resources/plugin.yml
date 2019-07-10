@@ -12,9 +12,6 @@ commands:
   post:
     description: Send a letter to a player
     usage: /<command>
-  postman:
-    description: Retreive unread mail
-    usage: /<command>
   courier:
     description: Courier help command
     usage: /<command>

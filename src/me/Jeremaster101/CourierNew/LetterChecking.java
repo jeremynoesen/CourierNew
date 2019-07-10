@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.BookMeta;
 /**
  * Methods to check for letters in a player's inventory
  */
-public class IsLetter {
+public class LetterChecking {
 
     /**
      * Test if a player is holding a letter they wrote and have not sent yet.

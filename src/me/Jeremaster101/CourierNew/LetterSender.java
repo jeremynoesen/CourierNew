@@ -29,9 +29,9 @@ import java.util.UUID;
 /**
  * Send the letters to players
  */
-public class PostLetter implements Listener {
+public class LetterSender implements Listener {
 
-    private IsLetter il = new IsLetter();
+    private LetterChecking il = new LetterChecking();
     private Message msg = new Message();
 
     /**
@@ -232,6 +232,7 @@ public class PostLetter implements Listener {
                 receive(e.getPlayer());
                 en.setCustomName(msg.POSTMAN_NAME_RECEIVED);
                 en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
+                en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, 1, 0), 20, 0.5, 1, 0.5);
                 new BukkitRunnable() {
                     @Override
                     public void run() {

@@ -31,12 +31,13 @@ public class CourierNew extends JavaPlugin {
      * Runs when plugin is enabled by the server
      */
     public void onEnable() {
-
         plugin = this;
+
+        Message.saveDefaultConfig();
 
         PluginManager pm = Bukkit.getPluginManager();
 
-        pm.registerEvents(new PostLetter(), this);
+        pm.registerEvents(new LetterSender(), this);
 
         pm.addPermission(letter);
         pm.addPermission(post);
@@ -48,13 +49,11 @@ public class CourierNew extends JavaPlugin {
 
         getCommand("letter").setExecutor(new CommandExec());
         getCommand("post").setExecutor(new CommandExec());
-        getCommand("postman").setExecutor(new CommandExec());
         getCommand("courier").setExecutor(new CommandExec());
         getCommand("shred").setExecutor(new CommandExec());
         getCommand("shredall").setExecutor(new CommandExec());
         getCommand("unread").setExecutor(new CommandExec());
         getCommand("courierreload").setExecutor(new CommandExec());
-
 
         new BukkitRunnable() {
             @Override

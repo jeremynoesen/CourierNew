@@ -21,9 +21,9 @@ import java.util.List;
  */
 public class CommandExec implements CommandExecutor {
 
-    private PostLetter pl = new PostLetter();
+    private LetterSender pl = new LetterSender();
     private LetterCreation lc = new LetterCreation();
-    private IsLetter il = new IsLetter();
+    private LetterChecking il = new LetterChecking();
     private Message msg = new Message();
 
     @Override
@@ -58,6 +58,7 @@ public class CommandExec implements CommandExecutor {
 
                     if (player.hasPermission("couriernew.reload")) {
                         CourierNew.plugin.reloadConfig();
+                        Message.reloadConfig();
 
                         int count = 0;
                         CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
@@ -130,7 +131,7 @@ public class CommandExec implements CommandExecutor {
                 }
 
 
-                if (label.equalsIgnoreCase("unread") || label.equalsIgnoreCase("postman")) {
+                if (label.equalsIgnoreCase("unread")) {
 
                     if (player.hasPermission("couriernew.unread")) {
                         File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");

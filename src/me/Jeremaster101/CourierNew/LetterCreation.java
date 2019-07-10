@@ -17,7 +17,7 @@ import java.util.Calendar;
 class LetterCreation {
 
     private Message msg = new Message();
-    private IsLetter il = new IsLetter();
+    private LetterChecking il = new LetterChecking();
 
     /**
      * Create a new letter with a specified message and places it in the player's inventory. Also set's the lore of

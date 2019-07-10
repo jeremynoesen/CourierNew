@@ -38,7 +38,8 @@ public class LetterSender implements Listener {
      * Send a letter to a player. The letter will have the recipient added to the lore, preventing it from being sent
      * again. It also adds it to a yml file of letters to be recieved. If the player recieving is online, they may
      * recieve their letter.
-     * @param sender player sending the letter
+     *
+     * @param sender    player sending the letter
      * @param recipient player to recieve the letter
      */
     @SuppressWarnings("deprecation")
@@ -107,6 +108,7 @@ public class LetterSender implements Listener {
      * When clicking the postman, retrieve the letters from the file and give all of them to the player. If they have
      * space in their inventory, give them all, starting with their hand if they aren't holding anything. Letters not
      * taken will be delivered later.
+     *
      * @param recipient player recieving the mail
      */
     void receive(Player recipient) {
@@ -143,23 +145,24 @@ public class LetterSender implements Listener {
 
     /**
      * Create the postman entity for a player if they are not vanished or in blocked gamemodes or worlds
+     *
      * @param recipient player recieving letters
      */
     void spawnPostman(Player recipient) {
 
 
-        if(Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket"))
-        if (((VanishPlugin) Bukkit.getPluginManager().getPlugin("VanishNoPacket")).getManager().isVanished
-        (recipient)) {
-            recipient.sendMessage(msg.ERROR_VANISHED);
-            return;
-        }
+        if (Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket"))
+            if (((VanishPlugin) Bukkit.getPluginManager().getPlugin("VanishNoPacket")).getManager().isVanished
+                    (recipient)) {
+                recipient.sendMessage(msg.ERROR_VANISHED);
+                return;
+            }
 
-        if(Bukkit.getPluginManager().isPluginEnabled("Essentials"))
-            if(((Essentials) Bukkit.getPluginManager().getPlugin("Essentials")).getVanishedPlayers().contains(recipient.getName())) {
-            recipient.sendMessage(msg.ERROR_VANISHED);
-            return;
-        }
+        if (Bukkit.getPluginManager().isPluginEnabled("Essentials"))
+            if (((Essentials) Bukkit.getPluginManager().getPlugin("Essentials")).getVanishedPlayers().contains(recipient.getName())) {
+                recipient.sendMessage(msg.ERROR_VANISHED);
+                return;
+            }
 
         ArrayList<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
         ArrayList<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
@@ -169,11 +172,17 @@ public class LetterSender implements Listener {
         }
 
         double radius = CourierNew.plugin.getConfig().getDouble("check-before-spawning-postman-radius");
-        for (Entity all : recipient.getNearbyEntities(radius, radius, radius)) {
-            if (all instanceof Villager && all.getCustomName().equals(msg.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()))) {
-                return;
-            }
-        }
+        for (Entity all : recipient.getNearbyEntities(radius, radius, radius)) if (il.isPostman(all)) return;
+
+        ItemStack identifier = new ItemStack(Material.PAPER, 1);
+        ItemMeta identifierMeta = identifier.getItemMeta();
+        identifierMeta.setDisplayName(recipient.getUniqueId().toString());
+        identifier.setItemMeta(identifierMeta);
+
+        ItemStack mailLiscense = new ItemStack(Material.PAPER, 1);
+        ItemMeta mailLiscenseMeta = mailLiscense.getItemMeta();
+        mailLiscenseMeta.setDisplayName("POSTMAN");
+        mailLiscense.setItemMeta(mailLiscenseMeta);
 
         Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(3));
         Villager postman = recipient.getWorld().spawn(loc, Villager.class);
@@ -187,6 +196,8 @@ public class LetterSender implements Listener {
         postman.setRemoveWhenFarAway(false);
         recipient.sendMessage(msg.SUCCESS_POSTMAN_ARRIVED);
         postman.getWorld().playSound(postman.getLocation(), Sound.ENTITY_VILLAGER_AMBIENT, 1, 1);
+        postman.getInventory().setItem(0, identifier);
+        postman.getInventory().setItem(1, mailLiscense);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -226,23 +237,23 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
-        if (en instanceof Villager) {
-            if (en.getCustomName() != null && en.getCustomName().equals(msg.POSTMAN_NAME.replace("$PLAYER$", e.getPlayer().getName())) && en.getCustomName().contains(e.getPlayer().getName())) {
-                e.setCancelled(true);
-                receive(e.getPlayer());
-                en.setCustomName(msg.POSTMAN_NAME_RECEIVED);
-                en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
-                en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, 1, 0), 20, 0.5, 1, 0.5);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (!en.isDead()) en.remove();
-                    }
-                }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
-            } else if (en.getCustomName() != null && en.getCustomName().contains(" Postman")) e.setCancelled(true);
-            if (en.getCustomName() != null && en.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED))
-                e.setCancelled(true);
+        if (!CourierNew.plugin.getConfig().getBoolean("protected-postman") || il.isPlayersPostman(e.getPlayer(), en)) {
+            e.setCancelled(true);
+            receive(e.getPlayer());
+            en.setCustomName(msg.POSTMAN_NAME_RECEIVED);
+            en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
+            en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, 1, 0), 20, 0.5, 1, 0.5);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!en.isDead()) en.remove();
+                }
+            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
+        } else if (il.isOtherPlayersPostman(e.getPlayer(), en)) {
+            e.setCancelled(true);
+            en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
         }
+        if (il.isReceivedPostman(en)) e.setCancelled(true);
     }
 
     /**
@@ -257,7 +268,8 @@ public class LetterSender implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (player.isOnline() && outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
+                if (player.isOnline() && outgoing.getList(player.getUniqueId().toString()) != null &&
+                        outgoing.getList(player.getUniqueId().toString()).size() > 0) {
                     spawnPostman(player);
                 }
             }

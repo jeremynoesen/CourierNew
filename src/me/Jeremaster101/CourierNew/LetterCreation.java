@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.BookMeta;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -34,12 +35,14 @@ class LetterCreation {
         bm.setAuthor(player.getName());
         bm.setTitle("Letter from " + player.getName());
         ArrayList<String> pages = new ArrayList<>();
-        pages.add(finalMessage);
+        String colorWrapped = WordUtils.wrap(finalMessage, 246, "<split>", true);
+        String[] multiPages = colorWrapped.split("<split>");
+        pages.addAll(Arrays.asList(multiPages));
         bm.setPages(pages);
 
         String plainMessage = msg.unformat(message);
 
-        String wrapped = WordUtils.wrap(plainMessage, 30, "<split>", true); //todo use this in books to wrap to new page
+        String wrapped = WordUtils.wrap(plainMessage, 30, "<split>", true);
         String[] lines = wrapped.split("<split>");
 
         ArrayList<String> lore = new ArrayList<>();

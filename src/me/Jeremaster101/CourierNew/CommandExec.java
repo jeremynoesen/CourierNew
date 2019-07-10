@@ -9,7 +9,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -65,14 +64,9 @@ public class CommandExec implements CommandExecutor {
 
                         for (World world : Bukkit.getWorlds()) {
                             for (Entity entity : world.getEntities()) {
-                                if (entity instanceof Villager) {
-                                    if (entity.getCustomName() != null) {
-                                        if (entity.getCustomName().equals(msg.POSTMAN_NAME_RECEIVED) ||
-                                                entity.getCustomName().contains("Postman")) {
-                                            entity.remove();
-                                            count++;
-                                        }
-                                    }
+                                if (il.isPostman(entity)) {
+                                    entity.remove();
+                                    count++;
                                 }
                             }
                         }

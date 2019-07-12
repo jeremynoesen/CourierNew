@@ -90,7 +90,7 @@ public class CourierNew extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        saveResource("paper.png", false);
+        //saveResource("paper.png", false);
     }
 
     /**

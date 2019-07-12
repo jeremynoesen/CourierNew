@@ -33,6 +33,13 @@ class LetterCreation {
     private Message msg = new Message();
     private LetterChecking il = new LetterChecking();
 
+    /**
+     * Create a new letter with a specified message on a map and places it in the player's inventory. This is not
+     * used in the current release. To be used later.
+     *
+     * @param player player writing the letter
+     * @param message message the player is writing
+     */
     void writeMap(Player player, String message) {
         String formattedMessage = Message.formatMap(message);
         ItemStack map = new ItemStack(Material.FILLED_MAP, 1);
@@ -79,9 +86,10 @@ class LetterCreation {
         bm.setAuthor(player.getName());
         bm.setTitle("Letter from " + player.getName()); //todo allow customizing of title in message config
         ArrayList<String> pages = new ArrayList<>();
-        String colorWrapped = WordUtils.wrap(finalMessage, 246, "<split>", true);//todo make \n include in char count
-        String[] multiPages = colorWrapped.split("<split>");
-        pages.addAll(Arrays.asList(multiPages));
+        //String colorWrapped = WordUtils.wrap(finalMessage, 246, "<split>", true);//todo make \n include in char count
+        //String[] multiPages = colorWrapped.split("<split>");
+        //pages.addAll(Arrays.asList(multiPages));
+        pages.add(finalMessage);
         bm.setPages(pages);
 
         String plainMessage = msg.unformat(message);

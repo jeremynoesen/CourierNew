@@ -46,7 +46,7 @@ public class CommandExec implements CommandExecutor {
                             if (il.isHoldingOwnLetter(player) && !il.wasSent(player.getInventory().getItemInMainHand()))
                                 lc.editBook(player, sb.toString());
                             else lc.writeBook(player, sb.toString());
-                            lc.writeMap(player, sb.toString());
+                            //lc.writeMap(player, sb.toString());
                         } else
                             player.sendMessage(Message.ERROR_NO_MSG);
                     } else

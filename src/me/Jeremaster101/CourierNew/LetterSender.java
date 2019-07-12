@@ -34,6 +34,7 @@ public class LetterSender implements Listener {
     private LetterChecking il = new LetterChecking();
     private Message msg = new Message();
 
+
     /**
      * Send a letter to a player. The letter will have the recipient added to the lore, preventing it from being sent
      * again. It also adds it to a yml file of letters to be recieved. If the player recieving is online, they may

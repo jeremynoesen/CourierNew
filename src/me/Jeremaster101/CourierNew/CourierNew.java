@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Register permissions, commands, and events, as well as save the default config, load the config, and delete
- * leftover postmen
+ * leftover postmen. Also copies the letter image for map letters
  *
  * @author Jeremy Noesen
  */
@@ -90,6 +90,7 @@ public class CourierNew extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
+        saveResource("paper.png", false);
     }
 
     /**

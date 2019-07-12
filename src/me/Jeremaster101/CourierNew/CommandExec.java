@@ -46,7 +46,7 @@ public class CommandExec implements CommandExecutor {
                             if (il.isHoldingOwnLetter(player) && !il.wasSent(player.getInventory().getItemInMainHand()))
                                 lc.editBook(player, sb.toString());
                             else lc.writeBook(player, sb.toString());
-                            lc.writeMap(player, sb.toString());
+                            //lc.writeMap(player, sb.toString());
                         } else
                             player.sendMessage(Message.ERROR_NO_MSG);
                     } else
@@ -55,7 +55,7 @@ public class CommandExec implements CommandExecutor {
                 }
 
 
-                if (label.equalsIgnoreCase("courierreload")) {
+                if (label.equalsIgnoreCase("cnreload")) {
 
                     if (player.hasPermission("couriernew.reload")) {
                         CourierNew.plugin.reloadConfig();
@@ -98,11 +98,11 @@ public class CommandExec implements CommandExecutor {
                 }
 
 
-                if (label.equalsIgnoreCase("courier")) {
+                if (label.equalsIgnoreCase("cnhelp")) {
 
                     if (player.hasPermission("couriernew.reload")) {
                         player.sendMessage(msg.OP_HELP);
-                    } else if (player.hasPermission("couriernew.courier")) {
+                    } else if (player.hasPermission("couriernew.couriernew")) {
                         player.sendMessage(msg.HELP);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);

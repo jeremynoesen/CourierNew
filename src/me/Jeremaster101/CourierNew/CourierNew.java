@@ -23,7 +23,7 @@ public class CourierNew extends JavaPlugin {
     private final Permission postmultiple = new Permission("couriernew.post.multiple");
     private final Permission postallonline = new Permission("couriernew.post.allonline");
     private final Permission postall = new Permission("couriernew.post.all");
-    private final Permission courier = new Permission("couriernew.courier");
+    private final Permission courier = new Permission("couriernew.help");
     private final Permission shred = new Permission("couriernew.shred");
     private final Permission shredall = new Permission("couriernew.shredall");
     private final Permission unread = new Permission("couriernew.unread");
@@ -58,11 +58,11 @@ public class CourierNew extends JavaPlugin {
 
         getCommand("letter").setExecutor(new CommandExec());
         getCommand("post").setExecutor(new CommandExec());
-        getCommand("courier").setExecutor(new CommandExec());
+        getCommand("cnhelp").setExecutor(new CommandExec());
         getCommand("shred").setExecutor(new CommandExec());
         getCommand("shredall").setExecutor(new CommandExec());
         getCommand("unread").setExecutor(new CommandExec());
-        getCommand("courierreload").setExecutor(new CommandExec());
+        getCommand("cnreload").setExecutor(new CommandExec());
 
         new BukkitRunnable() {
             @Override
@@ -90,7 +90,7 @@ public class CourierNew extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        saveResource("paper.png", false);
+        //saveResource("paper.png", false);
     }
 
     /**

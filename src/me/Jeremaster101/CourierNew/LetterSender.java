@@ -44,7 +44,7 @@ public class LetterSender implements Listener {
      * @param recipient player(s) to recieve the letter
      */
     @SuppressWarnings("deprecation")
-    void send(Player sender, String recipient) {//todo separate into multiple methods such as send, sendone, sendall,sendmultiple, and sendallonline
+    void send(Player sender, String recipient) {
         if (il.isHoldingOwnLetter(sender) && !il.wasSent(sender.getInventory().getItemInMainHand())) {
             File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
             FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);

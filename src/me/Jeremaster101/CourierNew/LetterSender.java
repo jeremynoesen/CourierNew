@@ -173,7 +173,7 @@ public class LetterSender implements Listener {
 
             } else if (recipient.contains(",")) {
 
-                if (sender.hasPermission("couriernew.send.multiple")) {
+                if (sender.hasPermission("couriernew.post.multiple")) {
 
                     ArrayList<String> lore = new ArrayList<>(letter.getItemMeta().getLore());
                     ArrayList<String> success = new ArrayList<>();

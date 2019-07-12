@@ -10,10 +10,10 @@ commands:
     description: Create a one-page letter or add pages to an existing letter
     usage: /<command>
   post:
-    description: Send a letter to a player
+    description: Send a letter to a player(s)
     usage: /<command>
-  courier:
-    description: Courier help command
+  cnhelp:
+    description: CourierNew help command
     usage: /<command>
   shred:
     description: Delete a letter you are holding
@@ -24,6 +24,6 @@ commands:
   unread:
     description: Retreive unread mail
     usage: /<command>
-  courierreload:
-    description: Reload the config
+  cnreload:
+    description: Reload the config and messages
     usage: /<command>

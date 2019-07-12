@@ -3,6 +3,7 @@ package me.Jeremaster101.CourierNew;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.map.MapPalette;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +17,11 @@ import java.util.logging.Level;
  */
 public class Message {
     static String PREFIX = format(getConfig().getString("PREFIX"));
-    static String ERROR_NO_PERMS = PREFIX + format(getConfig().getString("ERROR_NO_PERMS"));
     private static File messageConfigFile = null;
     private static YamlConfiguration config = null;
+    static String ERROR_NO_PERMS = PREFIX + format(getConfig().getString("ERROR_NO_PERMS"));
     static String ERROR_SENT_BEFORE = PREFIX + format(getConfig().getString("ERROR_SENT_BEFORE"));
     static String ERROR_NO_MSG = PREFIX + format(getConfig().getString("ERROR_NO_MSG"));
-    static String ERROR_SEND_FAILED = PREFIX + format(getConfig().getString("ERROR_SEND_FAILED"));
     static String ERROR_NO_LETTER = PREFIX + format(getConfig().getString("ERROR_NO_LETTER"));
     static String ERROR_NOT_YOUR_LETTER = PREFIX + format(getConfig().getString("ERROR_NOT_YOUR_LETTER"));
     static String SUCCESS_CREATED_HAND = PREFIX + format(getConfig().getString("SUCCESS_CREATED_HAND"));
@@ -46,10 +46,18 @@ public class Message {
     static String ERROR_WORLD = PREFIX + format(getConfig().getString("ERROR_WORLD"));
     static String POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
     static String POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
+    static String ERROR_SEND_FAILED = PREFIX + format(getConfig().getString("ERROR_SEND_FAILED"));
+    public String STARTUP = "\n\n" +
+            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.plugin.getDescription().getVersion() + " " + "has " + "been enabled!\n" +
+            ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
+            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██╔██╗ ██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  may not be modified or redistributed without\n" +
+            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
+            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + "╚██████╗" + ChatColor.DARK_GREEN + "██║ ╚████║" + ChatColor.DARK_GRAY + "███║" + ChatColor.WHITE + "  support discord group: https://discord.gg/WhmQYR\n" +
+            ChatColor.DARK_GRAY + "╚══╝" + ChatColor.GREEN + " ╚═════╝" + ChatColor.DARK_GREEN + "╚═╝  ╚═══╝" + ChatColor.DARK_GRAY + "╚══╝" + ChatColor.WHITE + "  Thank you for choosing CourierNew!\n";
     String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover postman entities...";
     String DONE_CLEANING =
             PREFIX + ChatColor.GRAY + "Successfully deleted " + ChatColor.WHITE + "$COUNT$" + ChatColor.GRAY +
-        " postman entities!";
+                    " postman entities!";
     String[] HELP = new String[]{
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
@@ -83,6 +91,39 @@ public class Message {
     }
 
     /**
+     * Apply color codes and line breaks to a message for maps
+     *
+     * @param msg message to format with color codes and line breaks
+     * @return formatted message
+     */
+    @SuppressWarnings("deprecation")
+    public static String formatMap(String msg) {
+        return msg.replace("\\n", "\n")
+                .replace("&0", "§" + MapPalette.matchColor(0, 0, 0) + ";")
+                .replace("&1", "§" + MapPalette.matchColor(0, 0, 170) + ";")
+                .replace("&2", "§" + MapPalette.matchColor(0, 170, 0) + ";")
+                .replace("&3", "§" + MapPalette.matchColor(0, 170, 170) + ";")
+                .replace("&4", "§" + MapPalette.matchColor(170, 0 ,0) + ";")
+                .replace("&5", "§" + MapPalette.matchColor(170, 0, 170) + ";")
+                .replace("&6", "§" + MapPalette.matchColor(255, 170, 0) + ";")
+                .replace("&7", "§" + MapPalette.matchColor(170, 170, 170) + ";")
+                .replace("&8", "§" + MapPalette.matchColor(85, 85, 85) + ";")
+                .replace("&9", "§" + MapPalette.matchColor(85, 85, 255) + ";")
+                .replace("&a", "§" + MapPalette.matchColor(85, 255, 85) + ";")
+                .replace("&b", "§" + MapPalette.matchColor(85, 255, 255) + ";")
+                .replace("&c", "§" + MapPalette.matchColor(255, 85, 85) + ";")
+                .replace("&d", "§" + MapPalette.matchColor(255, 85, 255) + ";")
+                .replace("&e", "§" + MapPalette.matchColor(255, 255, 85) + ";")
+                .replace("&f", "§" + MapPalette.matchColor(255, 255, 255) + ";")
+                .replace("&k", "\u00A7k")
+                .replace("&l", "\u00A7l")
+                .replace("&m", "\u00A7m")
+                .replace("&n", "\u00A7n")
+                .replace("&o", "\u00A7o")
+                .replace("&r", "§" + MapPalette.matchColor(0, 0, 0) + ";");
+    }
+
+    /**
      * Reloads the message file and reassigns the messages to the updated values
      */
     public static void reloadConfig() {
@@ -92,7 +133,8 @@ public class Message {
         }
         try {
             config.load(messageConfigFile);
-        } catch (IOException | InvalidConfigurationException ignored) {}
+        } catch (IOException | InvalidConfigurationException ignored) {
+        }
 
         Reader defConfigStream = new InputStreamReader(CourierNew.plugin.getResource("messages.yml"),
                 StandardCharsets.UTF_8);
@@ -175,13 +217,5 @@ public class Message {
     String unformat(String message) {
         return ChatColor.stripColor(message.replace("\\n", " "));
     }
-
-    public String STARTUP = "\n\n" +
-            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.plugin.getDescription().getVersion() + " " + "has " + "been enabled!\n" +
-            ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
-            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██╔██╗ ██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  may not be modified or redistributed without\n" +
-            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
-            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + "╚██████╗" + ChatColor.DARK_GREEN + "██║ ╚████║" + ChatColor.DARK_GRAY + "███║" + ChatColor.WHITE + "  support discord group: https://discord.gg/WhmQYR\n" +
-            ChatColor.DARK_GRAY + "╚══╝" + ChatColor.GREEN + " ╚═════╝" + ChatColor.DARK_GREEN + "╚═╝  ╚═══╝" + ChatColor.DARK_GRAY + "╚══╝" + ChatColor.WHITE + "  Thank you for choosing CourierNew!\n";
 
 }

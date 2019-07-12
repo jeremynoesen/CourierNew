@@ -11,6 +11,13 @@ remove-postman-ignored-delay: 200
 remove-postman-recieved-delay: 20
 resend-from-blocked-delay: 100
 protected-postman: true
+letter-type: book
+use-vault: false
+letter-cost:
+  book-item-cost: BOOK_AND_QUILL
+  book-econ-cost: 0
+  map-item-cost: EMPTY_MAP
+  map-econ-cost: 0
 blocked-gamemodes:
   - GAMEMODE
 blocked-worlds:

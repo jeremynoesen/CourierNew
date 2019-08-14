@@ -109,8 +109,4 @@ public class CourierNew extends JavaPlugin {
 
 //todo add to letter not page
 
-//todo limits to player sending multiple
-
 //todo custom entity
-
-//todo supervanish support

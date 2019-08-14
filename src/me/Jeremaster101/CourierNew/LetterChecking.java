@@ -23,7 +23,7 @@ public class LetterChecking {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getAuthor().equals(player.getName()) &&
-                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().equals("Letter from " + player.getName());
+                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().equals(Message.LETTER_FROM + player.getName());
     }
 
     /**
@@ -35,7 +35,7 @@ public class LetterChecking {
     boolean isHoldingLetter(Player player) {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
-                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().contains("Letter from ");
+                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().contains(Message.LETTER_FROM);
     }
 
     /**
@@ -46,7 +46,7 @@ public class LetterChecking {
      */
     boolean isLetter(ItemStack item) {
         return item != null && item.getType() == Material.WRITTEN_BOOK &&
-                ((BookMeta) item.getItemMeta()).getTitle().contains("Letter from ");
+                ((BookMeta) item.getItemMeta()).getTitle().contains(Message.LETTER_FROM);
     }
     
     /**

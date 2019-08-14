@@ -77,7 +77,7 @@ class LetterCreation {
         BookMeta bm = (BookMeta) book.getItemMeta();
 
         bm.setAuthor(player.getName());
-        bm.setTitle("Letter from " + player.getName()); //todo allow customizing of title in message config
+        bm.setTitle(Message.LETTER_FROM + player.getName());
         ArrayList<String> pages = new ArrayList<>();
         //String colorWrapped = WordUtils.wrap(finalMessage, 246, "<split>", true);//todo make \n include in char count
         //String[] multiPages = colorWrapped.split("<split>");

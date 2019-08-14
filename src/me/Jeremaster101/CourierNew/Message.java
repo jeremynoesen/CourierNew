@@ -1,7 +1,6 @@
 package me.Jeremaster101.CourierNew;
 
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.map.MapPalette;
 
@@ -16,17 +15,17 @@ import java.util.logging.Level;
  * All messages used within the plugin
  */
 public class Message {
-    static String PREFIX = format(getConfig().getString("PREFIX"));
     private static File messageConfigFile = null;
     private static YamlConfiguration config = null;
+    
+    static String PREFIX = format(getConfig().getString("PREFIX"));
     static String ERROR_NO_PERMS = PREFIX + format(getConfig().getString("ERROR_NO_PERMS"));
     static String ERROR_SENT_BEFORE = PREFIX + format(getConfig().getString("ERROR_SENT_BEFORE"));
     static String ERROR_NO_MSG = PREFIX + format(getConfig().getString("ERROR_NO_MSG"));
     static String ERROR_NO_LETTER = PREFIX + format(getConfig().getString("ERROR_NO_LETTER"));
     static String ERROR_NOT_YOUR_LETTER = PREFIX + format(getConfig().getString("ERROR_NOT_YOUR_LETTER"));
     static String SUCCESS_CREATED_HAND = PREFIX + format(getConfig().getString("SUCCESS_CREATED_HAND"));
-    static String SUCCESS_CREATED_DROPPED = PREFIX + format(getConfig().getString(
-            "SUCCESS_CREATED_DROPPED"));
+    static String SUCCESS_CREATED_DROPPED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_DROPPED"));
     static String SUCCESS_CREATED_ADDED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_ADDED"));
     static String SUCCESS_PAGE_ADDED = PREFIX + format(getConfig().getString("SUCCESS_PAGE_ADDED"));
     static String SUCCESS_DELETED = PREFIX + format(getConfig().getString("SUCCESS_DELETED"));
@@ -34,10 +33,8 @@ public class Message {
     static String ERROR_TOO_MANY_ARGS = PREFIX + format(getConfig().getString("ERROR_TOO_MANY_ARGS"));
     static String SUCCESS_SENT = PREFIX + format(getConfig().getString("SUCCESS_SENT"));
     static String ERROR_PLAYER_NO_EXIST = PREFIX + format(getConfig().getString("ERROR_PLAYER_NO_EXIST"));
-    static String SUCCESS_POSTMAN_ARRIVED = PREFIX + format(getConfig().getString(
-            "SUCCESS_POSTMAN_ARRIVED"));
-    static String SUCCESS_EXTRA_DELIVERIES = PREFIX + format(getConfig().getString(
-            "SUCCESS_EXTRA_DELIVERIES"));
+    static String SUCCESS_POSTMAN_ARRIVED = PREFIX + format(getConfig().getString("SUCCESS_POSTMAN_ARRIVED"));
+    static String SUCCESS_EXTRA_DELIVERIES = PREFIX + format(getConfig().getString("SUCCESS_EXTRA_DELIVERIES"));
     static String ERROR_NO_MAIL = PREFIX + format(getConfig().getString("ERROR_NO_MAIL"));
     static String ERROR_CANT_HOLD = PREFIX + format(getConfig().getString("ERROR_CANT_HOLD"));
     static String ERROR_VANISHED = PREFIX + format(getConfig().getString("ERROR_VANISHED"));
@@ -47,6 +44,7 @@ public class Message {
     static String POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
     static String POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
     static String ERROR_SEND_FAILED = PREFIX + format(getConfig().getString("ERROR_SEND_FAILED"));
+    static String LETTER_FROM = format(getConfig().getString("LETTER_FROM"));
     public String STARTUP = "\n\n" +
             ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.plugin.getDescription().getVersion() + " " + "has " + "been enabled!\n" +
             ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
@@ -144,31 +142,32 @@ public class Message {
         config.options().copyDefaults(true);
         saveConfig();
 
-        PREFIX = format(config.getString("PREFIX"));
-        ERROR_NO_PERMS = PREFIX + format(config.getString("ERROR_NO_PERMS"));
-        ERROR_SENT_BEFORE = PREFIX + format(config.getString("ERROR_SENT_BEFORE"));
-        ERROR_NO_MSG = PREFIX + format(config.getString("ERROR_NO_MSG"));
-        ERROR_NO_LETTER = PREFIX + format(config.getString("ERROR_NO_LETTER"));
-        ERROR_NOT_YOUR_LETTER = PREFIX + format(config.getString("ERROR_NOT_YOUR_LETTER"));
-        SUCCESS_CREATED_HAND = PREFIX + format(config.getString("SUCCESS_CREATED_HAND"));
-        SUCCESS_CREATED_DROPPED = PREFIX + format(config.getString("SUCCESS_CREATED_DROPPED"));
-        SUCCESS_CREATED_ADDED = PREFIX + format(config.getString("SUCCESS_CREATED_ADDED"));
-        SUCCESS_PAGE_ADDED = PREFIX + format(config.getString("SUCCESS_PAGE_ADDED"));
-        SUCCESS_DELETED = PREFIX + format(config.getString("SUCCESS_DELETED"));
-        SUCCESS_DELETED_ALL = PREFIX + format(config.getString("SUCCESS_DELETED_ALL"));
-        ERROR_TOO_MANY_ARGS = PREFIX + format(config.getString("ERROR_TOO_MANY_ARGS"));
-        SUCCESS_SENT = PREFIX + format(config.getString("SUCCESS_SENT"));
-        ERROR_PLAYER_NO_EXIST = PREFIX + format(config.getString("ERROR_PLAYER_NO_EXIST"));
-        SUCCESS_POSTMAN_ARRIVED = PREFIX + format(config.getString("SUCCESS_POSTMAN_ARRIVED"));
-        SUCCESS_EXTRA_DELIVERIES = PREFIX + format(config.getString("SUCCESS_EXTRA_DELIVERIES"));
-        ERROR_NO_MAIL = PREFIX + format(config.getString("ERROR_NO_MAIL"));
-        ERROR_CANT_HOLD = PREFIX + format(config.getString("ERROR_CANT_HOLD"));
-        ERROR_VANISHED = PREFIX + format(config.getString("ERROR_VANISHED"));
-        SUCCESS_IGNORED = PREFIX + format(config.getString("SUCCESS_IGNORED"));
-        SUCCESS_RELOADED = PREFIX + format(config.getString("SUCCESS_RELOADED"));
-        ERROR_WORLD = PREFIX + format(config.getString("ERROR_WORLD"));
-        POSTMAN_NAME = format(config.getString("POSTMAN_NAME"));
-        POSTMAN_NAME_RECEIVED = format(config.getString("POSTMAN_NAME_RECEIVED"));
+        PREFIX = format(getConfig().getString("PREFIX"));
+        ERROR_NO_PERMS = PREFIX + format(getConfig().getString("ERROR_NO_PERMS"));
+        ERROR_SENT_BEFORE = PREFIX + format(getConfig().getString("ERROR_SENT_BEFORE"));
+        ERROR_NO_MSG = PREFIX + format(getConfig().getString("ERROR_NO_MSG"));
+        ERROR_NO_LETTER = PREFIX + format(getConfig().getString("ERROR_NO_LETTER"));
+        ERROR_NOT_YOUR_LETTER = PREFIX + format(getConfig().getString("ERROR_NOT_YOUR_LETTER"));
+        SUCCESS_CREATED_HAND = PREFIX + format(getConfig().getString("SUCCESS_CREATED_HAND"));
+        SUCCESS_CREATED_DROPPED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_DROPPED"));
+        SUCCESS_CREATED_ADDED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_ADDED"));
+        SUCCESS_PAGE_ADDED = PREFIX + format(getConfig().getString("SUCCESS_PAGE_ADDED"));
+        SUCCESS_DELETED = PREFIX + format(getConfig().getString("SUCCESS_DELETED"));
+        SUCCESS_DELETED_ALL = PREFIX + format(getConfig().getString("SUCCESS_DELETED_ALL"));
+        ERROR_TOO_MANY_ARGS = PREFIX + format(getConfig().getString("ERROR_TOO_MANY_ARGS"));
+        SUCCESS_SENT = PREFIX + format(getConfig().getString("SUCCESS_SENT"));
+        ERROR_PLAYER_NO_EXIST = PREFIX + format(getConfig().getString("ERROR_PLAYER_NO_EXIST"));
+        SUCCESS_POSTMAN_ARRIVED = PREFIX + format(getConfig().getString("SUCCESS_POSTMAN_ARRIVED"));
+        SUCCESS_EXTRA_DELIVERIES = PREFIX + format(getConfig().getString("SUCCESS_EXTRA_DELIVERIES"));
+        ERROR_NO_MAIL = PREFIX + format(getConfig().getString("ERROR_NO_MAIL"));
+        ERROR_CANT_HOLD = PREFIX + format(getConfig().getString("ERROR_CANT_HOLD"));
+        ERROR_VANISHED = PREFIX + format(getConfig().getString("ERROR_VANISHED"));
+        SUCCESS_IGNORED = PREFIX + format(getConfig().getString("SUCCESS_IGNORED"));
+        SUCCESS_RELOADED = PREFIX + format(getConfig().getString("SUCCESS_RELOADED"));
+        ERROR_WORLD = PREFIX + format(getConfig().getString("ERROR_WORLD"));
+        POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
+        POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
+        LETTER_FROM = format(getConfig().getString("LETTER_FROM"));
     }
 
     /**

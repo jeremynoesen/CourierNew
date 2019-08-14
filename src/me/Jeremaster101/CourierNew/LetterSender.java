@@ -1,6 +1,7 @@
 package me.Jeremaster101.CourierNew;
 
 import com.earth2me.essentials.Essentials;
+import de.myzelyam.supervanish.SuperVanish;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -363,6 +364,12 @@ public class LetterSender implements Listener {
 
         if (Bukkit.getPluginManager().isPluginEnabled("Essentials"))
             if (((Essentials) Bukkit.getPluginManager().getPlugin("Essentials")).getVanishedPlayers().contains(recipient.getName())) {
+                recipient.sendMessage(Message.ERROR_VANISHED);
+                return;
+            }
+        
+        if(Bukkit.getPluginManager().isPluginEnabled("SuperVanish"))
+            if(((SuperVanish) Bukkit.getPluginManager().getPlugin("SuperVanish")).getVanishStateMgr().isVanished(recipient.getUniqueId())) {
                 recipient.sendMessage(Message.ERROR_VANISHED);
                 return;
             }

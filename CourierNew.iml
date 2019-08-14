@@ -49,7 +49,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/SuperVanish.jar!/" />
+          <root url="jar://$USER_HOME$/Spigot 1.13/plugins/SuperVanish.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

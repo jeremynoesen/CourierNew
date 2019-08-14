@@ -69,7 +69,9 @@ public class LetterSender implements Listener {
                         }
 
                         OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
-
+    
+                        if (recplayer.getName().equals(sender.getName())) continue;
+    
                         if (lore.get(lore.size() - 1).contains("§TTo ")) { //§TTo shows up as "To" in the lore, but doesnt block people from sending letters containing the word.
                             ItemMeta im = letterToAll.getItemMeta();
                             lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
@@ -129,7 +131,9 @@ public class LetterSender implements Listener {
                         }
 
                         OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
-
+    
+                        if (recplayer.getName().equals(sender.getName())) continue;
+    
                         if (lore.get(lore.size() - 1).contains("§TTo ")) {
                             ItemMeta im = letterToAll.getItemMeta();
                             lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());

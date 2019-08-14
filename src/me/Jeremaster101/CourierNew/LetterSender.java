@@ -44,7 +44,7 @@ public class LetterSender implements Listener {
      * @param recipient player(s) to recieve the letter
      */
     @SuppressWarnings("deprecation")
-    void send(Player sender, String recipient) {
+    void send(Player sender, String recipient) {//todo send to all shouldnt send to self
         if (il.isHoldingOwnLetter(sender) && !il.wasSent(sender.getInventory().getItemInMainHand())) {
             File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
             FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
@@ -70,14 +70,14 @@ public class LetterSender implements Listener {
 
                         OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
 
-                        if (lore.get(lore.size() - 1).contains("To ")) {
+                        if (lore.get(lore.size() - 1).contains("§TTo ")) { //§TTo shows up as "To" in the lore, but doesnt block people from sending letters containing the word.
                             ItemMeta im = letterToAll.getItemMeta();
-                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "To " + recplayer.getName());
+                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                             im.setLore(lore);
                             letterToAll.setItemMeta(im);
                         } else {
                             ItemMeta im = letterToAll.getItemMeta();
-                            lore.add(ChatColor.DARK_GRAY + "To " + recplayer.getName());
+                            lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                             im.setLore(lore);
                             letterToAll.setItemMeta(im);
                         }
@@ -130,14 +130,14 @@ public class LetterSender implements Listener {
 
                         OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
 
-                        if (lore.get(lore.size() - 1).contains("To ")) {
+                        if (lore.get(lore.size() - 1).contains("§TTo ")) {
                             ItemMeta im = letterToAll.getItemMeta();
-                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "To " + recplayer.getName());
+                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                             im.setLore(lore);
                             letterToAll.setItemMeta(im);
                         } else {
                             ItemMeta im = letterToAll.getItemMeta();
-                            lore.add(ChatColor.DARK_GRAY + "To " + recplayer.getName());
+                            lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                             im.setLore(lore);
                             letterToAll.setItemMeta(im);
                         }
@@ -195,14 +195,14 @@ public class LetterSender implements Listener {
 
                         OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
 
-                        if (lore.get(lore.size() - 1).contains("To ")) {
+                        if (lore.get(lore.size() - 1).contains("§TTo ")) {
                             ItemMeta im = letterToAll.getItemMeta();
-                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "To " + recplayer.getName());
+                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                             im.setLore(lore);
                             letterToAll.setItemMeta(im);
                         } else {
                             ItemMeta im = letterToAll.getItemMeta();
-                            lore.add(ChatColor.DARK_GRAY + "To " + recplayer.getName());
+                            lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                             im.setLore(lore);
                             letterToAll.setItemMeta(im);
                         }
@@ -264,7 +264,7 @@ public class LetterSender implements Listener {
 
                     ArrayList<String> lore = new ArrayList<>(letter.getItemMeta().getLore());
                     ItemMeta im = letter.getItemMeta();
-                    lore.add(ChatColor.DARK_GRAY + "To " + recplayer.getName());
+                    lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                     im.setLore(lore);
                     letter.setItemMeta(im);
 

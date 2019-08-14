@@ -59,6 +59,7 @@ public class Message {
             PREFIX + ChatColor.GRAY + "Successfully deleted " + ChatColor.WHITE + "$COUNT$" + ChatColor.GRAY +
                     " postman entities!";
     String[] HELP = new String[]{
+            "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
             ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player",
@@ -66,9 +67,11 @@ public class Message {
             ChatColor.GRAY + "/cnhelp" + ChatColor.WHITE + ": List all CourierNew commands",
             ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
             ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
-            ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------"
+            ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------",
+            ""
     };
     String[] OP_HELP = new String[]{
+            "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
             ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player",
@@ -76,8 +79,9 @@ public class Message {
             ChatColor.GRAY + "/cnhelp" + ChatColor.WHITE + ": List all CourierNew commands",
             ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
             ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
-            ChatColor.GRAY + "/cnreload" + ChatColor.RESET + ": Reload config and messages",
-            ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------"
+            ChatColor.GRAY + "/cnreload" + ChatColor.WHITE + ": Reload config and messages",
+            ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------",
+            ""
     };
 
     /**
@@ -127,14 +131,11 @@ public class Message {
      * Reloads the message file and reassigns the messages to the updated values
      */
     public static void reloadConfig() {
-        if (messageConfigFile == null || !messageConfigFile.exists()) {
+        if (messageConfigFile == null) {
             messageConfigFile = new File(CourierNew.plugin.getDataFolder(), "messages.yml");
-            config = YamlConfiguration.loadConfiguration(messageConfigFile);
         }
-        try {
-            config.load(messageConfigFile);
-        } catch (IOException | InvalidConfigurationException ignored) {
-        }
+
+        config = YamlConfiguration.loadConfiguration(messageConfigFile);
 
         Reader defConfigStream = new InputStreamReader(CourierNew.plugin.getResource("messages.yml"),
                 StandardCharsets.UTF_8);
@@ -205,6 +206,7 @@ public class Message {
         }
         if (!messageConfigFile.exists()) {
             CourierNew.plugin.saveResource("messages.yml", false);
+            config = YamlConfiguration.loadConfiguration(messageConfigFile);
         }
     }
 

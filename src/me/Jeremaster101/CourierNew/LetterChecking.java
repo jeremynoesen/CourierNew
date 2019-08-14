@@ -1,5 +1,6 @@
 package me.Jeremaster101.CourierNew;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -47,10 +48,14 @@ public class LetterChecking {
         return item != null && item.getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) item.getItemMeta()).getTitle().contains("Letter from ");
     }
-
+    
+    /**
+     * @param item item to check as a sent letter
+     * @return true if letter was already sent before
+     */
     boolean wasSent(ItemStack item) {
         return item.getType() == Material.WRITTEN_BOOK && item.getItemMeta().getLore() != null &&
-                item.getItemMeta().getLore().toString().contains("To ");
+                item.getItemMeta().getLore().toString().contains("§TTo ");
     }
 
     /**

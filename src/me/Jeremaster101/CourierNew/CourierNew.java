@@ -35,11 +35,11 @@ public class CourierNew extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        Message.saveDefaultConfig();
+
         Message msg = new Message();
 
-        CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.STARTUP);
-
-        Message.saveDefaultConfig();
+        plugin.getServer().getConsoleSender().sendMessage(msg.STARTUP);
 
         PluginManager pm = Bukkit.getPluginManager();
 
@@ -100,3 +100,17 @@ public class CourierNew extends JavaPlugin {
         plugin = null;
     }
 }
+
+//todo vault support
+
+//todo item cost for letter
+
+//todo cancelable letters
+
+//todo add to letter not page
+
+//todo limits to player sending multiple
+
+//todo custom entity
+
+//todo supervanish support

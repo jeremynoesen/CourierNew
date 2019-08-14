@@ -44,7 +44,7 @@ public class LetterSender implements Listener {
      * @param recipient player(s) to recieve the letter
      */
     @SuppressWarnings("deprecation")
-    void send(Player sender, String recipient) {//todo send to all shouldnt send to self
+    void send(Player sender, String recipient) {
         if (il.isHoldingOwnLetter(sender) && !il.wasSent(sender.getInventory().getItemInMainHand())) {
             File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
             FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
@@ -441,9 +441,9 @@ public class LetterSender implements Listener {
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
         if (!CourierNew.plugin.getConfig().getBoolean("protected-postman") || il.isPlayersPostman(e.getPlayer(), en)) {
+            en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             e.setCancelled(true);
             receive(e.getPlayer());
-            en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             en.getWorld().playSound(en.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
             en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, 1, 0), 20, 0.5, 1, 0.5);
             new BukkitRunnable() {

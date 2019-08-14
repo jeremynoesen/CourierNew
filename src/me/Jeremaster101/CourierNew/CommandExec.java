@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class CommandExec implements CommandExecutor {
 
-    private LetterSender pl = new LetterSender();//todo make these instances created in the commands they are needed in
+    private LetterSender pl = new LetterSender();
     private LetterCreation lc = new LetterCreation();
     private LetterChecking il = new LetterChecking();
     private Message msg = new Message();

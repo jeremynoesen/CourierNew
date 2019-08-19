@@ -412,7 +412,7 @@ public class LetterSender implements Listener {
             @Override
             public void run() {
                 postman.setFallDistance(0);
-                if (postman.isOnGround())
+                if (postman.isOnGround() && postman.getWorld() == recipient.getWorld())
                     postman.teleport(postman.getLocation().setDirection(recipient.getLocation().subtract(postman.getLocation()).toVector()));
                 if (postman.isDead()) this.cancel();
             }

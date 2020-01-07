@@ -377,7 +377,17 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (!en.isDead()) en.remove();
+                    if (!en.isDead()) {
+                        en.remove();
+                        File postmenyml = new File(CourierNew.plugin.getDataFolder(), "postmen.yml");
+                        FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
+                        postmen.set(en.getUniqueId().toString(), null);
+                        try {
+                            postmen.save(postmenyml);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
                 }
             }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
         } else if (pc.isOtherPlayersPostman(e.getPlayer(), en)) {

@@ -1,5 +1,7 @@
 package me.Jeremaster101.CourierNew;
 
+import me.Jeremaster101.CourierNew.Letter.LetterSender;
+import me.Jeremaster101.CourierNew.Postman.PostmanChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -15,9 +17,9 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Jeremy Noesen
  */
 public class CourierNew extends JavaPlugin {
-
+    
     public static CourierNew plugin;
-
+    
     private final Permission letter = new Permission("couriernew.letter");
     private final Permission postone = new Permission("couriernew.post.one");
     private final Permission postmultiple = new Permission("couriernew.post.multiple");
@@ -28,23 +30,27 @@ public class CourierNew extends JavaPlugin {
     private final Permission shredall = new Permission("couriernew.shredall");
     private final Permission unread = new Permission("couriernew.unread");
     private final Permission reload = new Permission("couriernew.reload");
-
+    
+    public static CourierNew getInstance() {
+        return plugin;
+    }
+    
     /**
      * Runs when plugin is enabled by the server
      */
     public void onEnable() {
         plugin = this;
-
+        
         Message.saveDefaultConfig();
-
+        
         Message msg = new Message();
-
+        
         plugin.getServer().getConsoleSender().sendMessage(msg.STARTUP);
-
+        
         PluginManager pm = Bukkit.getPluginManager();
-
+        
         pm.registerEvents(new LetterSender(), this);
-
+        
         pm.addPermission(letter);
         pm.addPermission(postone);
         pm.addPermission(postmultiple);
@@ -55,7 +61,7 @@ public class CourierNew extends JavaPlugin {
         pm.addPermission(shredall);
         pm.addPermission(unread);
         pm.addPermission(reload);
-
+        
         getCommand("letter").setExecutor(new CommandExec());
         getCommand("post").setExecutor(new CommandExec());
         getCommand("cnhelp").setExecutor(new CommandExec());
@@ -63,36 +69,36 @@ public class CourierNew extends JavaPlugin {
         getCommand("shredall").setExecutor(new CommandExec());
         getCommand("unread").setExecutor(new CommandExec());
         getCommand("cnreload").setExecutor(new CommandExec());
-
+        
         new BukkitRunnable() {
             @Override
             public void run() {
-
+                
                 int count = 0;
-                LetterChecking lc = new LetterChecking();
+                PostmanChecker pc = new PostmanChecker();
                 CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
-
+                
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
-                        if (lc.isPostman(entity)) {
+                        if (pc.isPostman(entity)) {
                             entity.remove();
                             count++;
                         }
                     }
                 }
-
+                
                 CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
                         Integer.toString(count)));
-
+                
             }
         }.runTaskLater(plugin, 2);
-
+        
         getConfig().options().copyDefaults(true);
         saveConfig();
-
+        
         //saveResource("paper.png", false);
     }
-
+    
     /**
      * runs when plugin is disabled by server, makes sure no method tries to reference the plugin anymore.
      */

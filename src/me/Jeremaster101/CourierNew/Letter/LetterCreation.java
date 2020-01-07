@@ -1,37 +1,24 @@
-package me.Jeremaster101.CourierNew;
+package me.Jeremaster101.CourierNew.Letter;
 
+import me.Jeremaster101.CourierNew.Message;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapRenderer;
-import org.bukkit.map.MapView;
-import org.bukkit.map.MinecraftFont;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 /**
  * Methods to create, edit, and delete letters
  */
-class LetterCreation {
+public class LetterCreation {
 
     private Message msg = new Message();
-    private LetterChecking il = new LetterChecking();
+    private LetterChecker il = new LetterChecker();
 
     /*void writeMap(Player player, String message) {
         String formattedMessage = Message.formatMap(message);
@@ -70,7 +57,7 @@ class LetterCreation {
      * @param player  player writing the letter
      * @param message the message the player is writing to the letter
      */
-    void writeBook(Player player, String message) {
+    public void writeBook(Player player, String message) {
         String finalMessage = Message.format(message);
 
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK, 1);
@@ -119,7 +106,7 @@ class LetterCreation {
      * @param player  player editing the letter
      * @param message message player is adding to the letter
      */
-    void editBook(Player player, String message) {
+    public void editBook(Player player, String message) {
         String finalMessage = Message.format(message);
 
         ItemStack writtenBook = player.getInventory().getItemInMainHand();
@@ -146,7 +133,7 @@ class LetterCreation {
      *
      * @param player player deleting the letter in their hand
      */
-    void delete(Player player) {
+    public void delete(Player player) {
         if (il.isHoldingLetter(player)) {
             player.getInventory().getItemInMainHand().setAmount(0);
             player.sendMessage(Message.SUCCESS_DELETED);
@@ -159,7 +146,7 @@ class LetterCreation {
      *
      * @param player player deleting the letters in their inventory
      */
-    void deleteAll(Player player) {
+    public void deleteAll(Player player) {
         for (ItemStack item : player.getInventory().getContents()) {
             if (il.isLetter(item)) item.setAmount(0);
         }

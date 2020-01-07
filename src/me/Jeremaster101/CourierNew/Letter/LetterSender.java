@@ -368,7 +368,7 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
-        if ((en instanceof Villager && !CourierNew.plugin.getConfig().getBoolean("protected-postman")) || pc.isPlayersPostman(e.getPlayer(), en)) {
+        if ((pc.isPostman(en) && !CourierNew.plugin.getConfig().getBoolean("protected-postman")) || pc.isPlayersPostman(e.getPlayer(), en) && !pc.isReceivedPostman(en)) {
             en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             e.setCancelled(true);
             receive(e.getPlayer());
@@ -457,5 +457,4 @@ public class LetterSender implements Listener {
     public void onVillagerProfession(VillagerCareerChangeEvent e) {
         if (pc.isPostman(e.getEntity())) e.setCancelled(true);
     }
-    //todo make listener class
 }

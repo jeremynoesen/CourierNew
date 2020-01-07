@@ -18,33 +18,33 @@ public class Message {
     private static File messageConfigFile = null;
     private static YamlConfiguration config = null;
     
-    static String PREFIX = format(getConfig().getString("PREFIX"));
-    static String ERROR_NO_PERMS = PREFIX + format(getConfig().getString("ERROR_NO_PERMS"));
-    static String ERROR_SENT_BEFORE = PREFIX + format(getConfig().getString("ERROR_SENT_BEFORE"));
-    static String ERROR_NO_MSG = PREFIX + format(getConfig().getString("ERROR_NO_MSG"));
-    static String ERROR_NO_LETTER = PREFIX + format(getConfig().getString("ERROR_NO_LETTER"));
-    static String ERROR_NOT_YOUR_LETTER = PREFIX + format(getConfig().getString("ERROR_NOT_YOUR_LETTER"));
-    static String SUCCESS_CREATED_HAND = PREFIX + format(getConfig().getString("SUCCESS_CREATED_HAND"));
-    static String SUCCESS_CREATED_DROPPED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_DROPPED"));
-    static String SUCCESS_CREATED_ADDED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_ADDED"));
-    static String SUCCESS_PAGE_ADDED = PREFIX + format(getConfig().getString("SUCCESS_PAGE_ADDED"));
-    static String SUCCESS_DELETED = PREFIX + format(getConfig().getString("SUCCESS_DELETED"));
-    static String SUCCESS_DELETED_ALL = PREFIX + format(getConfig().getString("SUCCESS_DELETED_ALL"));
-    static String ERROR_TOO_MANY_ARGS = PREFIX + format(getConfig().getString("ERROR_TOO_MANY_ARGS"));
-    static String SUCCESS_SENT = PREFIX + format(getConfig().getString("SUCCESS_SENT"));
-    static String ERROR_PLAYER_NO_EXIST = PREFIX + format(getConfig().getString("ERROR_PLAYER_NO_EXIST"));
-    static String SUCCESS_POSTMAN_ARRIVED = PREFIX + format(getConfig().getString("SUCCESS_POSTMAN_ARRIVED"));
-    static String SUCCESS_EXTRA_DELIVERIES = PREFIX + format(getConfig().getString("SUCCESS_EXTRA_DELIVERIES"));
-    static String ERROR_NO_MAIL = PREFIX + format(getConfig().getString("ERROR_NO_MAIL"));
-    static String ERROR_CANT_HOLD = PREFIX + format(getConfig().getString("ERROR_CANT_HOLD"));
-    static String ERROR_VANISHED = PREFIX + format(getConfig().getString("ERROR_VANISHED"));
-    static String SUCCESS_IGNORED = PREFIX + format(getConfig().getString("SUCCESS_IGNORED"));
-    static String SUCCESS_RELOADED = PREFIX + format(getConfig().getString("SUCCESS_RELOADED"));
-    static String ERROR_WORLD = PREFIX + format(getConfig().getString("ERROR_WORLD"));
-    static String POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
-    static String POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
-    static String ERROR_SEND_FAILED = PREFIX + format(getConfig().getString("ERROR_SEND_FAILED"));
-    static String LETTER_FROM = format(getConfig().getString("LETTER_FROM"));
+    public static String PREFIX = format(getConfig().getString("PREFIX"));
+    public static String ERROR_NO_PERMS = PREFIX + format(getConfig().getString("ERROR_NO_PERMS"));
+    public static String ERROR_SENT_BEFORE = PREFIX + format(getConfig().getString("ERROR_SENT_BEFORE"));
+    public static String ERROR_NO_MSG = PREFIX + format(getConfig().getString("ERROR_NO_MSG"));
+    public static String ERROR_NO_LETTER = PREFIX + format(getConfig().getString("ERROR_NO_LETTER"));
+    public static String ERROR_NOT_YOUR_LETTER = PREFIX + format(getConfig().getString("ERROR_NOT_YOUR_LETTER"));
+    public static String SUCCESS_CREATED_HAND = PREFIX + format(getConfig().getString("SUCCESS_CREATED_HAND"));
+    public static String SUCCESS_CREATED_DROPPED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_DROPPED"));
+    public static String SUCCESS_CREATED_ADDED = PREFIX + format(getConfig().getString("SUCCESS_CREATED_ADDED"));
+    public static String SUCCESS_PAGE_ADDED = PREFIX + format(getConfig().getString("SUCCESS_PAGE_ADDED"));
+    public static String SUCCESS_DELETED = PREFIX + format(getConfig().getString("SUCCESS_DELETED"));
+    public static String SUCCESS_DELETED_ALL = PREFIX + format(getConfig().getString("SUCCESS_DELETED_ALL"));
+    public static String ERROR_TOO_MANY_ARGS = PREFIX + format(getConfig().getString("ERROR_TOO_MANY_ARGS"));
+    public static String SUCCESS_SENT = PREFIX + format(getConfig().getString("SUCCESS_SENT"));
+    public static String ERROR_PLAYER_NO_EXIST = PREFIX + format(getConfig().getString("ERROR_PLAYER_NO_EXIST"));
+    public static String SUCCESS_POSTMAN_ARRIVED = PREFIX + format(getConfig().getString("SUCCESS_POSTMAN_ARRIVED"));
+    public static String SUCCESS_EXTRA_DELIVERIES = PREFIX + format(getConfig().getString("SUCCESS_EXTRA_DELIVERIES"));
+    public static String ERROR_NO_MAIL = PREFIX + format(getConfig().getString("ERROR_NO_MAIL"));
+    public static String ERROR_CANT_HOLD = PREFIX + format(getConfig().getString("ERROR_CANT_HOLD"));
+    public static String ERROR_VANISHED = PREFIX + format(getConfig().getString("ERROR_VANISHED"));
+    public static String SUCCESS_IGNORED = PREFIX + format(getConfig().getString("SUCCESS_IGNORED"));
+    public static String SUCCESS_RELOADED = PREFIX + format(getConfig().getString("SUCCESS_RELOADED"));
+    public static String ERROR_WORLD = PREFIX + format(getConfig().getString("ERROR_WORLD"));
+    public static String POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
+    public static String POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
+    public static String ERROR_SEND_FAILED = PREFIX + format(getConfig().getString("ERROR_SEND_FAILED"));
+    public static String LETTER_FROM = format(getConfig().getString("LETTER_FROM"));
     public String STARTUP = "\n\n" +
             ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.plugin.getDescription().getVersion() + " " + "has " + "been enabled!\n" +
             ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
@@ -215,7 +215,7 @@ public class Message {
      * @param message message to remove all formatting from
      * @return unformatted message
      */
-    String unformat(String message) {
+    public String unformat(String message) {
         return message.replace("\\n", " ").replace("&0", "").replace("&1", "").replace("&2", "").replace("&3", "")
                 .replace("&4", "").replace("&5", "").replace("&6", "").replace("&7", "").replace("&8", "")
                 .replace("&9", "").replace("&a", "").replace("&b", "").replace("&c", "").replace("&d", "")

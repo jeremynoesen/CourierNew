@@ -1,5 +1,9 @@
 package me.Jeremaster101.CourierNew;
 
+import me.Jeremaster101.CourierNew.Letter.LetterChecker;
+import me.Jeremaster101.CourierNew.Letter.LetterCreation;
+import me.Jeremaster101.CourierNew.Letter.LetterSender;
+import me.Jeremaster101.CourierNew.Postman.PostmanChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -19,24 +23,25 @@ import java.util.List;
  * Command class, runs commands if not in blocked worlds or gamemodes.
  */
 public class CommandExec implements CommandExecutor {
-
-    private LetterSender pl = new LetterSender();
+    
+    private LetterSender ls = new LetterSender();
+    private PostmanChecker pc = new PostmanChecker();
     private LetterCreation lc = new LetterCreation();
-    private LetterChecking il = new LetterChecking();
+    private LetterChecker il = new LetterChecker();
     private Message msg = new Message();
-
+    
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-
+            
             Player player = (Player) sender;
             List<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
             List<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
-
+            
             if (!worlds.contains(player.getWorld().getName()) && !modes.contains(player.getGameMode().toString())) {
-
+                
                 if (label.equalsIgnoreCase("letter")) {
-
+                    
                     if (player.hasPermission("couriernew.letter")) {
                         if (args.length >= 1) {
                             StringBuilder sb = new StringBuilder();
@@ -51,99 +56,100 @@ public class CommandExec implements CommandExecutor {
                             player.sendMessage(Message.ERROR_NO_MSG);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
-
+                    
                 }
-
-
+                
+                
                 if (label.equalsIgnoreCase("cnreload")) {
-
+                    
                     if (player.hasPermission("couriernew.reload")) {
                         CourierNew.plugin.reloadConfig();
                         Message.reloadConfig();
-
+                        
                         int count = 0;
                         CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
-
+                        
                         for (World world : Bukkit.getWorlds()) {
                             for (Entity entity : world.getEntities()) {
-                                if (il.isPostman(entity)) {
+                                if (pc.isPostman(entity)) {
                                     entity.remove();
                                     count++;
                                 }
                             }
                         }
-
+                        
                         CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
                                 Integer.toString(count)));
                         player.sendMessage(Message.SUCCESS_RELOADED);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
-
+                    
                 }
-
-
+                
+                
                 if (label.equalsIgnoreCase("post")) {
-
+                    
                     if (args.length == 1) {
                         if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew" +
                                 ".post.multiple") ||
                                 player.hasPermission("couriernew.post.allonline") || player.hasPermission("couriernew" +
                                 ".post.all")) {
-                            pl.send(player, args[0]);
+                            ls.send(player, args[0]);
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
                     } else
                         player.sendMessage(Message.ERROR_TOO_MANY_ARGS);
-
+                    
                 }
-
-
+                
+                
                 if (label.equalsIgnoreCase("cnhelp")) {
-
+                    
                     if (player.hasPermission("couriernew.help")) {
                         if (player.hasPermission("couriernew.reload")) {
                             player.sendMessage(msg.OP_HELP);
                         } else player.sendMessage(msg.HELP);
-
+                        
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
-
+                    
                 }
-
-
+                
+                
                 if (label.equalsIgnoreCase("shred")) {
-
+                    
                     if (player.hasPermission("couriernew.shred")) {
                         lc.delete(player);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
-
+                    
                 }
-
-
+                
+                
                 if (label.equalsIgnoreCase("shredall")) {
-
+                    
                     if (player.hasPermission("couriernew.shredall")) {
                         lc.deleteAll(player);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
-
+                    
                 }
-
-
+                
+                
                 if (label.equalsIgnoreCase("unread")) {
-
+                    
                     if (player.hasPermission("couriernew.unread")) {
                         File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
                         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
-
+                        
                         if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
                             player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    if (player.isOnline())
-                                        pl.spawnPostman(player);
+                                    if (player.isOnline()) {
+                                        ls.spawnPostman(player);
+                                    }
                                 }
                             }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("unread-delay"));
                         } else {
@@ -153,8 +159,8 @@ public class CommandExec implements CommandExecutor {
                         player.sendMessage(Message.ERROR_NO_PERMS);
                 }
                 return true;
-
-
+                
+                
             } else {
                 player.sendMessage(Message.ERROR_WORLD);
                 return true;

@@ -11,6 +11,8 @@ remove-postman-ignored-delay: 200
 remove-postman-recieved-delay: 20
 resend-from-blocked-delay: 100
 protected-postman: true
+postman-entity-type: VILLAGER
+postman-spawn-distance: 3
 blocked-gamemodes:
   - GAMEMODE
 blocked-worlds:

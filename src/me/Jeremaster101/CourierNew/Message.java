@@ -44,6 +44,7 @@ public class Message {
     public static String POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
     public static String POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
     public static String ERROR_SEND_FAILED = PREFIX + format(getConfig().getString("ERROR_SEND_FAILED"));
+    public static String SUCCESS_PAGE_EDITED = PREFIX + format(getConfig().getString("SUCCESS_PAGE_EDITED"));
     public static String LETTER_FROM = format(getConfig().getString("LETTER_FROM"));
     public String STARTUP = "\n\n" +
             ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.plugin.getDescription().getVersion() + " " + "has " + "been enabled!\n" +
@@ -168,6 +169,7 @@ public class Message {
         POSTMAN_NAME = format(getConfig().getString("POSTMAN_NAME"));
         POSTMAN_NAME_RECEIVED = format(getConfig().getString("POSTMAN_NAME_RECEIVED"));
         LETTER_FROM = format(getConfig().getString("LETTER_FROM"));
+        SUCCESS_PAGE_EDITED = PREFIX + format(getConfig().getString("SUCCESS_PAGE_EDITED"));
     }
 
     /**

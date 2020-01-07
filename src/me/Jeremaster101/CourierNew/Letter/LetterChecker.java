@@ -1,11 +1,8 @@
 package me.Jeremaster101.CourierNew.Letter;
 
 import me.Jeremaster101.CourierNew.Message;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
@@ -13,7 +10,7 @@ import org.bukkit.inventory.meta.BookMeta;
  * Methods to check for letters in a player's inventory
  */
 public class LetterChecker {
-
+    
     /**
      * Test if a player is holding a letter they wrote and have not sent yet.
      *
@@ -26,7 +23,7 @@ public class LetterChecker {
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getAuthor().equals(player.getName()) &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().equals(Message.LETTER_FROM + player.getName());
     }
-
+    
     /**
      * Check if a player is holding a letter in general
      *
@@ -38,7 +35,7 @@ public class LetterChecker {
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().contains(Message.LETTER_FROM);
     }
-
+    
     /**
      * Check if item is a letter
      *

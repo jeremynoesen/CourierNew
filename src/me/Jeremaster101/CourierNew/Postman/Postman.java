@@ -1,9 +1,7 @@
 package me.Jeremaster101.CourierNew.Postman;
 
-import com.sun.corba.se.impl.naming.namingutil.CorbalocURL;
 import me.Jeremaster101.CourierNew.CourierNew;
 import me.Jeremaster101.CourierNew.Message;
-import org.apache.logging.log4j.core.Core;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -114,5 +114,3 @@ public class CourierNew extends JavaPlugin {
 //todo cancelable letters
 
 //todo add to letter not page
-
-//todo custom entity

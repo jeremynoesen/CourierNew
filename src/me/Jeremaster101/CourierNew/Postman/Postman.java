@@ -100,7 +100,7 @@ public class Postman {
         postman.setCustomNameVisible(false);
         postman.setInvulnerable(true);
         recipient.sendMessage(Message.SUCCESS_POSTMAN_ARRIVED);
-        postman.getWorld().playSound(postman.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+        postman.getWorld().playSound(postman.getLocation(), Sound.UI_TOAST_IN, 1, 1);
         
         new BukkitRunnable() {
             @Override
@@ -130,7 +130,7 @@ public class Postman {
                     }
                     
                     recipient.sendMessage(Message.SUCCESS_IGNORED);
-                    postman.getWorld().playSound(postman.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1, 1);
+                    postman.getWorld().playSound(postman.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
                     new BukkitRunnable() {
                         @Override
                         public void run() {

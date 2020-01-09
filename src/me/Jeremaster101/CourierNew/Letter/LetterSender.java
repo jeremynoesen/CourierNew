@@ -372,7 +372,7 @@ public class LetterSender implements Listener {
             en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             e.setCancelled(true);
             receive(e.getPlayer());
-            en.getWorld().playSound(en.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+            en.getWorld().playSound(en.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);
             en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, en.getHeight()/2, 0), 20, en.getWidth()/2, en.getHeight(), en.getWidth()/2);
             new BukkitRunnable() {
                 @Override
@@ -392,7 +392,7 @@ public class LetterSender implements Listener {
             }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
         } else if (pc.isOtherPlayersPostman(e.getPlayer(), en)) {
             e.setCancelled(true);
-            en.getWorld().playSound(en.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1, 1);
+            en.getWorld().playSound(en.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
         } else if (pc.isReceivedPostman(en)) e.setCancelled(true);
     }
     

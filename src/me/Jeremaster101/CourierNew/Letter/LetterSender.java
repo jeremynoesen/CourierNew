@@ -463,6 +463,9 @@ public class LetterSender implements Listener {
         }
     }
     
+    /**
+     * prevent villager postmen from changing profession
+     */
     @EventHandler
     public void onVillagerProfession(VillagerCareerChangeEvent e) {
         if (pc.isPostman(e.getEntity())) e.setCancelled(true);

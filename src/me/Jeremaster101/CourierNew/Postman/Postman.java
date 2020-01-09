@@ -2,17 +2,17 @@ package me.Jeremaster101.CourierNew.Postman;
 
 import me.Jeremaster101.CourierNew.CourierNew;
 import me.Jeremaster101.CourierNew.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class Postman {
     
@@ -20,10 +20,47 @@ public class Postman {
     Player player;
     PostmanChecker pc = new PostmanChecker();
     
+    /**
+     * Get NMS class from jar
+     * @param name class name
+     * @return NMS class
+     */
+    private static Class<?> getNMSClass(String name) {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        try {
+            return Class.forName("net.minecraft.server." + version + "." + name);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * make an entity follow a player with a set speed
+     * @param player player entity will follow
+     * @param entity entity to follow player
+     * @param d speed
+     */
+    public void followPlayer(Player player, LivingEntity entity, double d) {
+        final LivingEntity e = entity;
+        final Player p = player;
+        final float f = (float) d;
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(CourierNew.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                //((EntityInsentient) ((CraftEntity) e).getHandle()).getNavigation().a(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ(), f);
+            }
+        }, 0 * 20, 2 * 20);
+    }
+    
     public Postman(Player player) {
         this.player = player;
     }
     
+    /**
+     * get mob type from config
+     * @return entitytype, default villager
+     */
     EntityType getTypeFromConfig() {
         if (CourierNew.getInstance().getConfig().get("postman-entity-type") != null) {
             try {
@@ -35,6 +72,9 @@ public class Postman {
             return EntityType.VILLAGER;
     }
     
+    /**
+     * spawn the postman entity
+     */
     public void spawn() {
         Player recipient = this.player;
         double radius = CourierNew.plugin.getConfig().getDouble("check-before-spawning-postman-radius");
@@ -66,8 +106,11 @@ public class Postman {
             @Override
             public void run() {
                 postman.setFallDistance(0);
-                if (postman.isOnGround() && postman.getWorld() == recipient.getWorld())
+                if (postman.isOnGround() && postman.getWorld() == recipient.getWorld()) {
                     postman.teleport(postman.getLocation().setDirection(recipient.getLocation().subtract(postman.getLocation()).toVector()));
+                    ((LivingEntity) postman).setAI(false);
+                    //followPlayer(recipient, (LivingEntity) postman, 1); //todo add ability to follow player
+                }
                 if (postman.isDead()) this.cancel();
             }
         }.runTaskTimer(CourierNew.plugin, 0, 1);

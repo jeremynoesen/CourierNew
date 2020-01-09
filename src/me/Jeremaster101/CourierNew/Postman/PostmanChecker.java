@@ -60,6 +60,10 @@ public class PostmanChecker {
         return isPostman(en) && en.getCustomName() != null && en.getCustomName().equals(Message.POSTMAN_NAME_RECEIVED);
     }
     
+    /**
+     * @param p player to check
+     * @return true if not vanished or not in a restricted world or mode
+     */
     public boolean canRecieveMail(Player p) {
         if (Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket")) {
             if (((VanishPlugin) Bukkit.getPluginManager().getPlugin("VanishNoPacket")).getManager().isVanished

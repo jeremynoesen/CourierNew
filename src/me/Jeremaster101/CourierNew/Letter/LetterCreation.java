@@ -113,8 +113,6 @@ public class LetterCreation {
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss MM/dd/yy");
         String dateNow = formatter.format(currentDate.getTime());
-        lore.set((wbm.getLore().size() - 1), ChatColor.DARK_GRAY + dateNow + " (" + (wbm.getPages().size() + 1) + ")");
-        wbm.setLore(lore);
         
         ArrayList<String> pages = new ArrayList<>(wbm.getPages());
         if (pages.get(pages.size() - 1).length() < 256 && pages.get(pages.size() - 1).length() > 0) {
@@ -126,6 +124,8 @@ public class LetterCreation {
         } else {
             pages.add(finalMessage);
             player.sendMessage(Message.SUCCESS_PAGE_ADDED);
+            lore.set((wbm.getLore().size() - 1), ChatColor.DARK_GRAY + dateNow + " (" + (wbm.getPages().size() + 1) + ")");
+            wbm.setLore(lore);
         }
         wbm.setPages(pages);
         writtenBook.setItemMeta(wbm);

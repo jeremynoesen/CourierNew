@@ -1,7 +1,7 @@
-package me.Jeremaster101.CourierNew;
+package jndev.couriernew;
 
-import me.Jeremaster101.CourierNew.Letter.LetterSender;
-import me.Jeremaster101.CourierNew.Postman.PostmanChecker;
+import jndev.couriernew.letter.LetterSender;
+import jndev.couriernew.postman.PostmanChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -36,7 +36,7 @@ public class CourierNew extends JavaPlugin {
     }
     
     /**
-     * Runs when plugin is enabled by the server
+     * Runs when getInstance() is enabled by the server
      */
     public void onEnable() {
         plugin = this;
@@ -76,7 +76,7 @@ public class CourierNew extends JavaPlugin {
                 
                 int count = 0;
                 PostmanChecker pc = new PostmanChecker();
-                CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
+                plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
                 
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
@@ -87,7 +87,7 @@ public class CourierNew extends JavaPlugin {
                     }
                 }
                 
-                CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
+                plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
                         Integer.toString(count)));
                 
             }
@@ -100,7 +100,7 @@ public class CourierNew extends JavaPlugin {
     }
     
     /**
-     * runs when plugin is disabled by server, makes sure no method tries to reference the plugin anymore.
+     * runs when getInstance() is disabled by server, makes sure no method tries to reference the getInstance() anymore.
      */
     public void onDisable() {
         plugin = null;

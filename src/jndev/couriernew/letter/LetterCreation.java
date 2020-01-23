@@ -1,6 +1,6 @@
-package me.Jeremaster101.CourierNew.Letter;
+package jndev.couriernew.letter;
 
-import me.Jeremaster101.CourierNew.Message;
+import jndev.couriernew.Message;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,7 +31,7 @@ public class LetterCreation {
         mapMeta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
         mapMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         try {
-            Image img = ImageIO.read(new File(CourierNew.plugin.getDataFolder(), "paper" + ".png"));
+            Image img = ImageIO.read(new File(CourierNew.getInstance().getDataFolder(), "paper" + ".png"));
             mv.addRenderer(new MapRenderer() {
                 @Override
                 public void render(MapView mapView, MapCanvas mapCanvas, Player player) {

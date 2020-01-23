@@ -1,9 +1,9 @@
-package me.Jeremaster101.CourierNew.Letter;
+package jndev.couriernew.letter;
 
-import me.Jeremaster101.CourierNew.CourierNew;
-import me.Jeremaster101.CourierNew.Message;
-import me.Jeremaster101.CourierNew.Postman.Postman;
-import me.Jeremaster101.CourierNew.Postman.PostmanChecker;
+import jndev.couriernew.postman.Postman;
+import jndev.couriernew.CourierNew;
+import jndev.couriernew.Message;
+import jndev.couriernew.postman.PostmanChecker;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -48,7 +48,7 @@ public class LetterSender implements Listener {
     @SuppressWarnings("deprecation")
     public void send(Player sender, String recipient) {
         if (lc.isHoldingOwnLetter(sender) && !lc.wasSent(sender.getInventory().getItemInMainHand())) {
-            File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
+            File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
             FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
             ItemStack letter = sender.getInventory().getItemInMainHand();
             
@@ -107,7 +107,7 @@ public class LetterSender implements Listener {
                                     spawnPostman((Player) recplayer);
                                 }
                             }
-                        }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("send-recieve-delay"));
+                        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
                     }
                     
                     sender.getInventory().getItemInMainHand().setAmount(0);
@@ -169,7 +169,7 @@ public class LetterSender implements Listener {
                                     spawnPostman((Player) recplayer);
                                 }
                             }
-                        }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("send-recieve-delay"));
+                        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
                     }
                     
                     sender.getInventory().getItemInMainHand().setAmount(0);
@@ -235,7 +235,7 @@ public class LetterSender implements Listener {
                                     spawnPostman((Player) recplayer);
                                 }
                             }
-                        }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("send-recieve-delay"));
+                        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
                     }
                     
                     if (success.size() > 0) {
@@ -298,7 +298,7 @@ public class LetterSender implements Listener {
                                 spawnPostman((Player) recplayer);
                             }
                         }
-                    }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("send-recieve-delay"));
+                    }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
             }
         } else if (lc.isHoldingOwnLetter(sender)) {
@@ -317,7 +317,7 @@ public class LetterSender implements Listener {
      * @param recipient player recieving the mail
      */
     public void receive(Player recipient) {
-        File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
+        File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
         UUID uuid = recipient.getUniqueId();
         
@@ -368,7 +368,7 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
-        if ((pc.isPostman(en) && !CourierNew.plugin.getConfig().getBoolean("protected-postman")) || pc.isPlayersPostman(e.getPlayer(), en) && !pc.isReceivedPostman(en)) {
+        if ((pc.isPostman(en) && !CourierNew.getInstance().getConfig().getBoolean("protected-postman")) || pc.isPlayersPostman(e.getPlayer(), en) && !pc.isReceivedPostman(en)) {
             en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             e.setCancelled(true);
             receive(e.getPlayer());
@@ -379,7 +379,7 @@ public class LetterSender implements Listener {
                 public void run() {
                     if (!en.isDead()) {
                         en.remove();
-                        File postmenyml = new File(CourierNew.plugin.getDataFolder(), "postmen.yml");
+                        File postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
                         FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
                         postmen.set(en.getUniqueId().toString(), null);
                         try {
@@ -389,7 +389,7 @@ public class LetterSender implements Listener {
                         }
                     }
                 }
-            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-recieved-delay"));
+            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("remove-postman-recieved-delay"));
         } else if (pc.isOtherPlayersPostman(e.getPlayer(), en)) {
             e.setCancelled(true);
             en.getWorld().playSound(en.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
@@ -402,7 +402,7 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
+        File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
         
         new BukkitRunnable() {
@@ -413,7 +413,7 @@ public class LetterSender implements Listener {
                     spawnPostman(player);
                 }
             }
-        }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("join-recieve-delay"));
+        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("join-recieve-delay"));
     }
     
     /**
@@ -421,7 +421,7 @@ public class LetterSender implements Listener {
      */
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
-        List<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
+        List<String> worlds = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-worlds"));
         String to = e.getTo().getWorld().getName();
         String from = e.getFrom().getWorld().getName();
         Player recipient = e.getPlayer();
@@ -430,13 +430,13 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
+                    File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
                     FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnPostman(recipient);
                 }
-            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("resend-from-blocked-delay"));
+            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-from-blocked-delay"));
         }
     }
     
@@ -445,7 +445,7 @@ public class LetterSender implements Listener {
      */
     @EventHandler
     public void onGamemode(PlayerGameModeChangeEvent e) {
-        List<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
+        List<String> modes = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-gamemodes"));
         GameMode to = e.getNewGameMode();
         GameMode from = e.getPlayer().getGameMode();
         Player recipient = e.getPlayer();
@@ -453,13 +453,13 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
+                    File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
                     FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnPostman(recipient);
                 }
-            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("resend-from-blocked-delay"));
+            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-from-blocked-delay"));
         }
     }
     

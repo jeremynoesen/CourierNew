@@ -1,7 +1,7 @@
-package me.Jeremaster101.CourierNew.Postman;
+package jndev.couriernew.postman;
 
-import me.Jeremaster101.CourierNew.CourierNew;
-import me.Jeremaster101.CourierNew.Message;
+import jndev.couriernew.CourierNew;
+import jndev.couriernew.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 public class Postman {
     
@@ -77,7 +76,7 @@ public class Postman {
      */
     public void spawn() {
         Player recipient = this.player;
-        double radius = CourierNew.plugin.getConfig().getDouble("check-before-spawning-postman-radius");
+        double radius = CourierNew.getInstance().getConfig().getDouble("check-before-spawning-postman-radius");
         for (Entity all : recipient.getNearbyEntities(radius, radius, radius)) if (pc.isPostman(all)) return;
         
         int dist = CourierNew.getInstance().getConfig().getInt("postman-spawn-distance");
@@ -85,7 +84,7 @@ public class Postman {
         Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist));
         postman = recipient.getWorld().spawnEntity(loc, getTypeFromConfig());
         
-        File postmenyml = new File(CourierNew.plugin.getDataFolder(), "postmen.yml");
+        File postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
         FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
         
         postmen.set(postman.getUniqueId().toString(), recipient.getName());
@@ -113,7 +112,7 @@ public class Postman {
                 }
                 if (postman.isDead()) this.cancel();
             }
-        }.runTaskTimer(CourierNew.plugin, 0, 1);
+        }.runTaskTimer(CourierNew.getInstance(), 0, 1);
         
         new BukkitRunnable() {
             @Override
@@ -134,16 +133,16 @@ public class Postman {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
+                            File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
                             FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
                             if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                                     && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                                 spawn();
                         }
-                    }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("resend-delay"));
+                    }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-delay"));
                 }
             }
-        }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("remove-postman-ignored-delay"));
+        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("remove-postman-ignored-delay"));
     }
     
 }

@@ -1,4 +1,4 @@
-package me.Jeremaster101.CourierNew;
+package jndev.couriernew;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 /**
- * All messages used within the plugin
+ * All messages used within the getInstance()
  */
 public class Message {
     private static File messageConfigFile = null;
@@ -47,7 +47,7 @@ public class Message {
     public static String SUCCESS_PAGE_EDITED = PREFIX + format(getConfig().getString("SUCCESS_PAGE_EDITED"));
     public static String LETTER_FROM = format(getConfig().getString("LETTER_FROM"));
     public String STARTUP = "\n\n" +
-            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.plugin.getDescription().getVersion() + " " + "has " + "been enabled!\n" +
+            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.getInstance().getDescription().getVersion() + " " + "has " + "been enabled!\n" +
             ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
             ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██╔██╗ ██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  may not be modified or redistributed without\n" +
             ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
@@ -131,12 +131,12 @@ public class Message {
      */
     public static void reloadConfig() {
         if (messageConfigFile == null) {
-            messageConfigFile = new File(CourierNew.plugin.getDataFolder(), "messages.yml");
+            messageConfigFile = new File(CourierNew.getInstance().getDataFolder(), "messages.yml");
         }
 
         config = YamlConfiguration.loadConfiguration(messageConfigFile);
 
-        Reader defConfigStream = new InputStreamReader(CourierNew.plugin.getResource("messages.yml"),
+        Reader defConfigStream = new InputStreamReader(CourierNew.getInstance().getResource("messages.yml"),
                 StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         config.setDefaults(defConfig);
@@ -194,7 +194,7 @@ public class Message {
         try {
             getConfig().save(messageConfigFile);
         } catch (IOException ex) {
-            CourierNew.plugin.getLogger().log(Level.SEVERE, "Could not save config to " + messageConfigFile, ex);
+            CourierNew.getInstance().getLogger().log(Level.SEVERE, "Could not save config to " + messageConfigFile, ex);
         }
     }
 
@@ -203,10 +203,10 @@ public class Message {
      */
     public static void saveDefaultConfig() {
         if (messageConfigFile == null) {
-            messageConfigFile = new File(CourierNew.plugin.getDataFolder(), "messages.yml");
+            messageConfigFile = new File(CourierNew.getInstance().getDataFolder(), "messages.yml");
         }
         if (!messageConfigFile.exists()) {
-            CourierNew.plugin.saveResource("messages.yml", false);
+            CourierNew.getInstance().saveResource("messages.yml", false);
             config = YamlConfiguration.loadConfiguration(messageConfigFile);
         }
     }

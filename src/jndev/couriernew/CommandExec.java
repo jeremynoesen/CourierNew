@@ -1,9 +1,9 @@
-package me.Jeremaster101.CourierNew;
+package jndev.couriernew;
 
-import me.Jeremaster101.CourierNew.Letter.LetterChecker;
-import me.Jeremaster101.CourierNew.Letter.LetterCreation;
-import me.Jeremaster101.CourierNew.Letter.LetterSender;
-import me.Jeremaster101.CourierNew.Postman.PostmanChecker;
+import jndev.couriernew.letter.LetterChecker;
+import jndev.couriernew.letter.LetterCreation;
+import jndev.couriernew.letter.LetterSender;
+import jndev.couriernew.postman.PostmanChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -35,8 +35,8 @@ public class CommandExec implements CommandExecutor {
         if (sender instanceof Player) {
             
             Player player = (Player) sender;
-            List<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
-            List<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
+            List<String> modes = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-gamemodes"));
+            List<String> worlds = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-worlds"));
             
             if (!worlds.contains(player.getWorld().getName()) && !modes.contains(player.getGameMode().toString())) {
                 
@@ -63,11 +63,11 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("cnreload")) {
                     
                     if (player.hasPermission("couriernew.reload")) {
-                        CourierNew.plugin.reloadConfig();
+                        CourierNew.getInstance().reloadConfig();
                         Message.reloadConfig();
                         
                         int count = 0;
-                        CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
+                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(msg.CLEANING);
                         
                         for (World world : Bukkit.getWorlds()) {
                             for (Entity entity : world.getEntities()) {
@@ -78,7 +78,7 @@ public class CommandExec implements CommandExecutor {
                             }
                         }
                         
-                        CourierNew.plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
+                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
                                 Integer.toString(count)));
                         player.sendMessage(Message.SUCCESS_RELOADED);
                     } else
@@ -139,7 +139,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("unread")) {
                     
                     if (player.hasPermission("couriernew.unread")) {
-                        File outgoingyml = new File(CourierNew.plugin.getDataFolder(), "outgoing.yml");
+                        File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
                         FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
                         
                         if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
@@ -151,7 +151,7 @@ public class CommandExec implements CommandExecutor {
                                         ls.spawnPostman(player);
                                     }
                                 }
-                            }.runTaskLater(CourierNew.plugin, CourierNew.plugin.getConfig().getLong("unread-delay"));
+                            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("unread-delay"));
                         } else {
                             player.sendMessage(Message.ERROR_NO_MAIL);
                         }

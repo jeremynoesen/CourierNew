@@ -1,9 +1,9 @@
-package me.Jeremaster101.CourierNew.Postman;
+package jndev.couriernew.postman;
 
 import com.earth2me.essentials.Essentials;
 import de.myzelyam.supervanish.SuperVanish;
-import me.Jeremaster101.CourierNew.CourierNew;
-import me.Jeremaster101.CourierNew.Message;
+import jndev.couriernew.CourierNew;
+import jndev.couriernew.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,7 +24,7 @@ public class PostmanChecker {
      * @return true if entity is a postman
      */
     public boolean isPostman(Entity en) {
-        File postmenyml = new File(CourierNew.plugin.getDataFolder(), "postmen.yml");
+        File postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
         FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
         return postmen.getKeys(false).contains(en.getUniqueId().toString());
     }
@@ -35,7 +35,7 @@ public class PostmanChecker {
      * @return true if entity is a postman for player p
      */
     public boolean isPlayersPostman(Player p, Entity en) {
-        File postmenyml = new File(CourierNew.plugin.getDataFolder(), "postmen.yml");
+        File postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
         FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
         return isPostman(en) && postmen.get(en.getUniqueId().toString()).equals(p.getName());
     }
@@ -46,7 +46,7 @@ public class PostmanChecker {
      * @return true if entity is a postman but not for player p
      */
     public boolean isOtherPlayersPostman(Player p, Entity en) {
-        File postmenyml = new File(CourierNew.plugin.getDataFolder(), "postmen.yml");
+        File postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
         FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
         return isPostman(en) && !postmen.get(en.getUniqueId().toString()).equals(p.getName());
     }
@@ -87,8 +87,8 @@ public class PostmanChecker {
             }
         }
         
-        ArrayList<String> worlds = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-worlds"));
-        ArrayList<String> modes = new ArrayList<>(CourierNew.plugin.getConfig().getStringList("blocked-gamemodes"));
+        ArrayList<String> worlds = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-worlds"));
+        ArrayList<String> modes = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-gamemodes"));
         if (worlds.contains(p.getWorld().getName()) || modes.contains(p.getGameMode().toString())) {
             p.sendMessage(Message.ERROR_WORLD);
             return false;

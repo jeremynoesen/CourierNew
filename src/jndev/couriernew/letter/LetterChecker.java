@@ -1,6 +1,6 @@
-package me.Jeremaster101.CourierNew.Letter;
+package jndev.couriernew.letter;
 
-import me.Jeremaster101.CourierNew.Message;
+import jndev.couriernew.Message;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

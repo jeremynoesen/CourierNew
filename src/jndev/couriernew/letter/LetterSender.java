@@ -1,15 +1,14 @@
 package jndev.couriernew.letter;
 
-import jndev.couriernew.postman.Postman;
 import jndev.couriernew.CourierNew;
 import jndev.couriernew.Message;
+import jndev.couriernew.postman.Postman;
 import jndev.couriernew.postman.PostmanChecker;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
@@ -48,8 +47,8 @@ public class LetterSender implements Listener {
     @SuppressWarnings("deprecation")
     public void send(Player sender, String recipient) {
         if (lc.isHoldingOwnLetter(sender) && !lc.wasSent(sender.getInventory().getItemInMainHand())) {
-            File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-            FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+            File outgoingyml = CourierNew.getOutgoingYml();
+            FileConfiguration outgoing = CourierNew.getOutgoing();
             ItemStack letter = sender.getInventory().getItemInMainHand();
             
             if (recipient.equals("*")) {
@@ -317,8 +316,8 @@ public class LetterSender implements Listener {
      * @param recipient player recieving the mail
      */
     public void receive(Player recipient) {
-        File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-        FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+        File outgoingyml = CourierNew.getOutgoingYml();
+        FileConfiguration outgoing = CourierNew.getOutgoing();
         UUID uuid = recipient.getUniqueId();
         
         if (outgoing.getList(uuid.toString()) != null && outgoing.getList(uuid.toString()).size() > 0) {
@@ -373,14 +372,14 @@ public class LetterSender implements Listener {
             e.setCancelled(true);
             receive(e.getPlayer());
             en.getWorld().playSound(en.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);
-            en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, en.getHeight()/2, 0), 20, en.getWidth()/2, en.getHeight(), en.getWidth()/2);
+            en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, en.getHeight() / 2, 0), 20, en.getWidth() / 2, en.getHeight(), en.getWidth() / 2);
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     if (!en.isDead()) {
                         en.remove();
-                        File postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
-                        FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
+                        File postmenyml = CourierNew.getPostmenYml();
+                        FileConfiguration postmen = CourierNew.getPostmen();
                         postmen.set(en.getUniqueId().toString(), null);
                         try {
                             postmen.save(postmenyml);
@@ -402,8 +401,7 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-        FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+        FileConfiguration outgoing = CourierNew.getOutgoing();
         
         new BukkitRunnable() {
             @Override
@@ -430,8 +428,7 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-                    FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+                    FileConfiguration outgoing = CourierNew.getOutgoing();
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnPostman(recipient);
@@ -453,8 +450,7 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-                    FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+                    FileConfiguration outgoing = CourierNew.getOutgoing();
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnPostman(recipient);

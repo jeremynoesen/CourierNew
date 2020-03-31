@@ -4,11 +4,15 @@ import jndev.couriernew.letter.LetterSender;
 import jndev.couriernew.postman.PostmanChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
 
 /**
  * Register permissions, commands, and events, as well as save the default config, load the config, and delete
@@ -30,9 +34,41 @@ public class CourierNew extends JavaPlugin {
     private final Permission shredall = new Permission("couriernew.shredall");
     private final Permission unread = new Permission("couriernew.unread");
     private final Permission reload = new Permission("couriernew.reload");
+    private static File outgoingyml;
+    private static FileConfiguration outgoing;
+    private static File postmenyml;
+    private static FileConfiguration postmen;
     
     public static CourierNew getInstance() {
         return plugin;
+    }
+    
+    /**
+     * @return file config containing all pending letters
+     */
+    public static FileConfiguration getOutgoing() {
+        return outgoing;
+    }
+    
+    /**
+     * @return file of pending letters
+     */
+    public static File getOutgoingYml() {
+        return outgoingyml;
+    }
+    
+    /**
+     * @return file config of alive postmen
+     */
+    public static FileConfiguration getPostmen() {
+        return postmen;
+    }
+    
+    /**
+     * @return file of postmen
+     */
+    public static File getPostmenYml() {
+        return postmenyml;
     }
     
     /**
@@ -95,6 +131,12 @@ public class CourierNew extends JavaPlugin {
         
         getConfig().options().copyDefaults(true);
         saveConfig();
+    
+        outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
+        outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+    
+        postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
+        postmen = YamlConfiguration.loadConfiguration(outgoingyml);
         
         //saveResource("paper.png", false);
     }

@@ -84,10 +84,10 @@ public class Postman {
         Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist));
         postman = recipient.getWorld().spawnEntity(loc, getTypeFromConfig());
         
-        File postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
-        FileConfiguration postmen = YamlConfiguration.loadConfiguration(postmenyml);
+        File postmenyml = CourierNew.getPostmenYml();
+        FileConfiguration postmen = CourierNew.getPostmen();
         
-        postmen.set(postman.getUniqueId().toString(), recipient.getName());
+        postmen.set(postman.getUniqueId().toString(), recipient.getUniqueId());
         
         try {
             postmen.save(postmenyml);
@@ -127,14 +127,13 @@ public class Postman {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    
-                    recipient.sendMessage(Message.SUCCESS_IGNORED);
+    
+                    if (recipient.isOnline()) recipient.sendMessage(Message.SUCCESS_IGNORED);
                     postman.getWorld().playSound(postman.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-                            FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+                            FileConfiguration outgoing = CourierNew.getOutgoing();
                             if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                                     && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                                 spawn();

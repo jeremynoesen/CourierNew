@@ -139,8 +139,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("unread")) {
                     
                     if (player.hasPermission("couriernew.unread")) {
-                        File outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-                        FileConfiguration outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
+                        FileConfiguration outgoing = CourierNew.getOutgoing();
                         
                         if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
                             player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);

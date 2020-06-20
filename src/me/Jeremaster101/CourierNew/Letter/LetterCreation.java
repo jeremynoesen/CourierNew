@@ -72,6 +72,9 @@ public class LetterCreation {
         String plainMessage = msg.unformat(message);
         
         String wrapped = WordUtils.wrap(plainMessage, 30, "<split>", true);
+        if (wrapped.startsWith("/")) {
+            wrapped = wrapped.substring(1);
+        }
         String[] lines = wrapped.split("<split>");
         
         ArrayList<String> lore = new ArrayList<>();

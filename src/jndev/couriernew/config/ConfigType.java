@@ -9,7 +9,7 @@ import java.io.InputStream;
  * enum to make getting separate configs easier
  */
 public enum ConfigType {
-    CONFIG("config.yml"), MESSAGE("messages.yml");
+    CONFIG("config.yml"), MESSAGE("messages.yml"), POSTMEN("postmen.yml"), OUTGOING("outgoing.yml");
     
     /**
      * config type file name

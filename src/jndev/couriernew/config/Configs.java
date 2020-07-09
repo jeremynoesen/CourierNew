@@ -8,7 +8,7 @@ public class Configs {
     /**
      * main config instance
      */
-    private static Config config = new Config(ConfigType.CONFIG);
+    private static Config main = new Config(ConfigType.MAIN);
     
     /**
      * outgoing config instance
@@ -18,7 +18,7 @@ public class Configs {
     /**
      * postmen config instance
      */
-    private static Config postmen = new Config(ConfigType.POSTMEN);
+    private static Config postmen = new Config(ConfigType.COURIERS);
     
     /**
      * message config instance
@@ -35,10 +35,10 @@ public class Configs {
             case MESSAGE:
                 return message;
             
-            case CONFIG:
-                return config;
+            case MAIN:
+                return main;
                 
-            case POSTMEN:
+            case COURIERS:
                 return postmen;
                 
             case OUTGOING:

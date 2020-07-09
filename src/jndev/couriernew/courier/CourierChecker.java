@@ -1,4 +1,4 @@
-package jndev.couriernew.postman;
+package jndev.couriernew.courier;
 
 import com.earth2me.essentials.Essentials;
 import de.myzelyam.supervanish.SuperVanish;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Methods to check info about a postman
  */
-public class PostmanChecker {
+public class CourierChecker {
     
     /**
      * @param en entity to check

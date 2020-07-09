@@ -10,6 +10,7 @@ import org.bukkit.map.MapPalette;
  * All messages used within the getInstance()
  */
 public class Message {
+    
     private static Config config = Configs.getConfig(ConfigType.MESSAGE);
     
     public static String PREFIX;
@@ -40,18 +41,18 @@ public class Message {
     public static String ERROR_SEND_FAILED;
     public static String SUCCESS_PAGE_EDITED;
     public static String LETTER_FROM;
-    public String STARTUP = "\n\n" +
+    public static String STARTUP = "\n\n" +
             ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.getInstance().getDescription().getVersion() + " " + "has " + "been enabled!\n" +
             ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
             ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██╔██╗ ██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  may not be modified or redistributed without\n" +
             ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
             ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + "╚██████╗" + ChatColor.DARK_GREEN + "██║ ╚████║" + ChatColor.DARK_GRAY + "███║" + ChatColor.WHITE + "  support discord group: https://discord.gg/WhmQYR\n" +
             ChatColor.DARK_GRAY + "╚══╝" + ChatColor.GREEN + " ╚═════╝" + ChatColor.DARK_GREEN + "╚═╝  ╚═══╝" + ChatColor.DARK_GRAY + "╚══╝" + ChatColor.WHITE + "  Thank you for choosing CourierNew!\n";
-    String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover postman entities...";
-    String DONE_CLEANING =
+    static String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover postman entities...";
+    static String DONE_CLEANING =
             PREFIX + ChatColor.GRAY + "Successfully deleted " + ChatColor.WHITE + "$COUNT$" + ChatColor.GRAY +
                     " postman entities!";
-    String[] HELP = new String[]{
+    public static String[] HELP = {
             "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
@@ -63,7 +64,7 @@ public class Message {
             ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------",
             ""
     };
-    String[] OP_HELP = new String[]{
+    public static String[] OP_HELP = {
             "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",

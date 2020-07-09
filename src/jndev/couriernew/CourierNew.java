@@ -17,32 +17,28 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 
 /**
- * Register permissions, commands, and events, as well as save the default config, load the config, and delete
- * leftover postmen. Also copies the letter image for map letters
+ * Main class for plugin, registers and initializes all files, listeners, and commands
  *
  * @author Jeremy Noesen
  */
 public class CourierNew extends JavaPlugin {
     
+    /**
+     * plugin instance
+     */
     public static CourierNew plugin;
     
-    private final Permission letter = new Permission("couriernew.letter");
-    private final Permission postone = new Permission("couriernew.post.one");
-    private final Permission postmultiple = new Permission("couriernew.post.multiple");
-    private final Permission postallonline = new Permission("couriernew.post.allonline");
-    private final Permission postall = new Permission("couriernew.post.all");
-    private final Permission courier = new Permission("couriernew.help");
-    private final Permission shred = new Permission("couriernew.shred");
-    private final Permission shredall = new Permission("couriernew.shredall");
-    private final Permission unread = new Permission("couriernew.unread");
-    private final Permission reload = new Permission("couriernew.reload");
-    
+    /**
+     * get the plugin instance
+     *
+     * @return plugin instance
+     */
     public static CourierNew getInstance() {
         return plugin;
     }
     
     /**
-     * Runs when getInstance() is enabled by the server
+     * initialize configurations, load messages, register commands and permissions, and delete leftover postmen
      */
     public void onEnable() {
         plugin = this;
@@ -60,16 +56,16 @@ public class CourierNew extends JavaPlugin {
         
         pm.registerEvents(new LetterSender(), this);
         
-        pm.addPermission(letter);
-        pm.addPermission(postone);
-        pm.addPermission(postmultiple);
-        pm.addPermission(postallonline);
-        pm.addPermission(postall);
-        pm.addPermission(courier);
-        pm.addPermission(shred);
-        pm.addPermission(shredall);
-        pm.addPermission(unread);
-        pm.addPermission(reload);
+        pm.addPermission(new Permission("couriernew.letter"));
+        pm.addPermission(new Permission("couriernew.post.one"));
+        pm.addPermission(new Permission("couriernew.post.multiple"));
+        pm.addPermission(new Permission("couriernew.post.allonline"));
+        pm.addPermission(new Permission("couriernew.post.all"));
+        pm.addPermission(new Permission("couriernew.help"));
+        pm.addPermission(new Permission("couriernew.shred"));
+        pm.addPermission(new Permission("couriernew.shredall"));
+        pm.addPermission(new Permission("couriernew.unread"));
+        pm.addPermission(new Permission("couriernew.reload"));
         
         getCommand("letter").setExecutor(new CommandExec());
         getCommand("post").setExecutor(new CommandExec());
@@ -106,7 +102,7 @@ public class CourierNew extends JavaPlugin {
     }
     
     /**
-     * runs when getInstance() is disabled by server, makes sure no method tries to reference the getInstance() anymore.
+     * nullify the plugin instance
      */
     public void onDisable() {
         plugin = null;

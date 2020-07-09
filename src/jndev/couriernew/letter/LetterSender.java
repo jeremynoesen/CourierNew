@@ -2,11 +2,10 @@ package jndev.couriernew.letter;
 
 import jndev.couriernew.CourierNew;
 import jndev.couriernew.Message;
-import jndev.couriernew.postman.Postman;
-import jndev.couriernew.postman.PostmanChecker;
+import jndev.couriernew.courier.Courier;
+import jndev.couriernew.courier.CourierChecker;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,7 +31,7 @@ import java.util.UUID;
 public class LetterSender implements Listener {
     
     private LetterChecker lc = new LetterChecker();
-    private PostmanChecker pc = new PostmanChecker();
+    private CourierChecker pc = new CourierChecker();
     private Message msg = new Message();
     
     
@@ -356,8 +355,8 @@ public class LetterSender implements Listener {
         
         if (pc.canRecieveMail(recipient)) {
             
-            Postman postman = new Postman(recipient);
-            postman.spawn();
+            Courier courier = new Courier(recipient);
+            courier.spawn();
         }
     }
     

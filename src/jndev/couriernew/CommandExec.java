@@ -3,19 +3,17 @@ package jndev.couriernew;
 import jndev.couriernew.letter.LetterChecker;
 import jndev.couriernew.letter.LetterCreation;
 import jndev.couriernew.letter.LetterSender;
-import jndev.couriernew.postman.PostmanChecker;
+import jndev.couriernew.courier.CourierChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +23,7 @@ import java.util.List;
 public class CommandExec implements CommandExecutor {
     
     private LetterSender ls = new LetterSender();
-    private PostmanChecker pc = new PostmanChecker();
+    private CourierChecker pc = new CourierChecker();
     private LetterCreation lc = new LetterCreation();
     private LetterChecker il = new LetterChecker();
     private Message msg = new Message();

@@ -14,7 +14,7 @@ import java.util.logging.Level;
 /**
  * class used to manage all config files in plugin
  */
-public class ConfigManager {
+public class Config {
     
     /**
      * file used for the config
@@ -36,7 +36,7 @@ public class ConfigManager {
      *
      * @param type config type
      */
-    public ConfigManager(ConfigType type) {
+    public Config(ConfigType type) {
         configType = type;
     }
     
@@ -56,11 +56,12 @@ public class ConfigManager {
         YMLConfig.options().copyDefaults(true);
         saveConfig();
         
-        if(configType == ConfigType.MESSAGE) Message.reloadMessages();
+        if (configType == ConfigType.MESSAGE) Message.reloadMessages();
     }
     
     /**
      * reloads config if YMLConfig is null
+     *
      * @return YMLConfig YamlConfiguration
      */
     public YamlConfiguration getConfig() {

@@ -1,5 +1,7 @@
 package jndev.couriernew;
 
+import jndev.couriernew.config.ConfigType;
+import jndev.couriernew.config.Configs;
 import jndev.couriernew.letter.LetterSender;
 import jndev.couriernew.postman.PostmanChecker;
 import org.bukkit.Bukkit;
@@ -34,41 +36,9 @@ public class CourierNew extends JavaPlugin {
     private final Permission shredall = new Permission("couriernew.shredall");
     private final Permission unread = new Permission("couriernew.unread");
     private final Permission reload = new Permission("couriernew.reload");
-    private static File outgoingyml;
-    private static FileConfiguration outgoing;
-    private static File postmenyml;
-    private static FileConfiguration postmen;
     
     public static CourierNew getInstance() {
         return plugin;
-    }
-    
-    /**
-     * @return file config containing all pending letters
-     */
-    public static FileConfiguration getOutgoing() {
-        return outgoing;
-    }
-    
-    /**
-     * @return file of pending letters
-     */
-    public static File getOutgoingYml() {
-        return outgoingyml;
-    }
-    
-    /**
-     * @return file config of alive postmen
-     */
-    public static FileConfiguration getPostmen() {
-        return postmen;
-    }
-    
-    /**
-     * @return file of postmen
-     */
-    public static File getPostmenYml() {
-        return postmenyml;
     }
     
     /**
@@ -76,12 +46,15 @@ public class CourierNew extends JavaPlugin {
      */
     public void onEnable() {
         plugin = this;
+    
+        Configs.getConfig(ConfigType.MESSAGE).saveDefaultConfig();
+        Configs.getConfig(ConfigType.POSTMEN).saveDefaultConfig();
+        Configs.getConfig(ConfigType.OUTGOING).saveDefaultConfig();
+        Configs.getConfig(ConfigType.CONFIG).saveDefaultConfig();
         
-        Message.saveDefaultConfig();
-        
-        Message msg = new Message();
-        
-        plugin.getServer().getConsoleSender().sendMessage(msg.STARTUP);
+        Message.reloadMessages();
+    
+        plugin.getServer().getConsoleSender().sendMessage(Message.STARTUP);
         
         PluginManager pm = Bukkit.getPluginManager();
         
@@ -112,7 +85,7 @@ public class CourierNew extends JavaPlugin {
                 
                 int count = 0;
                 PostmanChecker pc = new PostmanChecker();
-                plugin.getServer().getConsoleSender().sendMessage(msg.CLEANING);
+                plugin.getServer().getConsoleSender().sendMessage(Message.CLEANING);
                 
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
@@ -123,20 +96,11 @@ public class CourierNew extends JavaPlugin {
                     }
                 }
                 
-                plugin.getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
+                plugin.getServer().getConsoleSender().sendMessage(Message.DONE_CLEANING.replace("$COUNT$",
                         Integer.toString(count)));
                 
             }
         }.runTaskLater(plugin, 2);
-        
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-    
-        outgoingyml = new File(CourierNew.getInstance().getDataFolder(), "outgoing.yml");
-        outgoing = YamlConfiguration.loadConfiguration(outgoingyml);
-    
-        postmenyml = new File(CourierNew.getInstance().getDataFolder(), "postmen.yml");
-        postmen = YamlConfiguration.loadConfiguration(outgoingyml);
         
         //saveResource("paper.png", false);
     }

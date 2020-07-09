@@ -8,18 +8,18 @@ public class Configs {
     /**
      * main config instance
      */
-    private static ConfigManager config = new ConfigManager(ConfigType.CONFIG);
+    private static Config config = new Config(ConfigType.CONFIG);
     
     /**
      * message config instance
      */
-    private static ConfigManager message = new ConfigManager(ConfigType.MESSAGE);
+    private static Config message = new Config(ConfigType.MESSAGE);
     
     /**
      * @param type config type
      * @return config manager for the selected type
      */
-    public static ConfigManager getConfig(ConfigType type) {
+    public static Config getConfig(ConfigType type) {
         
         switch (type) {
             case MESSAGE:

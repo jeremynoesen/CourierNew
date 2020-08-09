@@ -1,5 +1,6 @@
 package jndev.couriernew;
 
+import jndev.couriernew.command.CommandExec;
 import jndev.couriernew.config.ConfigType;
 import jndev.couriernew.config.Configs;
 import jndev.couriernew.letter.LetterSender;

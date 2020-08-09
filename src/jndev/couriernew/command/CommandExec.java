@@ -1,5 +1,7 @@
-package jndev.couriernew;
+package jndev.couriernew.command;
 
+import jndev.couriernew.CourierNew;
+import jndev.couriernew.Message;
 import jndev.couriernew.letter.LetterChecker;
 import jndev.couriernew.letter.LetterCreation;
 import jndev.couriernew.letter.LetterSender;

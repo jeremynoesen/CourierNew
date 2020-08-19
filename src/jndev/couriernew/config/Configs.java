@@ -37,10 +37,10 @@ public class Configs {
             
             case MAIN:
                 return main;
-                
+            
             case COURIERS:
                 return postmen;
-                
+            
             case OUTGOING:
                 return outgoing;
             

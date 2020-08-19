@@ -2,10 +2,10 @@ package jndev.couriernew.command;
 
 import jndev.couriernew.CourierNew;
 import jndev.couriernew.Message;
+import jndev.couriernew.courier.CourierChecker;
 import jndev.couriernew.letter.LetterChecker;
 import jndev.couriernew.letter.LetterCreation;
 import jndev.couriernew.letter.LetterSender;
-import jndev.couriernew.courier.CourierChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;

@@ -21,6 +21,7 @@ public class Postman {
     
     /**
      * Get NMS class from jar
+     *
      * @param name class name
      * @return NMS class
      */
@@ -36,9 +37,10 @@ public class Postman {
     
     /**
      * make an entity follow a player with a set speed
+     *
      * @param player player entity will follow
      * @param entity entity to follow player
-     * @param d speed
+     * @param d      speed
      */
     public void followPlayer(Player player, LivingEntity entity, double d) {
         final LivingEntity e = entity;
@@ -58,6 +60,7 @@ public class Postman {
     
     /**
      * get mob type from config
+     *
      * @return entitytype, default villager
      */
     EntityType getTypeFromConfig() {
@@ -127,7 +130,7 @@ public class Postman {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-    
+                    
                     if (recipient.isOnline()) recipient.sendMessage(Message.SUCCESS_IGNORED);
                     postman.getWorld().playSound(postman.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
                     new BukkitRunnable() {

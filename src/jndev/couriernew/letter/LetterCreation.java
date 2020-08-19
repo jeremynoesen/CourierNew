@@ -51,8 +51,8 @@ public class LetterCreation {
     }*/
     
     /**
-     * Create a new letter with a specified message and places it in the player's inventory. Also set's the lore of
-     * the item to a preview of the message
+     * Create a new letter with a specified message and places it in the player's inventory. Also set's the lore of the
+     * item to a preview of the message
      *
      * @param player  player writing the letter
      * @param message the message the player is writing to the letter
@@ -73,7 +73,7 @@ public class LetterCreation {
         
         String wrapped = WordUtils.wrap(plainMessage, 30, "<split>", true);
         
-        while(wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
+        while (wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
         
         String[] lines = wrapped.split("<split>");
         

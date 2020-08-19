@@ -39,14 +39,14 @@ public class CourierNew extends JavaPlugin {
      */
     public void onEnable() {
         plugin = this;
-    
+        
         Configs.getConfig(ConfigType.MESSAGE).saveDefaultConfig();
         Configs.getConfig(ConfigType.COURIERS).saveDefaultConfig();
         Configs.getConfig(ConfigType.OUTGOING).saveDefaultConfig();
         Configs.getConfig(ConfigType.MAIN).saveDefaultConfig();
         
         Message.reloadMessages();
-    
+        
         plugin.getServer().getConsoleSender().sendMessage(Message.STARTUP);
         
         PluginManager pm = Bukkit.getPluginManager();

@@ -8,22 +8,22 @@ public class Configs {
     /**
      * main config instance
      */
-    private static Config main = new Config(ConfigType.MAIN);
+    private static final Config main = new Config(ConfigType.MAIN);
     
     /**
      * outgoing config instance
      */
-    private static Config outgoing = new Config(ConfigType.OUTGOING);
+    private static final Config outgoing = new Config(ConfigType.OUTGOING);
     
     /**
-     * postmen config instance
+     * couriers config instance
      */
-    private static Config postmen = new Config(ConfigType.COURIERS);
+    private static final Config couriers = new Config(ConfigType.COURIERS);
     
     /**
      * message config instance
      */
-    private static Config message = new Config(ConfigType.MESSAGE);
+    private static final Config message = new Config(ConfigType.MESSAGE);
     
     /**
      * @param type config type
@@ -39,7 +39,7 @@ public class Configs {
                 return main;
             
             case COURIERS:
-                return postmen;
+                return couriers;
             
             case OUTGOING:
                 return outgoing;

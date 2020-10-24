@@ -2,6 +2,9 @@ package jndev.couriernew.letter;
 
 import jndev.couriernew.CourierNew;
 import jndev.couriernew.Message;
+import jndev.couriernew.config.Config;
+import jndev.couriernew.config.ConfigType;
+import jndev.couriernew.config.Configs;
 import jndev.couriernew.courier.Courier;
 import jndev.couriernew.courier.CourierChecker;
 import org.bukkit.*;
@@ -19,8 +22,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,10 +31,7 @@ import java.util.UUID;
  */
 public class LetterSender implements Listener {
     
-    private LetterChecker lc = new LetterChecker();
-    private CourierChecker pc = new CourierChecker();
-    private Message msg = new Message();
-    
+    private static final Config outgoingConfig = Configs.getConfig(ConfigType.OUTGOING);
     
     /**
      * Send a letter to a player. The letter will have the recipient added to the lore, preventing it from being sent
@@ -44,12 +42,10 @@ public class LetterSender implements Listener {
      * @param recipient player(s) to recieve the letter
      */
     @SuppressWarnings("deprecation")
-    public void send(Player sender, String recipient) {
-        if (lc.isHoldingOwnLetter(sender) && !lc.wasSent(sender.getInventory().getItemInMainHand())) {
-            File outgoingyml = CourierNew.getOutgoingYml();
-            FileConfiguration outgoing = CourierNew.getOutgoing();
+    public static void send(Player sender, String recipient) {
+        if (LetterChecker.isHoldingOwnLetter(sender) && !LetterChecker.wasSent(sender.getInventory().getItemInMainHand())) {
             ItemStack letter = sender.getInventory().getItemInMainHand();
-            
+            FileConfiguration outgoing = outgoingConfig.getConfig();
             if (recipient.equals("*")) {
                 
                 if (sender.hasPermission("couriernew.post.allonline")) {
@@ -92,17 +88,13 @@ public class LetterSender implements Listener {
                         letters.add(letterToAll);
                         outgoing.set(uuid.toString(), letters);
                         
-                        try {
-                            outgoing.save(outgoingyml);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        Configs.getConfig(ConfigType.OUTGOING).saveConfig();
                         
                         new BukkitRunnable() {
                             @Override
                             public void run() {
                                 if (recplayer.isOnline()) {
-                                    spawnPostman((Player) recplayer);
+                                    spawnCourier((Player) recplayer);
                                 }
                             }
                         }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
@@ -154,17 +146,13 @@ public class LetterSender implements Listener {
                         letters.add(letterToAll);
                         outgoing.set(uuid.toString(), letters);
                         
-                        try {
-                            outgoing.save(outgoingyml);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        Configs.getConfig(ConfigType.OUTGOING).saveConfig();
                         
                         new BukkitRunnable() {
                             @Override
                             public void run() {
                                 if (recplayer.isOnline()) {
-                                    spawnPostman((Player) recplayer);
+                                    spawnCourier((Player) recplayer);
                                 }
                             }
                         }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
@@ -220,17 +208,13 @@ public class LetterSender implements Listener {
                         outgoing.set(uuid.toString(), letters);
                         success.add(recipients);
                         
-                        try {
-                            outgoing.save(outgoingyml);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        Configs.getConfig(ConfigType.OUTGOING).saveConfig();
                         
                         new BukkitRunnable() {
                             @Override
                             public void run() {
                                 if (recplayer.isOnline()) {
-                                    spawnPostman((Player) recplayer);
+                                    spawnCourier((Player) recplayer);
                                 }
                             }
                         }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
@@ -280,11 +264,7 @@ public class LetterSender implements Listener {
                     letters.add(letter);
                     outgoing.set(uuid.toString(), letters);
                     
-                    try {
-                        outgoing.save(outgoingyml);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Configs.getConfig(ConfigType.OUTGOING).saveConfig();
                     
                     sender.getInventory().getItemInMainHand().setAmount(0);
                     sender.sendMessage(Message.SUCCESS_SENT.replace("$PLAYER$", recplayer.getName()));
@@ -293,30 +273,29 @@ public class LetterSender implements Listener {
                         @Override
                         public void run() {
                             if (recplayer.isOnline()) {
-                                spawnPostman((Player) recplayer);
+                                spawnCourier((Player) recplayer);
                             }
                         }
                     }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
             }
-        } else if (lc.isHoldingOwnLetter(sender)) {
+        } else if (LetterChecker.isHoldingOwnLetter(sender)) {
             sender.sendMessage(Message.ERROR_SENT_BEFORE);
-        } else if (lc.isHoldingLetter(sender)) {
+        } else if (LetterChecker.isHoldingLetter(sender)) {
             sender.sendMessage(Message.ERROR_NOT_YOUR_LETTER);
         } else
             sender.sendMessage(Message.ERROR_NO_LETTER);
     }
     
     /**
-     * When clicking the postman, retrieve the letters from the file and give all of them to the player. If they have
+     * When clicking the courier, retrieve the letters from the file and give all of them to the player. If they have
      * space in their inventory, give them all, starting with their hand if they aren't holding anything. Letters not
      * taken will be delivered later.
      *
      * @param recipient player recieving the mail
      */
-    public void receive(Player recipient) {
-        File outgoingyml = CourierNew.getOutgoingYml();
-        FileConfiguration outgoing = CourierNew.getOutgoing();
+    public static void receive(Player recipient) {
+        FileConfiguration outgoing = outgoingConfig.getConfig();
         UUID uuid = recipient.getUniqueId();
         
         if (outgoing.getList(uuid.toString()) != null && outgoing.getList(uuid.toString()).size() > 0) {
@@ -337,23 +316,18 @@ public class LetterSender implements Listener {
             
             outgoing.set(uuid.toString(), letters);
             
-            try {
-                outgoing.save(outgoingyml);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Configs.getConfig(ConfigType.OUTGOING).saveConfig();
         }
-        
     }
     
     /**
-     * Create the postman entity for a player if they are not vanished or in blocked gamemodes or worlds
+     * Create the courier entity for a player if they are not vanished or in blocked gamemodes or worlds
      *
      * @param recipient player recieving letters
      */
-    public void spawnPostman(Player recipient) {
+    public static void spawnCourier(Player recipient) {
         
-        if (pc.canRecieveMail(recipient)) {
+        if (CourierChecker.canRecieveMail(recipient)) {
             
             Courier courier = new Courier(recipient);
             courier.spawn();
@@ -361,12 +335,12 @@ public class LetterSender implements Listener {
     }
     
     /**
-     * Check when a player right clicks their postman entity
+     * Check when a player right clicks their courier entity
      */
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
-        if ((pc.isPostman(en) && !CourierNew.getInstance().getConfig().getBoolean("protected-postman")) || pc.isPlayersPostman(e.getPlayer(), en) && !pc.isReceivedPostman(en)) {
+        if ((CourierChecker.isCourier(en) && !CourierNew.getInstance().getConfig().getBoolean("protected-courier")) || CourierChecker.isPlayersCourier(e.getPlayer(), en) && !CourierChecker.isReceivedCourier(en)) {
             en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             e.setCancelled(true);
             receive(e.getPlayer());
@@ -377,21 +351,14 @@ public class LetterSender implements Listener {
                 public void run() {
                     if (!en.isDead()) {
                         en.remove();
-                        File postmenyml = CourierNew.getPostmenYml();
-                        FileConfiguration postmen = CourierNew.getPostmen();
-                        postmen.set(en.getUniqueId().toString(), null);
-                        try {
-                            postmen.save(postmenyml);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
+                        Configs.getConfig(ConfigType.COURIERS).getConfig().set(en.getUniqueId().toString(), null);
                     }
                 }
-            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("remove-postman-recieved-delay"));
-        } else if (pc.isOtherPlayersPostman(e.getPlayer(), en)) {
+            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("remove-courier-recieved-delay"));
+        } else if (CourierChecker.isOtherPlayersCourier(e.getPlayer(), en)) {
             e.setCancelled(true);
             en.getWorld().playSound(en.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
-        } else if (pc.isReceivedPostman(en)) e.setCancelled(true);
+        } else if (CourierChecker.isReceivedCourier(en)) e.setCancelled(true);
     }
     
     /**
@@ -400,14 +367,14 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        FileConfiguration outgoing = CourierNew.getOutgoing();
+        FileConfiguration outgoing = outgoingConfig.getConfig();
         
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (player.isOnline() && outgoing.getList(player.getUniqueId().toString()) != null &&
                         outgoing.getList(player.getUniqueId().toString()).size() > 0) {
-                    spawnPostman(player);
+                    spawnCourier(player);
                 }
             }
         }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("join-recieve-delay"));
@@ -427,10 +394,10 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    FileConfiguration outgoing = CourierNew.getOutgoing();
+                    FileConfiguration outgoing = outgoingConfig.getConfig();
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
-                        spawnPostman(recipient);
+                        spawnCourier(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-from-blocked-delay"));
         }
@@ -449,20 +416,20 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    FileConfiguration outgoing = CourierNew.getOutgoing();
+                    FileConfiguration outgoing = outgoingConfig.getConfig();
                     if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
-                        spawnPostman(recipient);
+                        spawnCourier(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-from-blocked-delay"));
         }
     }
     
     /**
-     * prevent villager postmen from changing profession
+     * prevent villager couriers from changing profession
      */
     @EventHandler
     public void onVillagerProfession(VillagerCareerChangeEvent e) {
-        if (pc.isPostman(e.getEntity())) e.setCancelled(true);
+        if (CourierChecker.isCourier(e.getEntity())) e.setCancelled(true);
     }
 }

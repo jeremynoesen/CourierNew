@@ -2,6 +2,8 @@ package jndev.couriernew.command;
 
 import jndev.couriernew.CourierNew;
 import jndev.couriernew.Message;
+import jndev.couriernew.config.ConfigType;
+import jndev.couriernew.config.Configs;
 import jndev.couriernew.courier.CourierChecker;
 import jndev.couriernew.letter.LetterChecker;
 import jndev.couriernew.letter.LetterCreation;
@@ -24,12 +26,6 @@ import java.util.List;
  */
 public class CommandExec implements CommandExecutor {
     
-    private LetterSender ls = new LetterSender();
-    private CourierChecker pc = new CourierChecker();
-    private LetterCreation lc = new LetterCreation();
-    private LetterChecker il = new LetterChecker();
-    private Message msg = new Message();
-    
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -48,9 +44,9 @@ public class CommandExec implements CommandExecutor {
                             for (String arg : args) {
                                 sb.append(arg).append(" ");
                             }
-                            if (il.isHoldingOwnLetter(player) && !il.wasSent(player.getInventory().getItemInMainHand()))
-                                lc.editBook(player, sb.toString());
-                            else lc.writeBook(player, sb.toString());
+                            if (LetterChecker.isHoldingOwnLetter(player) && !LetterChecker.wasSent(player.getInventory().getItemInMainHand()))
+                                LetterCreation.editBook(player, sb.toString());
+                            else LetterCreation.writeBook(player, sb.toString());
                             //lc.writeMap(player, sb.toString());
                         } else
                             player.sendMessage(Message.ERROR_NO_MSG);
@@ -63,22 +59,24 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("cnreload")) {
                     
                     if (player.hasPermission("couriernew.reload")) {
-                        CourierNew.getInstance().reloadConfig();
-                        Message.reloadConfig();
+                        Configs.getConfig(ConfigType.MAIN).reloadConfig();
+                        Configs.getConfig(ConfigType.COURIERS).reloadConfig();
+                        Configs.getConfig(ConfigType.OUTGOING).reloadConfig();
+                        Configs.getConfig(ConfigType.MESSAGE).reloadConfig();
                         
                         int count = 0;
-                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(msg.CLEANING);
+                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(Message.CLEANING);
                         
                         for (World world : Bukkit.getWorlds()) {
                             for (Entity entity : world.getEntities()) {
-                                if (pc.isPostman(entity)) {
+                                if (CourierChecker.isCourier(entity)) {
                                     entity.remove();
                                     count++;
                                 }
                             }
                         }
                         
-                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(msg.DONE_CLEANING.replace("$COUNT$",
+                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(Message.DONE_CLEANING.replace("$COUNT$",
                                 Integer.toString(count)));
                         player.sendMessage(Message.SUCCESS_RELOADED);
                     } else
@@ -94,7 +92,7 @@ public class CommandExec implements CommandExecutor {
                                 ".post.multiple") ||
                                 player.hasPermission("couriernew.post.allonline") || player.hasPermission("couriernew" +
                                 ".post.all")) {
-                            ls.send(player, args[0]);
+                            LetterSender.send(player, args[0]);
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
                     } else
@@ -107,8 +105,8 @@ public class CommandExec implements CommandExecutor {
                     
                     if (player.hasPermission("couriernew.help")) {
                         if (player.hasPermission("couriernew.reload")) {
-                            player.sendMessage(msg.OP_HELP);
-                        } else player.sendMessage(msg.HELP);
+                            player.sendMessage(Message.OP_HELP);
+                        } else player.sendMessage(Message.HELP);
                         
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
@@ -119,7 +117,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("shred")) {
                     
                     if (player.hasPermission("couriernew.shred")) {
-                        lc.delete(player);
+                        LetterCreation.delete(player);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
                     
@@ -129,7 +127,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("shredall")) {
                     
                     if (player.hasPermission("couriernew.shredall")) {
-                        lc.deleteAll(player);
+                        LetterCreation.deleteAll(player);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
                     
@@ -139,7 +137,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("unread")) {
                     
                     if (player.hasPermission("couriernew.unread")) {
-                        FileConfiguration outgoing = CourierNew.getOutgoing();
+                        FileConfiguration outgoing = Configs.getConfig(ConfigType.OUTGOING).getConfig();
                         
                         if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
                             player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);
@@ -147,7 +145,7 @@ public class CommandExec implements CommandExecutor {
                                 @Override
                                 public void run() {
                                     if (player.isOnline()) {
-                                        ls.spawnPostman(player);
+                                        LetterSender.spawnCourier(player);
                                     }
                                 }
                             }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("unread-delay"));

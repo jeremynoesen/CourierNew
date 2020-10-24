@@ -11,7 +11,7 @@ import org.bukkit.map.MapPalette;
  */
 public class Message {
     
-    private static Config config = Configs.getConfig(ConfigType.MESSAGE);
+    private static final Config config = Configs.getConfig(ConfigType.MESSAGE);
     
     public static String PREFIX;
     public static String ERROR_NO_PERMS;
@@ -48,10 +48,10 @@ public class Message {
             ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
             ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + "╚██████╗" + ChatColor.DARK_GREEN + "██║ ╚████║" + ChatColor.DARK_GRAY + "███║" + ChatColor.WHITE + "  support discord group: https://discord.gg/WhmQYR\n" +
             ChatColor.DARK_GRAY + "╚══╝" + ChatColor.GREEN + " ╚═════╝" + ChatColor.DARK_GREEN + "╚═╝  ╚═══╝" + ChatColor.DARK_GRAY + "╚══╝" + ChatColor.WHITE + "  Thank you for choosing CourierNew!\n";
-    public static String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover postman entities...";
+    public static String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover courier entities...";
     public static String DONE_CLEANING =
             PREFIX + ChatColor.GRAY + "Successfully deleted " + ChatColor.WHITE + "$COUNT$" + ChatColor.GRAY +
-                    " postman entities!";
+                    " courier entities!";
     public static String[] HELP = {
             "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
@@ -161,7 +161,7 @@ public class Message {
      * @param message message to remove all formatting from
      * @return unformatted message
      */
-    public String unformat(String message) {
+    public static String unformat(String message) {
         return message.replace("\\n", " ").replace("&0", "").replace("&1", "").replace("&2", "").replace("&3", "")
                 .replace("&4", "").replace("&5", "").replace("&6", "").replace("&7", "").replace("&8", "")
                 .replace("&9", "").replace("&a", "").replace("&b", "").replace("&c", "").replace("&d", "")

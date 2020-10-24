@@ -29,7 +29,7 @@ public class Config {
     /**
      * type of config
      */
-    private ConfigType configType;
+    private final ConfigType configType;
     
     /**
      * create a new config with the specified type

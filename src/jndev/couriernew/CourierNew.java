@@ -35,7 +35,7 @@ public class CourierNew extends JavaPlugin {
     }
     
     /**
-     * initialize configurations, load messages, register commands and permissions, and delete leftover postmen
+     * initialize configurations, load messages, register commands and permissions, and delete leftover couriers
      */
     public void onEnable() {
         plugin = this;
@@ -77,12 +77,11 @@ public class CourierNew extends JavaPlugin {
             public void run() {
                 
                 int count = 0;
-                CourierChecker pc = new CourierChecker();
                 plugin.getServer().getConsoleSender().sendMessage(Message.CLEANING);
                 
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
-                        if (pc.isPostman(entity)) {
+                        if (CourierChecker.isCourier(entity)) {
                             entity.remove();
                             count++;
                         }

@@ -17,9 +17,6 @@ import java.util.Calendar;
  */
 public class LetterCreation {
     
-    private Message msg = new Message();
-    private LetterChecker il = new LetterChecker();
-
     /*void writeMap(Player player, String message) {
         String formattedMessage = Message.formatMap(message);
         ItemStack map = new ItemStack(Material.FILLED_MAP, 1);
@@ -57,7 +54,7 @@ public class LetterCreation {
      * @param player  player writing the letter
      * @param message the message the player is writing to the letter
      */
-    public void writeBook(Player player, String message) {
+    public static void writeBook(Player player, String message) {
         String finalMessage = Message.format(message);
         
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK, 1);
@@ -69,7 +66,7 @@ public class LetterCreation {
         pages.add(finalMessage);
         bm.setPages(pages);
         
-        String plainMessage = msg.unformat(message);
+        String plainMessage = Message.unformat(message);
         
         String wrapped = WordUtils.wrap(plainMessage, 30, "<split>", true);
         
@@ -106,7 +103,7 @@ public class LetterCreation {
      * @param player  player editing the letter
      * @param message message player is adding to the letter
      */
-    public void editBook(Player player, String message) {
+    public static void editBook(Player player, String message) {
         String finalMessage = Message.format(message);
         
         ItemStack writtenBook = player.getInventory().getItemInMainHand();
@@ -141,8 +138,8 @@ public class LetterCreation {
      *
      * @param player player deleting the letter in their hand
      */
-    public void delete(Player player) {
-        if (il.isHoldingLetter(player)) {
+    public static void delete(Player player) {
+        if (LetterChecker.isHoldingLetter(player)) {
             player.getInventory().getItemInMainHand().setAmount(0);
             player.sendMessage(Message.SUCCESS_DELETED);
         } else
@@ -154,9 +151,9 @@ public class LetterCreation {
      *
      * @param player player deleting the letters in their inventory
      */
-    public void deleteAll(Player player) {
+    public static void deleteAll(Player player) {
         for (ItemStack item : player.getInventory().getContents()) {
-            if (il.isLetter(item)) item.setAmount(0);
+            if (LetterChecker.isLetter(item)) item.setAmount(0);
         }
         player.sendMessage(Message.SUCCESS_DELETED_ALL);
     }

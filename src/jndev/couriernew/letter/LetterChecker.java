@@ -17,7 +17,7 @@ public class LetterChecker {
      * @param player player holding the letter
      * @return true if player is holding their own unsent letter
      */
-    public boolean isHoldingOwnLetter(Player player) {
+    public static boolean isHoldingOwnLetter(Player player) {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getAuthor().equals(player.getName()) &&
@@ -30,7 +30,7 @@ public class LetterChecker {
      * @param player player holding letter
      * @return true if player is holding a letter
      */
-    public boolean isHoldingLetter(Player player) {
+    public static boolean isHoldingLetter(Player player) {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().contains(Message.LETTER_FROM);
@@ -42,7 +42,7 @@ public class LetterChecker {
      * @param item item to check
      * @return true if item is a letter
      */
-    public boolean isLetter(ItemStack item) {
+    public static boolean isLetter(ItemStack item) {
         return item != null && item.getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) item.getItemMeta()).getTitle().contains(Message.LETTER_FROM);
     }
@@ -51,7 +51,7 @@ public class LetterChecker {
      * @param item item to check as a sent letter
      * @return true if letter was already sent before
      */
-    public boolean wasSent(ItemStack item) {
+    public static boolean wasSent(ItemStack item) {
         return item.getType() == Material.WRITTEN_BOOK && item.getItemMeta().getLore() != null &&
                 item.getItemMeta().getLore().toString().contains("§TTo ");
     }

@@ -1,6 +1,6 @@
-package jndev.couriernew.config;
+package jeremynoesen.couriernew.config;
 
-import jndev.couriernew.CourierNew;
+import jeremynoesen.couriernew.CourierNew;
 
 import java.io.File;
 import java.io.InputStream;

@@ -1,7 +1,7 @@
-package jndev.couriernew.config;
+package jeremynoesen.couriernew.config;
 
-import jndev.couriernew.CourierNew;
-import jndev.couriernew.Message;
+import jeremynoesen.couriernew.CourierNew;
+import jeremynoesen.couriernew.Message;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

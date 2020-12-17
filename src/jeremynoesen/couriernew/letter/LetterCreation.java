@@ -1,6 +1,6 @@
-package jndev.couriernew.letter;
+package jeremynoesen.couriernew.letter;
 
-import jndev.couriernew.Message;
+import jeremynoesen.couriernew.Message;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

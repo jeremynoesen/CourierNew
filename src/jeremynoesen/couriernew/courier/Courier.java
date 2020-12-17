@@ -1,7 +1,7 @@
-package jndev.couriernew.postman;
+package jeremynoesen.couriernew.courier;
 
-import jndev.couriernew.CourierNew;
-import jndev.couriernew.Message;
+import jeremynoesen.couriernew.Message;
+import jeremynoesen.couriernew.CourierNew;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;

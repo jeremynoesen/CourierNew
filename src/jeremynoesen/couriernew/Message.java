@@ -1,8 +1,8 @@
-package jndev.couriernew;
+package jeremynoesen.couriernew;
 
-import jndev.couriernew.config.Config;
-import jndev.couriernew.config.ConfigType;
-import jndev.couriernew.config.Configs;
+import jeremynoesen.couriernew.config.Config;
+import jeremynoesen.couriernew.config.ConfigType;
+import jeremynoesen.couriernew.config.Configs;
 import org.bukkit.ChatColor;
 import org.bukkit.map.MapPalette;
 

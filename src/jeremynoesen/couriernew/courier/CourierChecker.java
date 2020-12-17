@@ -1,9 +1,9 @@
-package jndev.couriernew.courier;
+package jeremynoesen.couriernew.courier;
 
 import com.earth2me.essentials.Essentials;
 import de.myzelyam.supervanish.SuperVanish;
-import jndev.couriernew.CourierNew;
-import jndev.couriernew.Message;
+import jeremynoesen.couriernew.Message;
+import jeremynoesen.couriernew.CourierNew;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

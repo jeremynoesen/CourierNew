@@ -1,10 +1,10 @@
-package jndev.couriernew;
+package jeremynoesen.couriernew;
 
-import jndev.couriernew.command.CommandExec;
-import jndev.couriernew.config.ConfigType;
-import jndev.couriernew.config.Configs;
-import jndev.couriernew.courier.CourierChecker;
-import jndev.couriernew.letter.LetterSender;
+import jeremynoesen.couriernew.courier.CourierChecker;
+import jeremynoesen.couriernew.letter.LetterSender;
+import jeremynoesen.couriernew.command.CommandExec;
+import jeremynoesen.couriernew.config.ConfigType;
+import jeremynoesen.couriernew.config.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;

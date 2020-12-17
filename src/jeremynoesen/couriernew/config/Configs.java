@@ -1,4 +1,4 @@
-package jndev.couriernew.config;
+package jeremynoesen.couriernew.config;
 
 /**
  * initialize all configs

@@ -5,7 +5,7 @@ import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.config.Config;
 import jeremynoesen.couriernew.config.ConfigType;
 import jeremynoesen.couriernew.config.Configs;
-import jndev.couriernew.courier.Courier;
+import jeremynoesen.couriernew.courier.Courier;
 import jeremynoesen.couriernew.courier.CourierChecker;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;

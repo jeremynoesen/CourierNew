@@ -23,6 +23,8 @@ import java.util.List;
 
 /**
  * Command class, runs commands if not in blocked worlds or gamemodes.
+ *
+ * @author Jeremy Noesen
  */
 public class CommandExec implements CommandExecutor {
     

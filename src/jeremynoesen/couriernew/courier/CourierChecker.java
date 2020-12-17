@@ -4,6 +4,8 @@ import com.earth2me.essentials.Essentials;
 import de.myzelyam.supervanish.SuperVanish;
 import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.CourierNew;
+import jeremynoesen.couriernew.config.ConfigType;
+import jeremynoesen.couriernew.config.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -12,49 +14,51 @@ import org.kitteh.vanish.VanishPlugin;
 import java.util.ArrayList;
 
 /**
- * Methods to check info about a postman
+ * Methods to check info about a courier
+ *
+ * @author Jeremy Noesen
  */
 public class CourierChecker {
     
     /**
      * @param en entity to check
-     * @return true if entity is a postman
+     * @return true if entity is a courier
      */
-    public boolean isPostman(Entity en) {
-        return CourierNew.getPostmen().getKeys(false).contains(en.getUniqueId().toString());
+    public static boolean isCourier(Entity en) {
+        return Configs.getConfig(ConfigType.COURIERS).getConfig().getKeys(false).contains(en.getUniqueId().toString());
     }
     
     /**
-     * @param p  player to check ownership of the postman
+     * @param p  player to check ownership of the courier
      * @param en entity to check
-     * @return true if entity is a postman for player p
+     * @return true if entity is a courier for player p
      */
-    public boolean isPlayersPostman(Player p, Entity en) {
-        return isPostman(en) && CourierNew.getPostmen().get(en.getUniqueId().toString()).equals(p.getUniqueId());
+    public static boolean isPlayersCourier(Player p, Entity en) {
+        return isCourier(en) && Configs.getConfig(ConfigType.COURIERS).getConfig().get(en.getUniqueId().toString()).equals(p.getUniqueId());
     }
     
     /**
-     * @param p  player to check owndership of the postman
+     * @param p  player to check owndership of the courier
      * @param en entity to check
-     * @return true if entity is a postman but not for player p
+     * @return true if entity is a courier but not for player p
      */
-    public boolean isOtherPlayersPostman(Player p, Entity en) {
-        return isPostman(en) && !CourierNew.getPostmen().get(en.getUniqueId().toString()).equals(p.getUniqueId());
+    public static boolean isOtherPlayersCourier(Player p, Entity en) {
+        return isCourier(en) && !Configs.getConfig(ConfigType.COURIERS).getConfig().get(en.getUniqueId().toString()).equals(p.getUniqueId());
     }
     
     /**
      * @param en entity to check
-     * @return true if entity isa postman who already delivered mail
+     * @return true if entity isa courier who already delivered mail
      */
-    public boolean isReceivedPostman(Entity en) {
-        return isPostman(en) && en.getCustomName() != null && en.getCustomName().equals(Message.POSTMAN_NAME_RECEIVED);
+    public static boolean isReceivedCourier(Entity en) {
+        return isCourier(en) && en.getCustomName() != null && en.getCustomName().equals(Message.POSTMAN_NAME_RECEIVED);
     }
     
     /**
      * @param p player to check
      * @return true if not vanished or not in a restricted world or mode
      */
-    public boolean canRecieveMail(Player p) {
+    public static boolean canRecieveMail(Player p) {
         
         if (!p.isOnline()) return false;
         

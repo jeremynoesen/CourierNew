@@ -1,23 +1,23 @@
 package jeremynoesen.couriernew.courier;
 
-import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.CourierNew;
+import jeremynoesen.couriernew.Message;
+import jeremynoesen.couriernew.config.ConfigType;
+import jeremynoesen.couriernew.config.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.IOException;
-
-public class Postman {
+public class Courier {
     
     Entity postman;
     Player player;
-    PostmanChecker pc = new PostmanChecker();
     
     /**
      * Get NMS class from jar
@@ -54,7 +54,7 @@ public class Postman {
         }, 0 * 20, 2 * 20);
     }
     
-    public Postman(Player player) {
+    public Courier(Player player) {
         this.player = player;
     }
     
@@ -80,23 +80,19 @@ public class Postman {
     public void spawn() {
         Player recipient = this.player;
         double radius = CourierNew.getInstance().getConfig().getDouble("check-before-spawning-postman-radius");
-        for (Entity all : recipient.getNearbyEntities(radius, radius, radius)) if (pc.isPostman(all)) return;
+        for (Entity all : recipient.getNearbyEntities(radius, radius, radius))
+            if (CourierChecker.isCourier(all)) return;
         
         int dist = CourierNew.getInstance().getConfig().getInt("postman-spawn-distance");
         
         Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist));
         postman = recipient.getWorld().spawnEntity(loc, getTypeFromConfig());
         
-        File postmenyml = CourierNew.getPostmenYml();
-        FileConfiguration postmen = CourierNew.getPostmen();
+        FileConfiguration postmen = Configs.getConfig(ConfigType.COURIERS).getConfig();
         
         postmen.set(postman.getUniqueId().toString(), recipient.getUniqueId());
         
-        try {
-            postmen.save(postmenyml);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Configs.getConfig(ConfigType.COURIERS).saveConfig();
         
         postman.setCustomName(Message.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()));
         postman.setCustomNameVisible(false);
@@ -125,18 +121,14 @@ public class Postman {
                     
                     postmen.set(postman.getUniqueId().toString(), null);
                     
-                    try {
-                        postmen.save(postmenyml);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Configs.getConfig(ConfigType.COURIERS).saveConfig();
                     
                     if (recipient.isOnline()) recipient.sendMessage(Message.SUCCESS_IGNORED);
                     postman.getWorld().playSound(postman.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            FileConfiguration outgoing = CourierNew.getOutgoing();
+                            FileConfiguration outgoing = Configs.getConfig(ConfigType.OUTGOING).getConfig();
                             if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
                                     && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                                 spawn();

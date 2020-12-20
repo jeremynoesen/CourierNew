@@ -4,7 +4,6 @@ import jeremynoesen.couriernew.config.Config;
 import jeremynoesen.couriernew.config.ConfigType;
 import jeremynoesen.couriernew.config.Configs;
 import org.bukkit.ChatColor;
-import org.bukkit.map.MapPalette;
 
 /**
  * All messages used within the getInstance()
@@ -120,39 +119,6 @@ public class Message {
      */
     public static String format(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg.replace("\\n", "\n"));
-    }
-    
-    /**
-     * Apply color codes and line breaks to a message for maps
-     *
-     * @param msg message to format with color codes and line breaks
-     * @return formatted message
-     */
-    @SuppressWarnings("deprecation")
-    public static String formatMap(String msg) {
-        return msg.replace("\\n", "\n")
-                .replace("&0", "§" + MapPalette.matchColor(0, 0, 0) + ";")
-                .replace("&1", "§" + MapPalette.matchColor(0, 0, 170) + ";")
-                .replace("&2", "§" + MapPalette.matchColor(0, 170, 0) + ";")
-                .replace("&3", "§" + MapPalette.matchColor(0, 170, 170) + ";")
-                .replace("&4", "§" + MapPalette.matchColor(170, 0, 0) + ";")
-                .replace("&5", "§" + MapPalette.matchColor(170, 0, 170) + ";")
-                .replace("&6", "§" + MapPalette.matchColor(255, 170, 0) + ";")
-                .replace("&7", "§" + MapPalette.matchColor(170, 170, 170) + ";")
-                .replace("&8", "§" + MapPalette.matchColor(85, 85, 85) + ";")
-                .replace("&9", "§" + MapPalette.matchColor(85, 85, 255) + ";")
-                .replace("&a", "§" + MapPalette.matchColor(85, 255, 85) + ";")
-                .replace("&b", "§" + MapPalette.matchColor(85, 255, 255) + ";")
-                .replace("&c", "§" + MapPalette.matchColor(255, 85, 85) + ";")
-                .replace("&d", "§" + MapPalette.matchColor(255, 85, 255) + ";")
-                .replace("&e", "§" + MapPalette.matchColor(255, 255, 85) + ";")
-                .replace("&f", "§" + MapPalette.matchColor(255, 255, 255) + ";")
-                .replace("&k", "\u00A7k")
-                .replace("&l", "\u00A7l")
-                .replace("&m", "\u00A7m")
-                .replace("&n", "\u00A7n")
-                .replace("&o", "\u00A7o")
-                .replace("&r", "§" + MapPalette.matchColor(0, 0, 0) + ";");
     }
     
     /**

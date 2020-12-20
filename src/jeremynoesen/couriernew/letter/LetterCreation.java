@@ -17,36 +17,6 @@ import java.util.Calendar;
  */
 public class LetterCreation {
     
-    /*void writeMap(Player player, String message) {
-        String formattedMessage = Message.formatMap(message);
-        ItemStack map = new ItemStack(Material.FILLED_MAP, 1);
-        MapMeta mapMeta = (MapMeta) map.getItemMeta();
-        MapView mv = Bukkit.createMap(player.getWorld());
-        mapMeta.setMapView(mv);
-        for (MapRenderer mr : mapMeta.getMapView().getRenderers()) mv.removeRenderer(mr);
-        mapMeta.setColor(Color.BLACK);
-        mapMeta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
-        mapMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        try {
-            Image img = ImageIO.read(new File(CourierNew.getInstance().getDataFolder(), "paper" + ".png"));
-            mv.addRenderer(new MapRenderer() {
-                @Override
-                public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
-                    mapCanvas.drawImage(0, 0, img);
-                    mapCanvas.drawText(5, 5, MinecraftFont.Font, formattedMessage);
-                }
-            });
-            map.setItemMeta(mapMeta);
-            player.getInventory().addItem(map);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //todo text wrapping
-        //todo save text to file along with map ID
-        //todo redraw maps on server start
-    }*/
-    
     /**
      * Create a new letter with a specified message and places it in the player's inventory. Also set's the lore of the
      * item to a preview of the message

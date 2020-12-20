@@ -109,8 +109,4 @@ public class CourierNew extends JavaPlugin {
 
 //todo vault support
 
-//todo item cost for letter
-
-//todo cancelable letters
-
 //todo add to letter not page

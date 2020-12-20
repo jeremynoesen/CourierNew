@@ -1,5 +1,6 @@
 package jeremynoesen.couriernew;
 
+import jeremynoesen.couriernew.config.ConfigOptions;
 import jeremynoesen.couriernew.courier.CourierChecker;
 import jeremynoesen.couriernew.letter.LetterSender;
 import jeremynoesen.couriernew.command.CommandExec;
@@ -44,7 +45,8 @@ public class CourierNew extends JavaPlugin {
         Configs.getConfig(ConfigType.COURIERS).saveDefaultConfig();
         Configs.getConfig(ConfigType.OUTGOING).saveDefaultConfig();
         Configs.getConfig(ConfigType.MAIN).saveDefaultConfig();
-        
+    
+        ConfigOptions.load();
         Message.reloadMessages();
         
         plugin.getServer().getConsoleSender().sendMessage(Message.STARTUP);

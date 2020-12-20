@@ -1,18 +1,9 @@
-# Change delays related to sending mail, the courier, and
-# when the courier will appear. All values are in
-# minecraft ticks. 20 ticks equals 1 second.
-# Radius is in blocks.
-join-recieve-delay: 300
-send-recieve-delay: 100
+receive-delay: 100
 resend-delay: 2400
-unread-delay: 100
-check-before-spawning-courier-radius: 10
-remove-courier-ignored-delay: 200
-remove-courier-recieved-delay: 20
-resend-from-blocked-delay: 100
+remove-delay: 200
+spawn-distance: 5
 protected-courier: true
 courier-entity-type: VILLAGER
-courier-spawn-distance: 3
 blocked-gamemodes:
   - GAMEMODE
 blocked-worlds:

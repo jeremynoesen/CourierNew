@@ -4,7 +4,6 @@ import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.config.ConfigType;
 import jeremynoesen.couriernew.config.Configs;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,41 +17,6 @@ public class Courier {
     
     Entity postman;
     Player player;
-    
-    /**
-     * Get NMS class from jar
-     *
-     * @param name class name
-     * @return NMS class
-     */
-    private static Class<?> getNMSClass(String name) {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        try {
-            return Class.forName("net.minecraft.server." + version + "." + name);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    /**
-     * make an entity follow a player with a set speed
-     *
-     * @param player player entity will follow
-     * @param entity entity to follow player
-     * @param d      speed
-     */
-    public void followPlayer(Player player, LivingEntity entity, double d) {
-        final LivingEntity e = entity;
-        final Player p = player;
-        final float f = (float) d;
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(CourierNew.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                //((EntityInsentient) ((CraftEntity) e).getHandle()).getNavigation().a(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ(), f);
-            }
-        }, 0 * 20, 2 * 20);
-    }
     
     public Courier(Player player) {
         this.player = player;
@@ -107,7 +71,6 @@ public class Courier {
                 if (postman.isOnGround() && postman.getWorld() == recipient.getWorld()) {
                     postman.teleport(postman.getLocation().setDirection(recipient.getLocation().subtract(postman.getLocation()).toVector()));
                     ((LivingEntity) postman).setAI(false);
-                    //followPlayer(recipient, (LivingEntity) postman, 1); //todo add ability to follow player
                 }
                 if (postman.isDead()) this.cancel();
             }

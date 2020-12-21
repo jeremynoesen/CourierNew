@@ -1,18 +1,15 @@
 package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.config.ConfigOptions;
-import jeremynoesen.couriernew.courier.CourierChecker;
-import jeremynoesen.couriernew.letter.LetterSender;
 import jeremynoesen.couriernew.command.CommandExec;
+import jeremynoesen.couriernew.config.ConfigOptions;
 import jeremynoesen.couriernew.config.ConfigType;
 import jeremynoesen.couriernew.config.Configs;
+import jeremynoesen.couriernew.courier.Couriers;
+import jeremynoesen.couriernew.letter.LetterSender;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Main class for plugin, registers and initializes all files, listeners, and commands
@@ -42,10 +39,9 @@ public class CourierNew extends JavaPlugin {
         plugin = this;
         
         Configs.getConfig(ConfigType.MESSAGE).saveDefaultConfig();
-        Configs.getConfig(ConfigType.COURIERS).saveDefaultConfig();
         Configs.getConfig(ConfigType.OUTGOING).saveDefaultConfig();
         Configs.getConfig(ConfigType.MAIN).saveDefaultConfig();
-    
+        
         ConfigOptions.load();
         Message.reloadMessages();
         
@@ -73,36 +69,13 @@ public class CourierNew extends JavaPlugin {
         getCommand("shredall").setExecutor(new CommandExec());
         getCommand("unread").setExecutor(new CommandExec());
         getCommand("cnreload").setExecutor(new CommandExec());
-        
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                
-                int count = 0;
-                plugin.getServer().getConsoleSender().sendMessage(Message.CLEANING);
-                
-                for (World world : Bukkit.getWorlds()) {
-                    for (Entity entity : world.getEntities()) {
-                        if (CourierChecker.isCourier(entity)) {
-                            entity.remove();
-                            count++;
-                        }
-                    }
-                }
-                
-                plugin.getServer().getConsoleSender().sendMessage(Message.DONE_CLEANING.replace("$COUNT$",
-                        Integer.toString(count)));
-                
-            }
-        }.runTaskLater(plugin, 2);
-        
-        //saveResource("paper.png", false);
     }
     
     /**
      * nullify the plugin instance
      */
     public void onDisable() {
+        Couriers.removeAll();
         plugin = null;
     }
 }

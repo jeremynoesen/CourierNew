@@ -18,11 +18,6 @@ public class Configs {
     private static final Config outgoing = new Config(ConfigType.OUTGOING);
     
     /**
-     * couriers config instance
-     */
-    private static final Config couriers = new Config(ConfigType.COURIERS);
-    
-    /**
      * message config instance
      */
     private static final Config message = new Config(ConfigType.MESSAGE);
@@ -39,9 +34,6 @@ public class Configs {
             
             case MAIN:
                 return main;
-            
-            case COURIERS:
-                return couriers;
             
             case OUTGOING:
                 return outgoing;

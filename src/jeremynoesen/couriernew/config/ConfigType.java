@@ -11,7 +11,7 @@ import java.io.InputStream;
  * @author Jeremy Noesen
  */
 public enum ConfigType {
-    MAIN("config.yml"), MESSAGE("messages.yml"), COURIERS("couriers.yml"), OUTGOING("outgoing.yml");
+    MAIN("config.yml"), MESSAGE("messages.yml"), OUTGOING("outgoing.yml");
     
     /**
      * config type file name

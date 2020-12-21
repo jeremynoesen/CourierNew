@@ -2,104 +2,138 @@ package jeremynoesen.couriernew.courier;
 
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.config.ConfigType;
-import jeremynoesen.couriernew.config.Configs;
+import jeremynoesen.couriernew.config.ConfigOptions;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * courier used to send mail
+ *
+ * @author Jeremy Noesen
+ */
 public class Courier {
     
-    Entity postman;
-    Player player;
-    
-    public Courier(Player player) {
-        this.player = player;
-    }
-    
     /**
-     * get mob type from config
-     *
-     * @return entitytype, default villager
+     * courier entity
      */
-    EntityType getTypeFromConfig() {
-        if (CourierNew.getInstance().getConfig().get("postman-entity-type") != null) {
-            try {
-                return EntityType.valueOf(CourierNew.getInstance().getConfig().getString("postman-entity-type"));
-            } catch (Exception e) {
-                return EntityType.VILLAGER;
-            }
-        } else
-            return EntityType.VILLAGER;
+    private Entity courier;
+    
+    /**
+     * player receiving mail
+     */
+    private Player recipient;
+    
+    /**
+     * whether the recipient has received their mail
+     */
+    private boolean delivered;
+    
+    /**
+     * create a new courier entity to deliver mail for a player
+     *
+     * @param recipient player receiving mail
+     */
+    public Courier(Player recipient) {
+        this.recipient = recipient;
+        this.delivered = false;
     }
     
     /**
-     * spawn the postman entity
+     * spawn the courier entity
      */
     public void spawn() {
-        Player recipient = this.player;
-        double radius = CourierNew.getInstance().getConfig().getDouble("check-before-spawning-postman-radius");
-        for (Entity all : recipient.getNearbyEntities(radius, radius, radius))
-            if (CourierChecker.isCourier(all)) return;
-        
-        int dist = CourierNew.getInstance().getConfig().getInt("postman-spawn-distance");
-        
+        double dist = ConfigOptions.SPAWN_DISTANCE * 2;
+        for (Entity entity : recipient.getNearbyEntities(dist, dist, dist))
+            if (Couriers.isCourier(entity)) return;
+    
         Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist));
-        postman = recipient.getWorld().spawnEntity(loc, getTypeFromConfig());
-        
-        FileConfiguration postmen = Configs.getConfig(ConfigType.COURIERS).getConfig();
-        
-        postmen.set(postman.getUniqueId().toString(), recipient.getUniqueId());
-        
-        Configs.getConfig(ConfigType.COURIERS).saveConfig();
-        
-        postman.setCustomName(Message.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()));
-        postman.setCustomNameVisible(false);
-        postman.setInvulnerable(true);
+        courier = recipient.getWorld().spawnEntity(loc, ConfigOptions.COURIER_ENTITY_TYPE);
+        Couriers.add(this);
+    
+        courier.setCustomName(Message.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()));
+        courier.setCustomNameVisible(false);
+        courier.setInvulnerable(true);
         recipient.sendMessage(Message.SUCCESS_POSTMAN_ARRIVED);
-        postman.getWorld().playSound(postman.getLocation(), Sound.UI_TOAST_IN, 1, 1);
-        
+        courier.getWorld().playSound(courier.getLocation(), Sound.UI_TOAST_IN, 1, 1);
+    
         new BukkitRunnable() {
             @Override
             public void run() {
-                postman.setFallDistance(0);
-                if (postman.isOnGround() && postman.getWorld() == recipient.getWorld()) {
-                    postman.teleport(postman.getLocation().setDirection(recipient.getLocation().subtract(postman.getLocation()).toVector()));
-                    ((LivingEntity) postman).setAI(false);
+                courier.setFallDistance(0);
+                if (courier.isOnGround() && courier.getWorld() == recipient.getWorld()) {
+                    courier.teleport(courier.getLocation().setDirection(recipient.getLocation().subtract(courier.getLocation()).toVector()));
+                    ((LivingEntity) courier).setAI(false);
                 }
-                if (postman.isDead()) this.cancel();
+                if (courier.isDead()) this.cancel();
             }
         }.runTaskTimer(CourierNew.getInstance(), 0, 1);
         
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!postman.isDead()) {
-                    postman.remove();
-                    
-                    postmen.set(postman.getUniqueId().toString(), null);
-                    
-                    Configs.getConfig(ConfigType.COURIERS).saveConfig();
-                    
+                if (!courier.isDead()) {
+                    remove();
+                
                     if (recipient.isOnline()) recipient.sendMessage(Message.SUCCESS_IGNORED);
-                    postman.getWorld().playSound(postman.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
+                    courier.getWorld().playSound(courier.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
+                    
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            FileConfiguration outgoing = Configs.getConfig(ConfigType.OUTGOING).getConfig();
-                            if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
-                                    && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
+                            if (recipient.isOnline()) //todo also check that player has mail to be delivered
                                 spawn();
                         }
-                    }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-delay"));
+                    }.runTaskLater(CourierNew.getInstance(), ConfigOptions.RESEND_DELAY);
                 }
             }
-        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("remove-postman-ignored-delay"));
+        }.runTaskLater(CourierNew.getInstance(), ConfigOptions.REMOVE_DELAY);
+    }
+    
+    /**
+     * remove the courier entity
+     */
+    public void remove() {
+        courier.remove();
+        Couriers.remove(this);
+    }
+    
+    /**
+     * set the status of the courier to delivered
+     */
+    public void setDelivered() {
+        delivered = true;
+        courier.setCustomName(Message.POSTMAN_NAME_RECEIVED);
+    }
+    
+    /**
+     * check if mail was delivered
+     *
+     * @return true if mail was delivered
+     */
+    public boolean isDelivered() {
+        return delivered;
+    }
+    
+    /**
+     * get the recipient for the courier
+     *
+     * @return recipient for courier
+     */
+    public Player getRecipient() {
+        return recipient;
+    }
+    
+    /**
+     * get the courier entity
+     *
+     * @return courier entity
+     */
+    public Entity getCourier() {
+        return courier;
     }
     
 }

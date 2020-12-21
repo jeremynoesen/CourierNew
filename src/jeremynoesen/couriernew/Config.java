@@ -1,7 +1,5 @@
-package jeremynoesen.couriernew.config;
+package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.CourierNew;
-import jeremynoesen.couriernew.Message;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

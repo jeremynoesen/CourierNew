@@ -2,9 +2,8 @@ package jeremynoesen.couriernew.letter;
 
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.config.Config;
+import jeremynoesen.couriernew.Config;
 import jeremynoesen.couriernew.courier.Courier;
-import jeremynoesen.couriernew.courier.Couriers;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;

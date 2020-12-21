@@ -1,5 +1,6 @@
-package jeremynoesen.couriernew.config;
+package jeremynoesen.couriernew.courier;
 
+import jeremynoesen.couriernew.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -14,7 +15,7 @@ import java.util.Set;
  *
  * @author Jeremy Noesen
  */
-public class Options {
+public class CourierOptions {
     
     /**
      * delay between sending a letter, joining the server, switching out of a blocked gamemode, or coming from a blocked

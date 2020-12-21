@@ -1,11 +1,11 @@
 package jeremynoesen.couriernew;
 
 import jeremynoesen.couriernew.command.CommandExec;
-import jeremynoesen.couriernew.config.Config;
-import jeremynoesen.couriernew.config.Options;
-import jeremynoesen.couriernew.courier.Couriers;
+import jeremynoesen.couriernew.courier.CourierOptions;
+import jeremynoesen.couriernew.courier.Courier;
 import jeremynoesen.couriernew.letter.LetterSender;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,7 +41,7 @@ public class CourierNew extends JavaPlugin {
         Config.getOutgoingConfig().saveDefaultConfig();
         Config.getMainConfig().saveDefaultConfig();
         
-        Options.load();
+        CourierOptions.load();
         Message.reloadMessages();
         
         PluginManager pm = Bukkit.getPluginManager();
@@ -72,11 +72,7 @@ public class CourierNew extends JavaPlugin {
      * nullify the plugin instance
      */
     public void onDisable() {
-        Couriers.removeAll();
+        Courier.getCouriers().forEach(Entity::remove);
         plugin = null;
     }
 }
-
-//todo vault support
-
-//todo add to letter not page

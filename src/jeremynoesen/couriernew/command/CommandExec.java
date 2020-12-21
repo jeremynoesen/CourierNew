@@ -2,7 +2,7 @@ package jeremynoesen.couriernew.command;
 
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.config.Config;
+import jeremynoesen.couriernew.Config;
 import jeremynoesen.couriernew.letter.LetterChecker;
 import jeremynoesen.couriernew.letter.LetterCreation;
 import jeremynoesen.couriernew.letter.LetterSender;

@@ -1,6 +1,5 @@
 package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.config.Config;
 import org.bukkit.ChatColor;
 
 /**

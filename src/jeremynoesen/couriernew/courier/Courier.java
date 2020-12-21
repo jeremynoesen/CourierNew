@@ -2,7 +2,7 @@ package jeremynoesen.couriernew.courier;
 
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.config.ConfigOptions;
+import jeremynoesen.couriernew.config.Options;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -46,12 +46,12 @@ public class Courier {
      * spawn the courier entity
      */
     public void spawn() {
-        double dist = ConfigOptions.SPAWN_DISTANCE * 2;
+        double dist = Options.SPAWN_DISTANCE * 2;
         for (Entity entity : recipient.getNearbyEntities(dist, dist, dist))
             if (Couriers.isCourier(entity)) return;
     
         Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist));
-        courier = recipient.getWorld().spawnEntity(loc, ConfigOptions.COURIER_ENTITY_TYPE);
+        courier = recipient.getWorld().spawnEntity(loc, Options.COURIER_ENTITY_TYPE);
         Couriers.add(this);
     
         courier.setCustomName(Message.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()));
@@ -87,10 +87,10 @@ public class Courier {
                             if (recipient.isOnline()) //todo also check that player has mail to be delivered
                                 spawn();
                         }
-                    }.runTaskLater(CourierNew.getInstance(), ConfigOptions.RESEND_DELAY);
+                    }.runTaskLater(CourierNew.getInstance(), Options.RESEND_DELAY);
                 }
             }
-        }.runTaskLater(CourierNew.getInstance(), ConfigOptions.REMOVE_DELAY);
+        }.runTaskLater(CourierNew.getInstance(), Options.REMOVE_DELAY);
     }
     
     /**

@@ -3,10 +3,8 @@ package jeremynoesen.couriernew.letter;
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.config.Config;
-import jeremynoesen.couriernew.config.ConfigType;
-import jeremynoesen.couriernew.config.Configs;
 import jeremynoesen.couriernew.courier.Courier;
-import jeremynoesen.couriernew.courier.CourierChecker;
+import jeremynoesen.couriernew.courier.Couriers;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -31,7 +29,7 @@ import java.util.UUID;
  */
 public class LetterSender implements Listener {
     
-    private static final Config outgoingConfig = Configs.getConfig(ConfigType.OUTGOING);
+    private static final Config outgoingConfig = Config.getOutgoingConfig();
     
     /**
      * Send a letter to a player. The letter will have the recipient added to the lore, preventing it from being sent
@@ -88,7 +86,7 @@ public class LetterSender implements Listener {
                         letters.add(letterToAll);
                         outgoing.set(uuid.toString(), letters);
                         
-                        Configs.getConfig(ConfigType.OUTGOING).saveConfig();
+                        Config.getOutgoingConfig().saveConfig();
                         
                         new BukkitRunnable() {
                             @Override
@@ -146,7 +144,7 @@ public class LetterSender implements Listener {
                         letters.add(letterToAll);
                         outgoing.set(uuid.toString(), letters);
                         
-                        Configs.getConfig(ConfigType.OUTGOING).saveConfig();
+                        Config.getOutgoingConfig().saveConfig();
                         
                         new BukkitRunnable() {
                             @Override
@@ -208,7 +206,7 @@ public class LetterSender implements Listener {
                         outgoing.set(uuid.toString(), letters);
                         success.add(recipients);
                         
-                        Configs.getConfig(ConfigType.OUTGOING).saveConfig();
+                        Config.getOutgoingConfig().saveConfig();
                         
                         new BukkitRunnable() {
                             @Override
@@ -264,7 +262,7 @@ public class LetterSender implements Listener {
                     letters.add(letter);
                     outgoing.set(uuid.toString(), letters);
                     
-                    Configs.getConfig(ConfigType.OUTGOING).saveConfig();
+                    Config.getOutgoingConfig().saveConfig();
                     
                     sender.getInventory().getItemInMainHand().setAmount(0);
                     sender.sendMessage(Message.SUCCESS_SENT.replace("$PLAYER$", recplayer.getName()));
@@ -316,7 +314,7 @@ public class LetterSender implements Listener {
             
             outgoing.set(uuid.toString(), letters);
             
-            Configs.getConfig(ConfigType.OUTGOING).saveConfig();
+            Config.getOutgoingConfig().saveConfig();
         }
     }
     
@@ -327,7 +325,7 @@ public class LetterSender implements Listener {
      */
     public static void spawnCourier(Player recipient) {
         
-        if (CourierChecker.canRecieveMail(recipient)) {
+        if (Couriers.canRecieveMail(recipient)) {
             
             Courier courier = new Courier(recipient);
             courier.spawn();

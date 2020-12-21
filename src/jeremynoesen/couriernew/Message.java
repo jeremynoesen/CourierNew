@@ -1,16 +1,16 @@
 package jeremynoesen.couriernew;
 
 import jeremynoesen.couriernew.config.Config;
-import jeremynoesen.couriernew.config.ConfigType;
-import jeremynoesen.couriernew.config.Configs;
 import org.bukkit.ChatColor;
 
 /**
  * All messages used within the getInstance()
+ *
+ * @author Jeremy Noesen
  */
 public class Message {
     
-    private static final Config config = Configs.getConfig(ConfigType.MESSAGE);
+    private static final Config config = Config.getMessageConfig();
     
     public static String PREFIX;
     public static String ERROR_NO_PERMS;
@@ -40,17 +40,7 @@ public class Message {
     public static String ERROR_SEND_FAILED;
     public static String SUCCESS_PAGE_EDITED;
     public static String LETTER_FROM;
-    public static String STARTUP = "\n\n" +
-            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.getInstance().getDescription().getVersion() + " " + "has " + "been enabled!\n" +
-            ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
-            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██╔██╗ ██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  may not be modified or redistributed without\n" +
-            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
-            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + "╚██████╗" + ChatColor.DARK_GREEN + "██║ ╚████║" + ChatColor.DARK_GRAY + "███║" + ChatColor.WHITE + "  support discord group: https://discord.gg/WhmQYR\n" +
-            ChatColor.DARK_GRAY + "╚══╝" + ChatColor.GREEN + " ╚═════╝" + ChatColor.DARK_GREEN + "╚═╝  ╚═══╝" + ChatColor.DARK_GRAY + "╚══╝" + ChatColor.WHITE + "  Thank you for choosing CourierNew!\n";
-    public static String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover courier entities...";
-    public static String DONE_CLEANING =
-            PREFIX + ChatColor.GRAY + "Successfully deleted " + ChatColor.WHITE + "$COUNT$" + ChatColor.GRAY +
-                    " courier entities!";
+
     public static String[] HELP = {
             "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),

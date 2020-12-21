@@ -2,19 +2,14 @@ package jeremynoesen.couriernew.command;
 
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.config.Configs;
-import jeremynoesen.couriernew.courier.CourierChecker;
+import jeremynoesen.couriernew.config.Config;
 import jeremynoesen.couriernew.letter.LetterChecker;
 import jeremynoesen.couriernew.letter.LetterCreation;
 import jeremynoesen.couriernew.letter.LetterSender;
-import jeremynoesen.couriernew.config.ConfigType;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -61,25 +56,12 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("cnreload")) {
                     
                     if (player.hasPermission("couriernew.reload")) {
-                        Configs.getConfig(ConfigType.MAIN).reloadConfig();
-                        Configs.getConfig(ConfigType.COURIERS).reloadConfig();
-                        Configs.getConfig(ConfigType.OUTGOING).reloadConfig();
-                        Configs.getConfig(ConfigType.MESSAGE).reloadConfig();
+                        Config.getMainConfig().reloadConfig();
+                        Config.getOutgoingConfig().reloadConfig();
+                        Config.getMessageConfig().reloadConfig();
                         
-                        int count = 0;
-                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(Message.CLEANING);
+                        //todo delete all couriers
                         
-                        for (World world : Bukkit.getWorlds()) {
-                            for (Entity entity : world.getEntities()) {
-                                if (CourierChecker.isCourier(entity)) {
-                                    entity.remove();
-                                    count++;
-                                }
-                            }
-                        }
-                        
-                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(Message.DONE_CLEANING.replace("$COUNT$",
-                                Integer.toString(count)));
                         player.sendMessage(Message.SUCCESS_RELOADED);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
@@ -139,7 +121,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("unread")) {
                     
                     if (player.hasPermission("couriernew.unread")) {
-                        FileConfiguration outgoing = Configs.getConfig(ConfigType.OUTGOING).getConfig();
+                        FileConfiguration outgoing = Config.getOutgoingConfig().getConfig();
                         
                         if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
                             player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);

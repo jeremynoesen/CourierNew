@@ -3,7 +3,7 @@ package jeremynoesen.couriernew.courier;
 import com.earth2me.essentials.Essentials;
 import de.myzelyam.supervanish.SuperVanish;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.config.ConfigOptions;
+import jeremynoesen.couriernew.config.Options;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -93,8 +93,8 @@ public class Couriers {
             }
         }
         
-        if (ConfigOptions.BLOCKED_WORLDS.contains(recipient.getWorld()) ||
-                ConfigOptions.BLOCKED_GAMEMODES.contains(recipient.getGameMode())) {
+        if (Options.BLOCKED_WORLDS.contains(recipient.getWorld()) ||
+                Options.BLOCKED_GAMEMODES.contains(recipient.getGameMode())) {
             recipient.sendMessage(Message.ERROR_WORLD);
             return false;
         }

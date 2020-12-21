@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * @author Jeremy Noesen
  */
-public class ConfigOptions {
+public class Options {
     
     /**
      * delay between sending a letter, joining the server, switching out of a blocked gamemode, or coming from a blocked
@@ -62,7 +62,7 @@ public class ConfigOptions {
      * load config options from the config file
      */
     public static void load() {
-        YamlConfiguration config = Configs.getConfig(ConfigType.MAIN).getConfig();
+        YamlConfiguration config = Config.getMainConfig().getConfig();
         RECEIVE_DELAY = config.getInt("receive-delay");
         RESEND_DELAY = config.getInt("resend-delay");
         REMOVE_DELAY = config.getInt("remove-delay");

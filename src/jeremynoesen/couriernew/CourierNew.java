@@ -1,9 +1,8 @@
 package jeremynoesen.couriernew;
 
 import jeremynoesen.couriernew.command.CommandExec;
-import jeremynoesen.couriernew.config.ConfigOptions;
-import jeremynoesen.couriernew.config.ConfigType;
-import jeremynoesen.couriernew.config.Configs;
+import jeremynoesen.couriernew.config.Config;
+import jeremynoesen.couriernew.config.Options;
 import jeremynoesen.couriernew.courier.Couriers;
 import jeremynoesen.couriernew.letter.LetterSender;
 import org.bukkit.Bukkit;
@@ -33,19 +32,17 @@ public class CourierNew extends JavaPlugin {
     }
     
     /**
-     * initialize configurations, load messages, register commands and permissions, and delete leftover couriers
+     * initialize configurations, load messages, register commands and permissions
      */
     public void onEnable() {
         plugin = this;
         
-        Configs.getConfig(ConfigType.MESSAGE).saveDefaultConfig();
-        Configs.getConfig(ConfigType.OUTGOING).saveDefaultConfig();
-        Configs.getConfig(ConfigType.MAIN).saveDefaultConfig();
+        Config.getMessageConfig().saveDefaultConfig();
+        Config.getOutgoingConfig().saveDefaultConfig();
+        Config.getMainConfig().saveDefaultConfig();
         
-        ConfigOptions.load();
+        Options.load();
         Message.reloadMessages();
-        
-        plugin.getServer().getConsoleSender().sendMessage(Message.STARTUP);
         
         PluginManager pm = Bukkit.getPluginManager();
         

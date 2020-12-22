@@ -1,9 +1,10 @@
 package jeremynoesen.couriernew.letter;
 
+import jeremynoesen.couriernew.Config;
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.Config;
 import jeremynoesen.couriernew.courier.Courier;
+import jeremynoesen.couriernew.courier.CourierOptions;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -25,6 +26,8 @@ import java.util.UUID;
 
 /**
  * Send the letters to players
+ *
+ * @author Jeremy Noesen
  */
 public class LetterSender implements Listener {
     
@@ -40,7 +43,8 @@ public class LetterSender implements Listener {
      */
     @SuppressWarnings("deprecation")
     public static void send(Player sender, String recipient) {
-        if (LetterChecker.isHoldingOwnLetter(sender) && !LetterChecker.wasSent(sender.getInventory().getItemInMainHand())) {
+        if (LetterChecker.isHoldingOwnLetter(sender) &&
+                !LetterChecker.wasSent(sender.getInventory().getItemInMainHand())) {
             ItemStack letter = sender.getInventory().getItemInMainHand();
             FileConfiguration outgoing = outgoingConfig.getConfig();
             if (recipient.equals("*")) {
@@ -65,7 +69,8 @@ public class LetterSender implements Listener {
                         
                         if (recplayer.getName().equals(sender.getName())) continue;
                         
-                        if (lore.get(lore.size() - 1).contains("§TTo ")) { //§TTo shows up as "To" in the lore, but doesnt block people from sending letters containing the word.
+                        if (lore.get(lore.size() - 1).contains("§TTo ")) {
+                            //§TTo shows up as "To" in the lore, but doesnt block people from sending letters containing the word.
                             ItemMeta im = letterToAll.getItemMeta();
                             lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
                             im.setLore(lore);
@@ -94,7 +99,7 @@ public class LetterSender implements Listener {
                                     spawnCourier((Player) recplayer);
                                 }
                             }
-                        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
+                        }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                     }
                     
                     sender.getInventory().getItemInMainHand().setAmount(0);
@@ -152,11 +157,12 @@ public class LetterSender implements Listener {
                                     spawnCourier((Player) recplayer);
                                 }
                             }
-                        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
+                        }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                     }
                     
                     sender.getInventory().getItemInMainHand().setAmount(0);
-                    sender.sendMessage(Message.SUCCESS_SENT.replace("$PLAYER$", "all players of this server"));
+                    sender.sendMessage(Message.SUCCESS_SENT
+                            .replace("$PLAYER$", "all players of this server"));
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
                 
@@ -214,18 +220,20 @@ public class LetterSender implements Listener {
                                     spawnCourier((Player) recplayer);
                                 }
                             }
-                        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
+                        }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                     }
                     
                     if (success.size() > 0) {
                         sender.getInventory().getItemInMainHand().setAmount(0);
                         sender.sendMessage(Message.SUCCESS_SENT.replace("$PLAYER$",
-                                success.toString().replace("[", "").replace("]", "")));
+                                success.toString().replace("[", "")
+                                        .replace("]", "")));
                     }
                     
                     if (failed.size() > 0) {
                         sender.sendMessage(Message.ERROR_SEND_FAILED.replace("$PLAYER$",
-                                failed.toString().replace("[", "").replace("]", "")));
+                                failed.toString().replace("[", "")
+                                        .replace("]", "")));
                     }
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
@@ -241,7 +249,8 @@ public class LetterSender implements Listener {
                     try {
                         uuid = op.getUniqueId();
                     } catch (Exception e) {
-                        sender.sendMessage(Message.ERROR_PLAYER_NO_EXIST.replace("$PLAYER$", recipient));
+                        sender.sendMessage(Message.ERROR_PLAYER_NO_EXIST
+                                .replace("$PLAYER$", recipient));
                         return;
                     }
                     
@@ -264,7 +273,8 @@ public class LetterSender implements Listener {
                     Config.getOutgoingConfig().saveConfig();
                     
                     sender.getInventory().getItemInMainHand().setAmount(0);
-                    sender.sendMessage(Message.SUCCESS_SENT.replace("$PLAYER$", recplayer.getName()));
+                    sender.sendMessage(Message.SUCCESS_SENT
+                            .replace("$PLAYER$", recplayer.getName()));
                     
                     new BukkitRunnable() {
                         @Override
@@ -273,7 +283,7 @@ public class LetterSender implements Listener {
                                 spawnCourier((Player) recplayer);
                             }
                         }
-                    }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("send-recieve-delay"));
+                    }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
             }
         } else if (LetterChecker.isHoldingOwnLetter(sender)) {
@@ -323,9 +333,7 @@ public class LetterSender implements Listener {
      * @param recipient player recieving letters
      */
     public static void spawnCourier(Player recipient) {
-        
-        if (Couriers.canRecieveMail(recipient)) {
-            
+        if (Courier.canSpawn(recipient)) {
             Courier courier = new Courier(recipient);
             courier.spawn();
         }
@@ -337,25 +345,21 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
-        if ((CourierChecker.isCourier(en) && !CourierNew.getInstance().getConfig().getBoolean("protected-courier")) || CourierChecker.isPlayersCourier(e.getPlayer(), en) && !CourierChecker.isReceivedCourier(en)) {
+        if ((Courier.getCouriers().containsKey(en) &&
+                !CourierNew.getInstance().getConfig().getBoolean("protected-courier")) ||
+                Courier.getCouriers().get(en).getRecipient().equals(e.getPlayer()) &&
+                        !Courier.getCouriers().get(en).isDelivered()) {
             en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             e.setCancelled(true);
             receive(e.getPlayer());
             en.getWorld().playSound(en.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);
-            en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, en.getLocation().add(0, en.getHeight() / 2, 0), 20, en.getWidth() / 2, en.getHeight(), en.getWidth() / 2);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!en.isDead()) {
-                        en.remove();
-                        Configs.getConfig(ConfigType.COURIERS).getConfig().set(en.getUniqueId().toString(), null);
-                    }
-                }
-            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("remove-courier-recieved-delay"));
-        } else if (CourierChecker.isOtherPlayersCourier(e.getPlayer(), en)) {
+            en.getWorld().spawnParticle(Particle.VILLAGER_HAPPY,
+                    en.getLocation().add(0, en.getHeight() / 2, 0), 20,
+                    en.getWidth() / 2, en.getHeight(), en.getWidth() / 2);
+        } else if (!Courier.getCouriers().get(en).getRecipient().equals(e.getPlayer())) {
             e.setCancelled(true);
             en.getWorld().playSound(en.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
-        } else if (CourierChecker.isReceivedCourier(en)) e.setCancelled(true);
+        } else if (Courier.getCouriers().get(en).isDelivered()) e.setCancelled(true);
     }
     
     /**
@@ -374,7 +378,7 @@ public class LetterSender implements Listener {
                     spawnCourier(player);
                 }
             }
-        }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("join-recieve-delay"));
+        }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
     }
     
     /**
@@ -396,7 +400,7 @@ public class LetterSender implements Listener {
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnCourier(recipient);
                 }
-            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-from-blocked-delay"));
+            }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
         }
     }
     
@@ -418,7 +422,7 @@ public class LetterSender implements Listener {
                             && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
                         spawnCourier(recipient);
                 }
-            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("resend-from-blocked-delay"));
+            }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
         }
     }
     
@@ -427,6 +431,6 @@ public class LetterSender implements Listener {
      */
     @EventHandler
     public void onVillagerProfession(VillagerCareerChangeEvent e) {
-        if (CourierChecker.isCourier(e.getEntity())) e.setCancelled(true);
+        if (Courier.getCouriers().keySet().contains(e.getEntity())) e.setCancelled(true);
     }
 }

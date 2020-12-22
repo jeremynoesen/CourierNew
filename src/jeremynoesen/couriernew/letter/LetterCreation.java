@@ -14,6 +14,8 @@ import java.util.Calendar;
 
 /**
  * Methods to create, edit, and delete letters
+ *
+ * @author Jeremy Noesen
  */
 public class LetterCreation {
     

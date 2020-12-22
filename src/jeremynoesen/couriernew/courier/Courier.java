@@ -13,8 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.kitteh.vanish.VanishPlugin;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * courier used to send mail
@@ -26,7 +25,7 @@ public class Courier {
     /**
      * set of all alive courier entities
      */
-    private static Set<Entity> couriers = new HashSet<>();
+    private static HashMap<Entity, Courier> couriers = new HashMap<>();
     
     /**
      * courier entity
@@ -58,7 +57,7 @@ public class Courier {
      *
      * @return set of all alive courier entities
      */
-    public static Set<Entity> getCouriers() {
+    public static HashMap<Entity, Courier> getCouriers() {
         return couriers;
     }
     
@@ -68,11 +67,11 @@ public class Courier {
     public void spawn() {
         double dist = CourierOptions.SPAWN_DISTANCE * 2;
         for (Entity entity : recipient.getNearbyEntities(dist, dist, dist))
-            if (couriers.contains(entity)) return;
+            if (couriers.containsKey(entity)) return;
     
         Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist));
         courier = recipient.getWorld().spawnEntity(loc, CourierOptions.COURIER_ENTITY_TYPE);
-        couriers.add(courier);
+        couriers.put(courier, this);
     
         courier.setCustomName(Message.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()));
         courier.setCustomNameVisible(false);

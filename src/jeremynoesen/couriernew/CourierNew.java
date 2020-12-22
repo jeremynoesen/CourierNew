@@ -72,7 +72,7 @@ public class CourierNew extends JavaPlugin {
      * nullify the plugin instance
      */
     public void onDisable() {
-        Courier.getCouriers().forEach(Entity::remove);
+        Courier.getCouriers().keySet().forEach(Entity::remove);
         plugin = null;
     }
 }

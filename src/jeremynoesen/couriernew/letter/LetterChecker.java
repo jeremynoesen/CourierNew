@@ -8,6 +8,8 @@ import org.bukkit.inventory.meta.BookMeta;
 
 /**
  * Methods to check for letters in a player's inventory
+ *
+ * @author Jeremy Noesen
  */
 public class LetterChecker {
     

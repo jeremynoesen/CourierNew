@@ -4,6 +4,7 @@ import jeremynoesen.couriernew.command.CommandExec;
 import jeremynoesen.couriernew.courier.CourierOptions;
 import jeremynoesen.couriernew.courier.Courier;
 import jeremynoesen.couriernew.letter.LetterSender;
+import jeremynoesen.couriernew.letter.Outgoing;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.permissions.Permission;
@@ -42,6 +43,7 @@ public class CourierNew extends JavaPlugin {
         Config.getMainConfig().saveDefaultConfig();
         
         CourierOptions.load();
+        Outgoing.loadAll();
         Message.reloadMessages();
         
         PluginManager pm = Bukkit.getPluginManager();
@@ -73,6 +75,7 @@ public class CourierNew extends JavaPlugin {
      */
     public void onDisable() {
         Courier.getCouriers().keySet().forEach(Entity::remove);
+        Outgoing.saveAll();
         plugin = null;
     }
 }

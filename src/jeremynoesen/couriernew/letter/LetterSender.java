@@ -1,12 +1,10 @@
 package jeremynoesen.couriernew.letter;
 
-import jeremynoesen.couriernew.Config;
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.courier.Courier;
 import jeremynoesen.couriernew.courier.CourierOptions;
 import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,9 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Send the letters to players
@@ -30,8 +26,6 @@ import java.util.UUID;
  * @author Jeremy Noesen
  */
 public class LetterSender implements Listener {
-    
-    private static final Config outgoingConfig = Config.getOutgoingConfig();
     
     /**
      * Send a letter to a player. The letter will have the recipient added to the lore, preventing it from being sent
@@ -45,65 +39,20 @@ public class LetterSender implements Listener {
     public static void send(Player sender, String recipient) {
         if (LetterChecker.isHoldingOwnLetter(sender) &&
                 !LetterChecker.wasSent(sender.getInventory().getItemInMainHand())) {
+            
             ItemStack letter = sender.getInventory().getItemInMainHand();
-            FileConfiguration outgoing = outgoingConfig.getConfig();
+            Collection<OfflinePlayer> offlinePlayers = null;
+            ItemMeta im = letter.getItemMeta();
+            List<String> lore = letter.getItemMeta().getLore();
+            
             if (recipient.equals("*")) {
                 
                 if (sender.hasPermission("couriernew.post.allonline")) {
                     
-                    for (OfflinePlayer op : Bukkit.getOfflinePlayers()) {
-                        ItemStack letterToAll = new ItemStack(letter.getType());
-                        letterToAll.setItemMeta(letter.getItemMeta());
-                        ArrayList<String> lore = new ArrayList<>(letterToAll.getItemMeta().getLore());
-                        UUID uuid;
-                        List<ItemStack> letters;
-                        
-                        try {
-                            uuid = op.getUniqueId();
-                            if (!op.isOnline()) continue;
-                        } catch (Exception e) {
-                            continue;
-                        }
-                        
-                        OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
-                        
-                        if (recplayer.getName().equals(sender.getName())) continue;
-                        
-                        if (lore.get(lore.size() - 1).contains("§TTo ")) {
-                            //§TTo shows up as "To" in the lore, but doesnt block people from sending letters containing the word.
-                            ItemMeta im = letterToAll.getItemMeta();
-                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
-                            im.setLore(lore);
-                            letterToAll.setItemMeta(im);
-                        } else {
-                            ItemMeta im = letterToAll.getItemMeta();
-                            lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
-                            im.setLore(lore);
-                            letterToAll.setItemMeta(im);
-                        }
-                        
-                        if (outgoing.get(uuid.toString()) == null) {
-                            letters = new ArrayList<>();
-                        } else
-                            letters = (List<ItemStack>) outgoing.getList(uuid.toString());
-                        
-                        letters.add(letterToAll);
-                        outgoing.set(uuid.toString(), letters);
-                        
-                        Config.getOutgoingConfig().saveConfig();
-                        
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (recplayer.isOnline()) {
-                                    spawnCourier((Player) recplayer);
-                                }
-                            }
-                        }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
-                    }
-                    
-                    sender.getInventory().getItemInMainHand().setAmount(0);
-                    sender.sendMessage(Message.SUCCESS_SENT.replace("$PLAYER$", "all online players"));
+                    lore.add(ChatColor.DARK_GRAY + "§TTo Everyone Online");
+                    offlinePlayers = (Collection<OfflinePlayer>) Bukkit.getOnlinePlayers();
+                    sender.sendMessage(Message.SUCCESS_SENT
+                            .replace("$PLAYER$", "Everyone Online"));
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
                 
@@ -111,58 +60,10 @@ public class LetterSender implements Listener {
                 
                 if (sender.hasPermission("couriernew.post.all")) {
                     
-                    for (OfflinePlayer op : Bukkit.getOfflinePlayers()) {
-                        ItemStack letterToAll = new ItemStack(letter.getType());
-                        letterToAll.setItemMeta(letter.getItemMeta());
-                        ArrayList<String> lore = new ArrayList<>(letterToAll.getItemMeta().getLore());
-                        UUID uuid;
-                        List<ItemStack> letters;
-                        
-                        try {
-                            uuid = op.getUniqueId();
-                        } catch (Exception e) {
-                            continue;
-                        }
-                        
-                        OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
-                        
-                        if (recplayer.getName().equals(sender.getName())) continue;
-                        
-                        if (lore.get(lore.size() - 1).contains("§TTo ")) {
-                            ItemMeta im = letterToAll.getItemMeta();
-                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
-                            im.setLore(lore);
-                            letterToAll.setItemMeta(im);
-                        } else {
-                            ItemMeta im = letterToAll.getItemMeta();
-                            lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
-                            im.setLore(lore);
-                            letterToAll.setItemMeta(im);
-                        }
-                        
-                        if (outgoing.get(uuid.toString()) == null) {
-                            letters = new ArrayList<>();
-                        } else
-                            letters = (List<ItemStack>) outgoing.getList(uuid.toString());
-                        
-                        letters.add(letterToAll);
-                        outgoing.set(uuid.toString(), letters);
-                        
-                        Config.getOutgoingConfig().saveConfig();
-                        
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (recplayer.isOnline()) {
-                                    spawnCourier((Player) recplayer);
-                                }
-                            }
-                        }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
-                    }
-                    
-                    sender.getInventory().getItemInMainHand().setAmount(0);
+                    lore.add(ChatColor.DARK_GRAY + "§TTo Everyone");
+                    offlinePlayers = Arrays.asList(Bukkit.getOfflinePlayers());
                     sender.sendMessage(Message.SUCCESS_SENT
-                            .replace("$PLAYER$", "all players of this server"));
+                            .replace("$PLAYER$", "Everyone"));
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
                 
@@ -170,122 +71,70 @@ public class LetterSender implements Listener {
                 
                 if (sender.hasPermission("couriernew.post.multiple")) {
                     
-                    ArrayList<String> lore = new ArrayList<>(letter.getItemMeta().getLore());
-                    ArrayList<String> success = new ArrayList<>();
-                    ArrayList<String> failed = new ArrayList<>();
+                    offlinePlayers = new ArrayList<>();
                     
                     for (String recipients : recipient.split(",")) {
-                        OfflinePlayer op = Bukkit.getOfflinePlayer(recipients);
-                        ItemStack letterToAll = new ItemStack(letter.getType());
-                        letterToAll.setItemMeta(letter.getItemMeta());
-                        UUID uuid;
-                        List<ItemStack> letters;
-                        
+                        OfflinePlayer op;
                         try {
-                            uuid = op.getUniqueId();
+                            op = Bukkit.getOfflinePlayer(recipients);
                         } catch (Exception e) {
-                            failed.add(recipients);
-                            continue;
+                            sender.sendMessage(Message.ERROR_PLAYER_NO_EXIST
+                                    .replace("$PLAYER$", recipients));
+                            return;
                         }
-                        
-                        OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
-                        
-                        if (lore.get(lore.size() - 1).contains("§TTo ")) {
-                            ItemMeta im = letterToAll.getItemMeta();
-                            lore.set(lore.size() - 1, ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
-                            im.setLore(lore);
-                            letterToAll.setItemMeta(im);
-                        } else {
-                            ItemMeta im = letterToAll.getItemMeta();
-                            lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
-                            im.setLore(lore);
-                            letterToAll.setItemMeta(im);
-                        }
-                        
-                        if (outgoing.get(uuid.toString()) == null) {
-                            letters = new ArrayList<>();
-                        } else
-                            letters = (List<ItemStack>) outgoing.getList(uuid.toString());
-                        
-                        letters.add(letterToAll);
-                        outgoing.set(uuid.toString(), letters);
-                        success.add(recipients);
-                        
-                        Config.getOutgoingConfig().saveConfig();
-                        
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (recplayer.isOnline()) {
-                                    spawnCourier((Player) recplayer);
-                                }
-                            }
-                        }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
+                        offlinePlayers.add(op);
                     }
                     
-                    if (success.size() > 0) {
-                        sender.getInventory().getItemInMainHand().setAmount(0);
-                        sender.sendMessage(Message.SUCCESS_SENT.replace("$PLAYER$",
-                                success.toString().replace("[", "")
-                                        .replace("]", "")));
-                    }
-                    
-                    if (failed.size() > 0) {
-                        sender.sendMessage(Message.ERROR_SEND_FAILED.replace("$PLAYER$",
-                                failed.toString().replace("[", "")
-                                        .replace("]", "")));
-                    }
+                    lore.add(ChatColor.DARK_GRAY + "§TTo Multiple Players");
+                    sender.sendMessage(Message.SUCCESS_SENT
+                            .replace("$PLAYER$", "Multiple Players"));
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
                 
             } else {
                 
                 if (sender.hasPermission("couriernew.post.one")) {
-                    
-                    OfflinePlayer op = Bukkit.getOfflinePlayer(recipient);
-                    UUID uuid;
-                    List<ItemStack> letters;
-                    
+                    OfflinePlayer op;
                     try {
-                        uuid = op.getUniqueId();
+                        op = Bukkit.getOfflinePlayer(recipient);
                     } catch (Exception e) {
                         sender.sendMessage(Message.ERROR_PLAYER_NO_EXIST
                                 .replace("$PLAYER$", recipient));
                         return;
                     }
-                    
-                    OfflinePlayer recplayer = Bukkit.getOfflinePlayer(uuid);
-                    
-                    ArrayList<String> lore = new ArrayList<>(letter.getItemMeta().getLore());
-                    ItemMeta im = letter.getItemMeta();
-                    lore.add(ChatColor.DARK_GRAY + "§TTo " + recplayer.getName());
-                    im.setLore(lore);
-                    letter.setItemMeta(im);
-                    
-                    if (outgoing.get(uuid.toString()) == null) {
-                        letters = new ArrayList<>();
-                    } else
-                        letters = (List<ItemStack>) outgoing.getList(uuid.toString());
-                    
-                    letters.add(letter);
-                    outgoing.set(uuid.toString(), letters);
-                    
-                    Config.getOutgoingConfig().saveConfig();
-                    
-                    sender.getInventory().getItemInMainHand().setAmount(0);
+                    offlinePlayers = new ArrayList<>();
+                    offlinePlayers.add(op);
+                    lore.add(ChatColor.DARK_GRAY + "§TTo " + op.getName());
                     sender.sendMessage(Message.SUCCESS_SENT
-                            .replace("$PLAYER$", recplayer.getName()));
+                            .replace("$PLAYER$", op.getName()));
                     
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (recplayer.isOnline()) {
-                                spawnCourier((Player) recplayer);
-                            }
-                        }
-                    }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
             }
+            
+            im.setLore(lore);
+            letter.setItemMeta(im);
+            
+            for (OfflinePlayer op : offlinePlayers) {
+                
+                if (op.equals(sender)) continue;
+                
+                if (!Outgoing.getOutgoing().containsKey(op))
+                    Outgoing.getOutgoing().put(op, new ArrayList<>());
+                List<ItemStack> letters = Outgoing.getOutgoing().get(op);
+                letters.add(letter);
+                
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (op.isOnline()) {
+                            spawnCourier((Player) op);
+                        }
+                    }
+                }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
+            }
+            
+            sender.getInventory().getItemInMainHand().setAmount(0);
+            
         } else if (LetterChecker.isHoldingOwnLetter(sender)) {
             sender.sendMessage(Message.ERROR_SENT_BEFORE);
         } else if (LetterChecker.isHoldingLetter(sender)) {
@@ -302,11 +151,8 @@ public class LetterSender implements Listener {
      * @param recipient player recieving the mail
      */
     public static void receive(Player recipient) {
-        FileConfiguration outgoing = outgoingConfig.getConfig();
-        UUID uuid = recipient.getUniqueId();
-        
-        if (outgoing.getList(uuid.toString()) != null && outgoing.getList(uuid.toString()).size() > 0) {
-            List<ItemStack> letters = (List<ItemStack>) outgoing.getList(uuid.toString());
+        if (Outgoing.getOutgoing().containsKey(recipient) && Outgoing.getOutgoing().get(recipient).size() > 0) {
+            List<ItemStack> letters = Outgoing.getOutgoing().get(recipient);
             
             for (ItemStack letter : letters.toArray(new ItemStack[0])) {
                 if (recipient.getInventory().firstEmpty() < 0) {
@@ -321,9 +167,7 @@ public class LetterSender implements Listener {
                 }
             }
             
-            outgoing.set(uuid.toString(), letters);
-            
-            Config.getOutgoingConfig().saveConfig();
+            Outgoing.getOutgoing().put(recipient, letters);
         }
     }
     
@@ -345,10 +189,9 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
-        if ((Courier.getCouriers().containsKey(en) &&
-                !CourierNew.getInstance().getConfig().getBoolean("protected-courier")) ||
+        if ((Courier.getCouriers().containsKey(en) && !CourierOptions.PROTECTED_COURIER ||
                 Courier.getCouriers().get(en).getRecipient().equals(e.getPlayer()) &&
-                        !Courier.getCouriers().get(en).isDelivered()) {
+                        !Courier.getCouriers().get(en).isDelivered())) {
             en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
             e.setCancelled(true);
             receive(e.getPlayer());
@@ -368,15 +211,12 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        FileConfiguration outgoing = outgoingConfig.getConfig();
-        
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (player.isOnline() && outgoing.getList(player.getUniqueId().toString()) != null &&
-                        outgoing.getList(player.getUniqueId().toString()).size() > 0) {
+                if (player.isOnline() && Outgoing.getOutgoing().containsKey(player)
+                        && Outgoing.getOutgoing().get(player).size() > 0)
                     spawnCourier(player);
-                }
             }
         }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
     }
@@ -386,18 +226,17 @@ public class LetterSender implements Listener {
      */
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
-        List<String> worlds = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-worlds"));
-        String to = e.getTo().getWorld().getName();
-        String from = e.getFrom().getWorld().getName();
+        Set<World> worlds = CourierOptions.BLOCKED_WORLDS;
+        World to = e.getTo().getWorld();
+        World from = e.getFrom().getWorld();
         Player recipient = e.getPlayer();
         
         if (worlds.contains(from) && !worlds.contains(to)) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    FileConfiguration outgoing = outgoingConfig.getConfig();
-                    if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
-                            && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
+                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient)
+                            && Outgoing.getOutgoing().get(recipient).size() > 0)
                         spawnCourier(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
@@ -409,17 +248,16 @@ public class LetterSender implements Listener {
      */
     @EventHandler
     public void onGamemode(PlayerGameModeChangeEvent e) {
-        List<String> modes = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-gamemodes"));
+        Set<GameMode> modes = CourierOptions.BLOCKED_GAMEMODES;
         GameMode to = e.getNewGameMode();
         GameMode from = e.getPlayer().getGameMode();
         Player recipient = e.getPlayer();
-        if (modes.contains(from.toString()) && !modes.contains(to.toString())) {
+        if (modes.contains(from) && !modes.contains(to)) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    FileConfiguration outgoing = outgoingConfig.getConfig();
-                    if (recipient.isOnline() && outgoing.getList(recipient.getUniqueId().toString()) != null
-                            && outgoing.getList(recipient.getUniqueId().toString()).size() > 0)
+                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient)
+                            && Outgoing.getOutgoing().get(recipient).size() > 0)
                         spawnCourier(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);

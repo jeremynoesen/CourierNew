@@ -10,10 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -114,19 +111,19 @@ public class LetterSender implements Listener {
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
             }
             
-            if(offlinePlayers != null && offlinePlayers.size() > 0) {
-    
+            if (offlinePlayers != null && offlinePlayers.size() > 0) {
+                
                 im.setLore(lore);
                 letter.setItemMeta(im);
-    
+                
                 for (OfflinePlayer op : offlinePlayers) {
-        
+                    
                     if (offlinePlayers.size() > 1 && op.equals(sender)) continue;
-        
+                    
                     if (!Outgoing.getOutgoing().containsKey(op))
                         Outgoing.getOutgoing().put(op, new ArrayList<>());
                     Outgoing.getOutgoing().get(op).add(new ItemStack(letter));
-        
+                    
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -136,7 +133,7 @@ public class LetterSender implements Listener {
                         }
                     }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                 }
-    
+                
                 sender.getInventory().getItemInMainHand().setAmount(0);
             }
             
@@ -277,5 +274,23 @@ public class LetterSender implements Listener {
     @EventHandler
     public void onVillagerProfession(VillagerCareerChangeEvent e) {
         if (Courier.getCouriers().keySet().contains(e.getEntity())) e.setCancelled(true);
+    }
+    
+    /**
+     * prevent players from running non-couriernew commands while holding a letter
+     */
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        if (LetterChecker.isHoldingLetter(e.getPlayer()) &&
+                !e.getMessage().contains("letter") &&
+                !e.getMessage().contains("cnreload") &&
+                !e.getMessage().contains("post") &&
+                !e.getMessage().contains("cnhelp") &&
+                !e.getMessage().contains("shred") &&
+                !e.getMessage().contains("shredall") &&
+                !e.getMessage().contains("unread")) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(Message.ERROR_NO_PERMS);
+        }
     }
 }

@@ -33,6 +33,7 @@ public class Outgoing {
      * @param player player to save outgoing data
      */
     private static void savePlayer(OfflinePlayer player) {
+        if(outgoing.containsKey(player) && outgoing.get(player).size() > 0)
         outgoingConfig.getConfig().set(player.getUniqueId().toString(), outgoing.get(player));
         outgoingConfig.saveConfig();
     }

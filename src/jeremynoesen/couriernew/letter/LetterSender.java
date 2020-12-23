@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Send the letters to players
@@ -40,17 +41,18 @@ public class LetterSender implements Listener {
         if (LetterChecker.isHoldingOwnLetter(sender) &&
                 !LetterChecker.wasSent(sender.getInventory().getItemInMainHand())) {
             
-            ItemStack letter = sender.getInventory().getItemInMainHand();
+            ItemStack letter = new ItemStack(sender.getInventory().getItemInMainHand());
             Collection<OfflinePlayer> offlinePlayers = null;
             ItemMeta im = letter.getItemMeta();
-            List<String> lore = letter.getItemMeta().getLore();
+            List<String> lore = im.getLore();
             
             if (recipient.equals("*")) {
                 
                 if (sender.hasPermission("couriernew.post.allonline")) {
                     
                     lore.add(ChatColor.DARK_GRAY + "§TTo Everyone Online");
-                    offlinePlayers = (Collection<OfflinePlayer>) Bukkit.getOnlinePlayers();
+                    offlinePlayers = new ArrayList<>();
+                    offlinePlayers.addAll(Bukkit.getOnlinePlayers());
                     sender.sendMessage(Message.SUCCESS_SENT
                             .replace("$PLAYER$", "Everyone Online"));
                     
@@ -111,29 +113,31 @@ public class LetterSender implements Listener {
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
             }
             
-            im.setLore(lore);
-            letter.setItemMeta(im);
-            
-            for (OfflinePlayer op : offlinePlayers) {
-                
-                if (op.equals(sender)) continue;
-                
-                if (!Outgoing.getOutgoing().containsKey(op))
-                    Outgoing.getOutgoing().put(op, new ArrayList<>());
-                List<ItemStack> letters = Outgoing.getOutgoing().get(op);
-                letters.add(letter);
-                
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (op.isOnline()) {
-                            spawnCourier((Player) op);
+            if(offlinePlayers != null && offlinePlayers.size() > 0) {
+    
+                im.setLore(lore);
+                letter.setItemMeta(im);
+    
+                for (OfflinePlayer op : offlinePlayers) {
+        
+                    if (offlinePlayers.size() > 1 && op.equals(sender)) continue;
+        
+                    if (!Outgoing.getOutgoing().containsKey(op))
+                        Outgoing.getOutgoing().put(op, new ArrayList<>());
+                    Outgoing.getOutgoing().get(op).add(letter);
+        
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (op.isOnline()) {
+                                spawnCourier((Player) op);
+                            }
                         }
-                    }
-                }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
+                    }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
+                }
+    
+                sender.getInventory().getItemInMainHand().setAmount(0);
             }
-            
-            sender.getInventory().getItemInMainHand().setAmount(0);
             
         } else if (LetterChecker.isHoldingOwnLetter(sender)) {
             sender.sendMessage(Message.ERROR_SENT_BEFORE);
@@ -148,17 +152,17 @@ public class LetterSender implements Listener {
      * space in their inventory, give them all, starting with their hand if they aren't holding anything. Letters not
      * taken will be delivered later.
      *
-     * @param recipient player recieving the mail
+     * @param recipient player receiving the mail
      */
     public static void receive(Player recipient) {
         if (Outgoing.getOutgoing().containsKey(recipient) && Outgoing.getOutgoing().get(recipient).size() > 0) {
-            List<ItemStack> letters = Outgoing.getOutgoing().get(recipient);
+            CopyOnWriteArrayList<ItemStack> letters = new CopyOnWriteArrayList<>(Outgoing.getOutgoing().get(recipient));
             
-            for (ItemStack letter : letters.toArray(new ItemStack[0])) {
+            for (ItemStack letter : letters) {
                 if (recipient.getInventory().firstEmpty() < 0) {
                     recipient.sendMessage(Message.ERROR_CANT_HOLD);
                     break;
-                } else if (recipient.getInventory().getItemInMainHand().getType() == Material.AIR) {
+                } else if (recipient.getInventory().getItemInMainHand().getAmount() == 0) {
                     recipient.getInventory().setItemInMainHand(letter);
                     letters.remove(0);
                 } else {
@@ -167,6 +171,8 @@ public class LetterSender implements Listener {
                 }
             }
             
+            recipient.updateInventory();
+            
             Outgoing.getOutgoing().put(recipient, letters);
         }
     }
@@ -174,7 +180,7 @@ public class LetterSender implements Listener {
     /**
      * Create the courier entity for a player if they are not vanished or in blocked gamemodes or worlds
      *
-     * @param recipient player recieving letters
+     * @param recipient player receiving letters
      */
     public static void spawnCourier(Player recipient) {
         if (Courier.canSpawn(recipient)) {
@@ -192,7 +198,7 @@ public class LetterSender implements Listener {
         if ((Courier.getCouriers().containsKey(en) && !CourierOptions.PROTECTED_COURIER ||
                 Courier.getCouriers().get(en).getRecipient().equals(e.getPlayer()) &&
                         !Courier.getCouriers().get(en).isDelivered())) {
-            en.setCustomName(Message.POSTMAN_NAME_RECEIVED);
+            Courier.getCouriers().get(en).setDelivered();
             e.setCancelled(true);
             receive(e.getPlayer());
             en.getWorld().playSound(en.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);

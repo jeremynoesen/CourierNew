@@ -4,6 +4,7 @@ import com.earth2me.essentials.Essentials;
 import de.myzelyam.supervanish.SuperVanish;
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
+import jeremynoesen.couriernew.letter.Outgoing;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -97,13 +98,14 @@ public class Courier {
                 if (!courier.isDead()) {
                     remove();
                 
-                    if (recipient.isOnline()) recipient.sendMessage(Message.SUCCESS_IGNORED);
+                    if (recipient.isOnline() && !delivered) recipient.sendMessage(Message.SUCCESS_IGNORED);
                     courier.getWorld().playSound(courier.getLocation(), Sound.UI_TOAST_OUT, 1, 1);
                     
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (recipient.isOnline()) //todo also check that player has mail to be delivered
+                            if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient) &&
+                                    Outgoing.getOutgoing().get(recipient).size() > 0)
                                 spawn();
                         }
                     }.runTaskLater(CourierNew.getInstance(), CourierOptions.RESEND_DELAY);

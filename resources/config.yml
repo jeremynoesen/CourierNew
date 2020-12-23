@@ -4,7 +4,5 @@ remove-delay: 200
 spawn-distance: 5
 protected-courier: true
 courier-entity-type: VILLAGER
-blocked-gamemodes:
-  - GAMEMODE
-blocked-worlds:
-  - world_name
+blocked-gamemodes: []
+blocked-worlds: []

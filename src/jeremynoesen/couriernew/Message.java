@@ -36,23 +36,10 @@ public class Message {
     public static String ERROR_WORLD;
     public static String POSTMAN_NAME;
     public static String POSTMAN_NAME_RECEIVED;
-    public static String ERROR_SEND_FAILED;
     public static String SUCCESS_PAGE_EDITED;
     public static String LETTER_FROM;
-
+    
     public static String[] HELP = {
-            "",
-            format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
-            ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
-            ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player",
-            ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters",
-            ChatColor.GRAY + "/cnhelp" + ChatColor.WHITE + ": List all CourierNew commands",
-            ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
-            ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
-            ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------",
-            ""
-    };
-    public static String[] OP_HELP = {
             "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
@@ -117,11 +104,18 @@ public class Message {
      * @return unformatted message
      */
     public static String unformat(String message) {
-        return message.replace("\\n", " ").replace("&0", "").replace("&1", "").replace("&2", "").replace("&3", "")
-                .replace("&4", "").replace("&5", "").replace("&6", "").replace("&7", "").replace("&8", "")
-                .replace("&9", "").replace("&a", "").replace("&b", "").replace("&c", "").replace("&d", "")
-                .replace("&e", "").replace("&f", "").replace("&k", "").replace("&l", "").replace("&m", "")
-                .replace("&n", "").replace("&o", "").replace("&r", "");
+        return message.replace("\\n", " ").replace("&0", "")
+                .replace("&1", "").replace("&2", "")
+                .replace("&3", "").replace("&4", "")
+                .replace("&5", "").replace("&6", "")
+                .replace("&7", "").replace("&8", "")
+                .replace("&9", "").replace("&a", "")
+                .replace("&b", "").replace("&c", "")
+                .replace("&d", "").replace("&e", "")
+                .replace("&f", "").replace("&k", "")
+                .replace("&l", "").replace("&m", "")
+                .replace("&n", "").replace("&o", "")
+                .replace("&r", "");
     }
     
 }

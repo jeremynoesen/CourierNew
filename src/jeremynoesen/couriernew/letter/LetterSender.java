@@ -27,11 +27,11 @@ public class LetterSender implements Listener {
     
     /**
      * Send a letter to a player. The letter will have the recipient added to the lore, preventing it from being sent
-     * again. It also adds it to a yml file of letters to be recieved. If the player recieving is online, they may
-     * recieve their letter.
+     * again. It also adds it to a yml file of letters to be received. If the player receiving is online, they may
+     * receive their letter.
      *
      * @param sender    player sending the letter
-     * @param recipient player(s) to recieve the letter
+     * @param recipient player(s) to receive the letter
      */
     @SuppressWarnings("deprecation")
     public static void send(Player sender, String recipient) {

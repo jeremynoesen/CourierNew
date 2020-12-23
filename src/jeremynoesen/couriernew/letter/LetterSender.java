@@ -63,7 +63,8 @@ public class LetterSender implements Listener {
                 if (sender.hasPermission("couriernew.post.all")) {
                     
                     lore.add(ChatColor.DARK_GRAY + "§TTo Everyone");
-                    offlinePlayers = Arrays.asList(Bukkit.getOfflinePlayers());
+                    offlinePlayers = new ArrayList<>();
+                    offlinePlayers.addAll(Arrays.asList(Bukkit.getOfflinePlayers()));
                     sender.sendMessage(Message.SUCCESS_SENT
                             .replace("$PLAYER$", "Everyone"));
                     
@@ -124,7 +125,7 @@ public class LetterSender implements Listener {
         
                     if (!Outgoing.getOutgoing().containsKey(op))
                         Outgoing.getOutgoing().put(op, new ArrayList<>());
-                    Outgoing.getOutgoing().get(op).add(letter);
+                    Outgoing.getOutgoing().get(op).add(new ItemStack(letter));
         
                     new BukkitRunnable() {
                         @Override

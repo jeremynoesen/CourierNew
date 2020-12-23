@@ -70,7 +70,7 @@ public class Courier {
         for (Entity entity : recipient.getNearbyEntities(dist, dist, dist))
             if (couriers.containsKey(entity)) return;
     
-        Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist));
+        Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist * 0.5));
         courier = recipient.getWorld().spawnEntity(loc, CourierOptions.COURIER_ENTITY_TYPE);
         couriers.put(courier, this);
     

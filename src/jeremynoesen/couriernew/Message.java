@@ -1,17 +1,15 @@
 package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.config.Config;
-import jeremynoesen.couriernew.config.ConfigType;
-import jeremynoesen.couriernew.config.Configs;
 import org.bukkit.ChatColor;
-import org.bukkit.map.MapPalette;
 
 /**
  * All messages used within the getInstance()
+ *
+ * @author Jeremy Noesen
  */
 public class Message {
     
-    private static final Config config = Configs.getConfig(ConfigType.MESSAGE);
+    private static final Config config = Config.getMessageConfig();
     
     public static String PREFIX;
     public static String ERROR_NO_PERMS;
@@ -38,33 +36,10 @@ public class Message {
     public static String ERROR_WORLD;
     public static String POSTMAN_NAME;
     public static String POSTMAN_NAME_RECEIVED;
-    public static String ERROR_SEND_FAILED;
     public static String SUCCESS_PAGE_EDITED;
     public static String LETTER_FROM;
-    public static String STARTUP = "\n\n" +
-            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + " ██████╗" + ChatColor.DARK_GREEN + "███╗   ██╗" + ChatColor.DARK_GRAY + "███╗" + ChatColor.WHITE + "  CourierNew version " + CourierNew.getInstance().getDescription().getVersion() + " " + "has " + "been enabled!\n" +
-            ChatColor.DARK_GRAY + "██╔╝" + ChatColor.GREEN + "██╔════╝" + ChatColor.DARK_GREEN + "████╗  ██║" + ChatColor.DARK_GRAY + "╚██║" + ChatColor.WHITE + "  CourierNew is written by Jeremaster101 and\n" +
-            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██╔██╗ ██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  may not be modified or redistributed without\n" +
-            ChatColor.DARK_GRAY + "██║ " + ChatColor.GREEN + "██║     " + ChatColor.DARK_GREEN + "██║╚██╗██║" + ChatColor.DARK_GRAY + " ██║" + ChatColor.WHITE + "  his consent. For help and support, join the\n" +
-            ChatColor.DARK_GRAY + "███╗" + ChatColor.GREEN + "╚██████╗" + ChatColor.DARK_GREEN + "██║ ╚████║" + ChatColor.DARK_GRAY + "███║" + ChatColor.WHITE + "  support discord group: https://discord.gg/WhmQYR\n" +
-            ChatColor.DARK_GRAY + "╚══╝" + ChatColor.GREEN + " ╚═════╝" + ChatColor.DARK_GREEN + "╚═╝  ╚═══╝" + ChatColor.DARK_GRAY + "╚══╝" + ChatColor.WHITE + "  Thank you for choosing CourierNew!\n";
-    public static String CLEANING = PREFIX + ChatColor.GRAY + "Deleting leftover courier entities...";
-    public static String DONE_CLEANING =
-            PREFIX + ChatColor.GRAY + "Successfully deleted " + ChatColor.WHITE + "$COUNT$" + ChatColor.GRAY +
-                    " courier entities!";
+    
     public static String[] HELP = {
-            "",
-            format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
-            ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
-            ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player",
-            ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters",
-            ChatColor.GRAY + "/cnhelp" + ChatColor.WHITE + ": List all CourierNew commands",
-            ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
-            ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
-            ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------",
-            ""
-    };
-    public static String[] OP_HELP = {
             "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
@@ -123,50 +98,24 @@ public class Message {
     }
     
     /**
-     * Apply color codes and line breaks to a message for maps
-     *
-     * @param msg message to format with color codes and line breaks
-     * @return formatted message
-     */
-    @SuppressWarnings("deprecation")
-    public static String formatMap(String msg) {
-        return msg.replace("\\n", "\n")
-                .replace("&0", "§" + MapPalette.matchColor(0, 0, 0) + ";")
-                .replace("&1", "§" + MapPalette.matchColor(0, 0, 170) + ";")
-                .replace("&2", "§" + MapPalette.matchColor(0, 170, 0) + ";")
-                .replace("&3", "§" + MapPalette.matchColor(0, 170, 170) + ";")
-                .replace("&4", "§" + MapPalette.matchColor(170, 0, 0) + ";")
-                .replace("&5", "§" + MapPalette.matchColor(170, 0, 170) + ";")
-                .replace("&6", "§" + MapPalette.matchColor(255, 170, 0) + ";")
-                .replace("&7", "§" + MapPalette.matchColor(170, 170, 170) + ";")
-                .replace("&8", "§" + MapPalette.matchColor(85, 85, 85) + ";")
-                .replace("&9", "§" + MapPalette.matchColor(85, 85, 255) + ";")
-                .replace("&a", "§" + MapPalette.matchColor(85, 255, 85) + ";")
-                .replace("&b", "§" + MapPalette.matchColor(85, 255, 255) + ";")
-                .replace("&c", "§" + MapPalette.matchColor(255, 85, 85) + ";")
-                .replace("&d", "§" + MapPalette.matchColor(255, 85, 255) + ";")
-                .replace("&e", "§" + MapPalette.matchColor(255, 255, 85) + ";")
-                .replace("&f", "§" + MapPalette.matchColor(255, 255, 255) + ";")
-                .replace("&k", "\u00A7k")
-                .replace("&l", "\u00A7l")
-                .replace("&m", "\u00A7m")
-                .replace("&n", "\u00A7n")
-                .replace("&o", "\u00A7o")
-                .replace("&r", "§" + MapPalette.matchColor(0, 0, 0) + ";");
-    }
-    
-    /**
      * Used to remove all minecraft color codes and line breakes from a message
      *
      * @param message message to remove all formatting from
      * @return unformatted message
      */
     public static String unformat(String message) {
-        return message.replace("\\n", " ").replace("&0", "").replace("&1", "").replace("&2", "").replace("&3", "")
-                .replace("&4", "").replace("&5", "").replace("&6", "").replace("&7", "").replace("&8", "")
-                .replace("&9", "").replace("&a", "").replace("&b", "").replace("&c", "").replace("&d", "")
-                .replace("&e", "").replace("&f", "").replace("&k", "").replace("&l", "").replace("&m", "")
-                .replace("&n", "").replace("&o", "").replace("&r", "");
+        return message.replace("\\n", " ").replace("&0", "")
+                .replace("&1", "").replace("&2", "")
+                .replace("&3", "").replace("&4", "")
+                .replace("&5", "").replace("&6", "")
+                .replace("&7", "").replace("&8", "")
+                .replace("&9", "").replace("&a", "")
+                .replace("&b", "").replace("&c", "")
+                .replace("&d", "").replace("&e", "")
+                .replace("&f", "").replace("&k", "")
+                .replace("&l", "").replace("&m", "")
+                .replace("&n", "").replace("&o", "")
+                .replace("&r", "");
     }
     
 }

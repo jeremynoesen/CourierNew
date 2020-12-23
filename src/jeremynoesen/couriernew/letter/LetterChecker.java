@@ -8,6 +8,8 @@ import org.bukkit.inventory.meta.BookMeta;
 
 /**
  * Methods to check for letters in a player's inventory
+ *
+ * @author Jeremy Noesen
  */
 public class LetterChecker {
     
@@ -20,8 +22,10 @@ public class LetterChecker {
     public static boolean isHoldingOwnLetter(Player player) {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
-                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getAuthor().equals(player.getName()) &&
-                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().equals(Message.LETTER_FROM + player.getName());
+                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta())
+                        .getAuthor().equals(player.getName()) &&
+                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta())
+                        .getTitle().equals(Message.LETTER_FROM + player.getName());
     }
     
     /**
@@ -33,7 +37,8 @@ public class LetterChecker {
     public static boolean isHoldingLetter(Player player) {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
-                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle().contains(Message.LETTER_FROM);
+                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle()
+                        .contains(Message.LETTER_FROM);
     }
     
     /**

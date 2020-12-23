@@ -1,25 +1,24 @@
-package jeremynoesen.couriernew.command;
+package jeremynoesen.couriernew;
 
+import jeremynoesen.couriernew.Config;
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.config.Configs;
-import jeremynoesen.couriernew.courier.CourierChecker;
+import jeremynoesen.couriernew.courier.Courier;
+import jeremynoesen.couriernew.courier.CourierOptions;
 import jeremynoesen.couriernew.letter.LetterChecker;
 import jeremynoesen.couriernew.letter.LetterCreation;
 import jeremynoesen.couriernew.letter.LetterSender;
-import jeremynoesen.couriernew.config.ConfigType;
-import org.bukkit.Bukkit;
+import jeremynoesen.couriernew.letter.Outgoing;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Command class, runs commands if not in blocked worlds or gamemodes.
@@ -33,10 +32,10 @@ public class CommandExec implements CommandExecutor {
         if (sender instanceof Player) {
             
             Player player = (Player) sender;
-            List<String> modes = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-gamemodes"));
-            List<String> worlds = new ArrayList<>(CourierNew.getInstance().getConfig().getStringList("blocked-worlds"));
+            Set<GameMode> modes = CourierOptions.BLOCKED_GAMEMODES;
+            Set<World> worlds = CourierOptions.BLOCKED_WORLDS;
             
-            if (!worlds.contains(player.getWorld().getName()) && !modes.contains(player.getGameMode().toString())) {
+            if (!worlds.contains(player.getWorld()) && !modes.contains(player.getGameMode())) {
                 
                 if (label.equalsIgnoreCase("letter")) {
                     
@@ -46,7 +45,8 @@ public class CommandExec implements CommandExecutor {
                             for (String arg : args) {
                                 sb.append(arg).append(" ");
                             }
-                            if (LetterChecker.isHoldingOwnLetter(player) && !LetterChecker.wasSent(player.getInventory().getItemInMainHand()))
+                            if (LetterChecker.isHoldingOwnLetter(player) &&
+                                    !LetterChecker.wasSent(player.getInventory().getItemInMainHand()))
                                 LetterCreation.editBook(player, sb.toString());
                             else LetterCreation.writeBook(player, sb.toString());
                             //lc.writeMap(player, sb.toString());
@@ -61,25 +61,11 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("cnreload")) {
                     
                     if (player.hasPermission("couriernew.reload")) {
-                        Configs.getConfig(ConfigType.MAIN).reloadConfig();
-                        Configs.getConfig(ConfigType.COURIERS).reloadConfig();
-                        Configs.getConfig(ConfigType.OUTGOING).reloadConfig();
-                        Configs.getConfig(ConfigType.MESSAGE).reloadConfig();
-                        
-                        int count = 0;
-                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(Message.CLEANING);
-                        
-                        for (World world : Bukkit.getWorlds()) {
-                            for (Entity entity : world.getEntities()) {
-                                if (CourierChecker.isCourier(entity)) {
-                                    entity.remove();
-                                    count++;
-                                }
-                            }
-                        }
-                        
-                        CourierNew.getInstance().getServer().getConsoleSender().sendMessage(Message.DONE_CLEANING.replace("$COUNT$",
-                                Integer.toString(count)));
+                        Config.getMainConfig().reloadConfig();
+                        Config.getOutgoingConfig().reloadConfig();
+                        Config.getMessageConfig().reloadConfig();
+                        Courier.getCouriers().keySet().forEach(Entity::remove);
+                        Courier.getCouriers().clear();
                         player.sendMessage(Message.SUCCESS_RELOADED);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
@@ -106,10 +92,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("cnhelp")) {
                     
                     if (player.hasPermission("couriernew.help")) {
-                        if (player.hasPermission("couriernew.reload")) {
-                            player.sendMessage(Message.OP_HELP);
-                        } else player.sendMessage(Message.HELP);
-                        
+                        player.sendMessage(Message.HELP);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
                     
@@ -139,9 +122,8 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("unread")) {
                     
                     if (player.hasPermission("couriernew.unread")) {
-                        FileConfiguration outgoing = Configs.getConfig(ConfigType.OUTGOING).getConfig();
                         
-                        if (outgoing.getList(player.getUniqueId().toString()) != null && outgoing.getList(player.getUniqueId().toString()).size() > 0) {
+                        if (Outgoing.getOutgoing().containsKey(player) && Outgoing.getOutgoing().get(player).size() > 0) {
                             player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);
                             new BukkitRunnable() {
                                 @Override
@@ -150,20 +132,18 @@ public class CommandExec implements CommandExecutor {
                                         LetterSender.spawnCourier(player);
                                     }
                                 }
-                            }.runTaskLater(CourierNew.getInstance(), CourierNew.getInstance().getConfig().getLong("unread-delay"));
+                            }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                         } else {
                             player.sendMessage(Message.ERROR_NO_MAIL);
                         }
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
                 }
-                return true;
-                
                 
             } else {
                 player.sendMessage(Message.ERROR_WORLD);
-                return true;
             }
+            return true;
         }
         return false;
     }

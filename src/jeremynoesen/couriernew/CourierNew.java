@@ -1,17 +1,14 @@
 package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.courier.CourierChecker;
+import jeremynoesen.couriernew.courier.CourierOptions;
+import jeremynoesen.couriernew.courier.Courier;
 import jeremynoesen.couriernew.letter.LetterSender;
-import jeremynoesen.couriernew.command.CommandExec;
-import jeremynoesen.couriernew.config.ConfigType;
-import jeremynoesen.couriernew.config.Configs;
+import jeremynoesen.couriernew.letter.Outgoing;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Main class for plugin, registers and initializes all files, listeners, and commands
@@ -35,19 +32,18 @@ public class CourierNew extends JavaPlugin {
     }
     
     /**
-     * initialize configurations, load messages, register commands and permissions, and delete leftover couriers
+     * initialize configurations, load messages, register commands and permissions
      */
     public void onEnable() {
         plugin = this;
         
-        Configs.getConfig(ConfigType.MESSAGE).saveDefaultConfig();
-        Configs.getConfig(ConfigType.COURIERS).saveDefaultConfig();
-        Configs.getConfig(ConfigType.OUTGOING).saveDefaultConfig();
-        Configs.getConfig(ConfigType.MAIN).saveDefaultConfig();
+        Config.getMessageConfig().saveDefaultConfig();
+        Config.getOutgoingConfig().saveDefaultConfig();
+        Config.getMainConfig().saveDefaultConfig();
         
+        CourierOptions.load();
+        Outgoing.loadAll();
         Message.reloadMessages();
-        
-        plugin.getServer().getConsoleSender().sendMessage(Message.STARTUP);
         
         PluginManager pm = Bukkit.getPluginManager();
         
@@ -71,44 +67,14 @@ public class CourierNew extends JavaPlugin {
         getCommand("shredall").setExecutor(new CommandExec());
         getCommand("unread").setExecutor(new CommandExec());
         getCommand("cnreload").setExecutor(new CommandExec());
-        
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                
-                int count = 0;
-                plugin.getServer().getConsoleSender().sendMessage(Message.CLEANING);
-                
-                for (World world : Bukkit.getWorlds()) {
-                    for (Entity entity : world.getEntities()) {
-                        if (CourierChecker.isCourier(entity)) {
-                            entity.remove();
-                            count++;
-                        }
-                    }
-                }
-                
-                plugin.getServer().getConsoleSender().sendMessage(Message.DONE_CLEANING.replace("$COUNT$",
-                        Integer.toString(count)));
-                
-            }
-        }.runTaskLater(plugin, 2);
-        
-        //saveResource("paper.png", false);
     }
     
     /**
      * nullify the plugin instance
      */
     public void onDisable() {
+        Courier.getCouriers().keySet().forEach(Entity::remove);
+        Outgoing.saveAll();
         plugin = null;
     }
 }
-
-//todo vault support
-
-//todo item cost for letter
-
-//todo cancelable letters
-
-//todo add to letter not page

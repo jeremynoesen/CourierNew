@@ -1,7 +1,5 @@
-package jeremynoesen.couriernew.config;
+package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.CourierNew;
-import jeremynoesen.couriernew.Message;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -19,6 +17,21 @@ import java.util.logging.Level;
 public class Config {
     
     /**
+     * main config instance
+     */
+    private static Config main = new Config("config.yml");
+    
+    /**
+     * outgoing config instance
+     */
+    private static Config outgoing = new Config("outgoing.yml");
+    
+    /**
+     * message config instance
+     */
+    private static Config message = new Config("messages.yml");
+    
+    /**
      * file used for the config
      */
     private File configFile;
@@ -29,17 +42,45 @@ public class Config {
     private YamlConfiguration YMLConfig;
     
     /**
-     * type of config
+     * config file name
      */
-    private final ConfigType configType;
+    private final String filename;
     
     /**
      * create a new config with the specified type
      *
-     * @param type config type
+     * @param filename config file name
      */
-    public Config(ConfigType type) {
-        configType = type;
+    public Config(String filename) {
+        this.filename = filename;
+        configFile = new File(CourierNew.getInstance().getDataFolder(), filename);
+    }
+    
+    /**
+     * get the main config
+     *
+     * @return main config instance
+     */
+    public static Config getMainConfig() {
+        return main;
+    }
+    
+    /**
+     * get the outgoing config
+     *
+     * @return outgoing config instance
+     */
+    public static Config getOutgoingConfig() {
+        return outgoing;
+    }
+    
+    /**
+     * get the message config
+     *
+     * @return message config instance
+     */
+    public static Config getMessageConfig() {
+        return message;
     }
     
     /**
@@ -47,18 +88,19 @@ public class Config {
      */
     public void reloadConfig() {
         if (configFile == null) {
-            configFile = configType.getFile();
+            configFile = new File(CourierNew.getInstance().getDataFolder(), filename);
         }
         
         YMLConfig = YamlConfiguration.loadConfiguration(configFile);
         
-        Reader defConfigStream = new InputStreamReader(configType.getResource(), StandardCharsets.UTF_8);
+        Reader defConfigStream = new InputStreamReader(
+                CourierNew.getInstance().getResource(filename), StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         YMLConfig.setDefaults(defConfig);
         YMLConfig.options().copyDefaults(true);
         saveConfig();
         
-        if (configType == ConfigType.MESSAGE) Message.reloadMessages();
+        if (filename.equals("messages.yml")) Message.reloadMessages();
     }
     
     /**
@@ -92,10 +134,10 @@ public class Config {
      */
     public void saveDefaultConfig() {
         if (configFile == null) {
-            configFile = configType.getFile();
+            configFile = new File(CourierNew.getInstance().getDataFolder(), filename);
         }
         if (!configFile.exists()) {
-            configType.saveResource();
+            CourierNew.getInstance().saveResource(filename, false);
             YMLConfig = YamlConfiguration.loadConfiguration(configFile);
         }
     }

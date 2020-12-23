@@ -85,7 +85,8 @@ public class Courier {
             public void run() {
                 courier.setFallDistance(0);
                 if (courier.isOnGround() && courier.getWorld() == recipient.getWorld()) {
-                    courier.teleport(courier.getLocation().setDirection(recipient.getLocation().subtract(courier.getLocation()).toVector()));
+                    courier.teleport(courier.getLocation().setDirection(recipient.getLocation()
+                            .subtract(courier.getLocation()).toVector()));
                     ((LivingEntity) courier).setAI(false);
                 }
                 if (courier.isDead()) this.cancel();

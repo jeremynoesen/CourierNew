@@ -1,6 +1,5 @@
 package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.command.CommandExec;
 import jeremynoesen.couriernew.courier.CourierOptions;
 import jeremynoesen.couriernew.courier.Courier;
 import jeremynoesen.couriernew.letter.LetterSender;

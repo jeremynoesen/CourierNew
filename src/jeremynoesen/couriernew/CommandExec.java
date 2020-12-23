@@ -1,4 +1,4 @@
-package jeremynoesen.couriernew.command;
+package jeremynoesen.couriernew;
 
 import jeremynoesen.couriernew.Config;
 import jeremynoesen.couriernew.CourierNew;
@@ -92,10 +92,7 @@ public class CommandExec implements CommandExecutor {
                 if (label.equalsIgnoreCase("cnhelp")) {
                     
                     if (player.hasPermission("couriernew.help")) {
-                        if (player.hasPermission("couriernew.reload")) {
-                            player.sendMessage(Message.OP_HELP);
-                        } else player.sendMessage(Message.HELP);
-                        
+                        player.sendMessage(Message.HELP);
                     } else
                         player.sendMessage(Message.ERROR_NO_PERMS);
                     

@@ -26,7 +26,7 @@ public class Message {
     public static String ERROR_TOO_MANY_ARGS;
     public static String SUCCESS_SENT;
     public static String ERROR_PLAYER_NO_EXIST;
-    public static String SUCCESS_POSTMAN_ARRIVED;
+    public static String SUCCESS_COURIER_ARRIVED;
     public static String SUCCESS_EXTRA_DELIVERIES;
     public static String ERROR_NO_MAIL;
     public static String ERROR_CANT_HOLD;
@@ -34,8 +34,8 @@ public class Message {
     public static String SUCCESS_IGNORED;
     public static String SUCCESS_RELOADED;
     public static String ERROR_WORLD;
-    public static String POSTMAN_NAME;
-    public static String POSTMAN_NAME_RECEIVED;
+    public static String COURIER_NAME;
+    public static String COURIER_NAME_RECEIVED;
     public static String SUCCESS_PAGE_EDITED;
     public static String LETTER_FROM;
     
@@ -72,7 +72,7 @@ public class Message {
         ERROR_TOO_MANY_ARGS = PREFIX + format(config.getConfig().getString("ERROR_TOO_MANY_ARGS"));
         SUCCESS_SENT = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
         ERROR_PLAYER_NO_EXIST = PREFIX + format(config.getConfig().getString("ERROR_PLAYER_NO_EXIST"));
-        SUCCESS_POSTMAN_ARRIVED = PREFIX + format(config.getConfig().getString("SUCCESS_POSTMAN_ARRIVED"));
+        SUCCESS_COURIER_ARRIVED = PREFIX + format(config.getConfig().getString("SUCCESS_COURIER_ARRIVED"));
         SUCCESS_EXTRA_DELIVERIES = PREFIX + format(config.getConfig().getString("SUCCESS_EXTRA_DELIVERIES"));
         ERROR_NO_MAIL = PREFIX + format(config.getConfig().getString("ERROR_NO_MAIL"));
         ERROR_CANT_HOLD = PREFIX + format(config.getConfig().getString("ERROR_CANT_HOLD"));
@@ -80,8 +80,8 @@ public class Message {
         SUCCESS_IGNORED = PREFIX + format(config.getConfig().getString("SUCCESS_IGNORED"));
         SUCCESS_RELOADED = PREFIX + format(config.getConfig().getString("SUCCESS_RELOADED"));
         ERROR_WORLD = PREFIX + format(config.getConfig().getString("ERROR_WORLD"));
-        POSTMAN_NAME = format(config.getConfig().getString("POSTMAN_NAME"));
-        POSTMAN_NAME_RECEIVED = format(config.getConfig().getString("POSTMAN_NAME_RECEIVED"));
+        COURIER_NAME = format(config.getConfig().getString("COURIER_NAME"));
+        COURIER_NAME_RECEIVED = format(config.getConfig().getString("COURIER_NAME_RECEIVED"));
         LETTER_FROM = format(config.getConfig().getString("LETTER_FROM"));
         SUCCESS_PAGE_EDITED = PREFIX + format(config.getConfig().getString("SUCCESS_PAGE_EDITED"));
     }

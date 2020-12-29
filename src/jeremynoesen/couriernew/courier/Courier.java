@@ -74,10 +74,10 @@ public class Courier {
         courier = recipient.getWorld().spawnEntity(loc, CourierOptions.COURIER_ENTITY_TYPE);
         couriers.put(courier, this);
     
-        courier.setCustomName(Message.POSTMAN_NAME.replace("$PLAYER$", recipient.getName()));
+        courier.setCustomName(Message.COURIER_NAME.replace("$PLAYER$", recipient.getName()));
         courier.setCustomNameVisible(false);
         courier.setInvulnerable(true);
-        recipient.sendMessage(Message.SUCCESS_POSTMAN_ARRIVED);
+        recipient.sendMessage(Message.SUCCESS_COURIER_ARRIVED);
         courier.getWorld().playSound(courier.getLocation(), Sound.UI_TOAST_IN, 1, 1);
     
         new BukkitRunnable() {
@@ -128,7 +128,7 @@ public class Courier {
      */
     public void setDelivered() {
         delivered = true;
-        courier.setCustomName(Message.POSTMAN_NAME_RECEIVED);
+        courier.setCustomName(Message.COURIER_NAME_RECEIVED);
     }
     
     /**

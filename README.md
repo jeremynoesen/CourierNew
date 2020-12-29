@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/jeremynoesen/CourierNew/main/cnlogo.png" align="right"/>
+
 # CourierNew
 
 ## About

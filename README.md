@@ -29,6 +29,10 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 - `couriernew.unread` - Allows players to retrieve unread mail
 - `couriernew.reload` - Allows for reloading of configs
 
+## Requirements
+- Spigot 1.13 - 1.16
+- Java 8
+
 ## Installation
 To install the plugin, download the latest release, put it in your server plugins folder, and start or restart your server. This will generate the necessary files for configuration of the plugin, located in `plugins/CourierNew`.
 

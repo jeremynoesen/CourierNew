@@ -56,6 +56,10 @@ blocked-worlds: []
 - `blocked-gamemodes` - Gamemodes that receiving mail isn't allowed in. (SURVIVAL, CREATIVE, ADVENTURE, SPECTATOR)
 - `blocked-worlds` - Names of worlds that receiving is blocked in
 
+For the message configuration, you can use color codes. You can also use the placeholder `$PLAYER$` in messages that have it by default to replace it with player name(s). The messages and their names should explain what they are used for.
+
+The third configuration file is actually used to store outgoing mail. Don't modify this file unless you know exactly what you are doing!
+
 ## Screenshots
 ![Writing a latter](writeletter.png)
 ![Editing a letter](editletter.png)

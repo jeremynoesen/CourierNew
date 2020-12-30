@@ -62,11 +62,8 @@ For the message configuration, you can use color codes. You can also use the pla
 
 The third configuration file is actually used to store outgoing mail. Don't modify this file unless you know exactly what you are doing!
 
-## Screenshots
-![Writing a latter](writeletter.png)
-![Editing a letter](editletter.png)
-![Courier spawn](courierspawn.png)
-![Inventory preview](invpreview.png)
+## Demonstration
+![Demonstration](demo.gif)
 
 ## Troubleshooting
 Courier not spawning? 

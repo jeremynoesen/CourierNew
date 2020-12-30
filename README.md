@@ -11,7 +11,7 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 ## Usage
 
 ### Commands
-- `/letter <message>` - Compose a new letter with the specified message. Minecraft color codes and \n linebreaks are allowed in the message. If holding a not-sent letter written by you, this command will append a new page to the letter with the specified message.
+- `/letter <message>` - Compose a new letter with the specified message. Minecraft color codes and \n linebreaks are allowed in the message. If holding a not-sent letter written by you, this command will append the specified message to the letter.
 - `/post <player>` - Send a letter to a specified player. You can list multiple players by separating their usernames with a comma. Use the command with only `*` to send to all online players, or `**` to send to all players who have ever joined the server.
 - `/unread` - Retrieve unread mail, if any.
 - `/shred` - Delete the letter in your hand.

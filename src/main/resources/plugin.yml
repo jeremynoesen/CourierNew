@@ -3,7 +3,6 @@ version: 1.3.2
 description: A unique mail system
 author: Jeremaster101
 main: jeremynoesen.couriernew.CourierNew
-softdepend: [VanishNoPacket, Essentials, SuperVanish]
 api-version: 1.13
 commands:
   letter:

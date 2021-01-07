@@ -1,8 +1,5 @@
 package jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.Config;
-import jeremynoesen.couriernew.CourierNew;
-import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.courier.Courier;
 import jeremynoesen.couriernew.courier.CourierOptions;
 import jeremynoesen.couriernew.letter.LetterChecker;
@@ -37,109 +34,91 @@ public class CommandExec implements CommandExecutor {
             
             if (!worlds.contains(player.getWorld()) && !modes.contains(player.getGameMode())) {
                 
-                if (label.equalsIgnoreCase("letter")) {
+                switch (label.toLowerCase()) {
                     
-                    if (player.hasPermission("couriernew.letter")) {
-                        if (args.length >= 1) {
-                            StringBuilder sb = new StringBuilder();
-                            for (String arg : args) {
-                                sb.append(arg).append(" ");
-                            }
-                            if (LetterChecker.isHoldingOwnLetter(player) &&
-                                    !LetterChecker.wasSent(player.getInventory().getItemInMainHand()))
-                                LetterCreation.editBook(player, sb.toString());
-                            else LetterCreation.writeBook(player, sb.toString());
-                            //lc.writeMap(player, sb.toString());
-                        } else
-                            player.sendMessage(Message.ERROR_NO_MSG);
-                    } else
-                        player.sendMessage(Message.ERROR_NO_PERMS);
-                    
-                }
-                
-                
-                if (label.equalsIgnoreCase("cnreload")) {
-                    
-                    if (player.hasPermission("couriernew.reload")) {
-                        Config.getMainConfig().reloadConfig();
-                        Config.getOutgoingConfig().reloadConfig();
-                        Config.getMessageConfig().reloadConfig();
-                        Courier.getCouriers().keySet().forEach(Entity::remove);
-                        Courier.getCouriers().clear();
-                        player.sendMessage(Message.SUCCESS_RELOADED);
-                    } else
-                        player.sendMessage(Message.ERROR_NO_PERMS);
-                    
-                }
-                
-                
-                if (label.equalsIgnoreCase("post")) {
-                    
-                    if (args.length == 1) {
-                        if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew" +
-                                ".post.multiple") ||
-                                player.hasPermission("couriernew.post.allonline") || player.hasPermission("couriernew" +
-                                ".post.all")) {
-                            LetterSender.send(player, args[0]);
+                    case "letter":
+                        if (player.hasPermission("couriernew.letter")) {
+                            if (args.length >= 1) {
+                                StringBuilder sb = new StringBuilder();
+                                for (String arg : args) {
+                                    sb.append(arg).append(" ");
+                                }
+                                if (LetterChecker.isHoldingOwnLetter(player) &&
+                                        !LetterChecker.wasSent(player.getInventory().getItemInMainHand()))
+                                    LetterCreation.editBook(player, sb.toString());
+                                else LetterCreation.writeBook(player, sb.toString());
+                                //lc.writeMap(player, sb.toString());
+                            } else
+                                player.sendMessage(Message.ERROR_NO_MSG);
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
-                    } else
-                        player.sendMessage(Message.ERROR_TOO_MANY_ARGS);
+                        break;
                     
-                }
-                
-                
-                if (label.equalsIgnoreCase("cnhelp")) {
+                    case "cnreload":
+                        if (player.hasPermission("couriernew.reload")) {
+                            Config.getMainConfig().reloadConfig();
+                            Config.getOutgoingConfig().reloadConfig();
+                            Config.getMessageConfig().reloadConfig();
+                            Courier.getCouriers().keySet().forEach(Entity::remove);
+                            Courier.getCouriers().clear();
+                            player.sendMessage(Message.SUCCESS_RELOADED);
+                        } else
+                            player.sendMessage(Message.ERROR_NO_PERMS);
+                        break;
                     
-                    if (player.hasPermission("couriernew.help")) {
-                        player.sendMessage(Message.HELP);
-                    } else
-                        player.sendMessage(Message.ERROR_NO_PERMS);
+                    case "post":
+                        if (args.length == 1) {
+                            if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew" +
+                                    ".post.multiple") ||
+                                    player.hasPermission("couriernew.post.allonline") || player.hasPermission("couriernew" +
+                                    ".post.all")) {
+                                LetterSender.send(player, args[0]);
+                            } else
+                                player.sendMessage(Message.ERROR_NO_PERMS);
+                        } else
+                            player.sendMessage(Message.ERROR_TOO_MANY_ARGS);
+                        break;
                     
-                }
-                
-                
-                if (label.equalsIgnoreCase("shred")) {
+                    case "cnhelp":
+                        if (player.hasPermission("couriernew.help")) {
+                            player.sendMessage(Message.HELP);
+                        } else
+                            player.sendMessage(Message.ERROR_NO_PERMS);
+                        break;
                     
-                    if (player.hasPermission("couriernew.shred")) {
-                        LetterCreation.delete(player);
-                    } else
-                        player.sendMessage(Message.ERROR_NO_PERMS);
+                    case "shred":
+                        if (player.hasPermission("couriernew.shred")) {
+                            LetterCreation.delete(player);
+                        } else
+                            player.sendMessage(Message.ERROR_NO_PERMS);
+                        break;
                     
-                }
-                
-                
-                if (label.equalsIgnoreCase("shredall")) {
+                    case "shredall":
+                        if (player.hasPermission("couriernew.shredall")) {
+                            LetterCreation.deleteAll(player);
+                        } else
+                            player.sendMessage(Message.ERROR_NO_PERMS);
+                        break;
                     
-                    if (player.hasPermission("couriernew.shredall")) {
-                        LetterCreation.deleteAll(player);
-                    } else
-                        player.sendMessage(Message.ERROR_NO_PERMS);
-                    
-                }
-                
-                
-                if (label.equalsIgnoreCase("unread")) {
-                    
-                    if (player.hasPermission("couriernew.unread")) {
-                        
-                        if (Outgoing.getOutgoing().containsKey(player) && Outgoing.getOutgoing().get(player).size() > 0) {
-                            player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    if (player.isOnline()) {
-                                        LetterSender.spawnCourier(player);
+                    case "unread":
+                        if (player.hasPermission("couriernew.unread")) {
+                            if (Outgoing.getOutgoing().containsKey(player) && Outgoing.getOutgoing().get(player).size() > 0) {
+                                player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        if (player.isOnline()) {
+                                            LetterSender.spawnCourier(player);
+                                        }
                                     }
-                                }
-                            }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
-                        } else {
-                            player.sendMessage(Message.ERROR_NO_MAIL);
-                        }
-                    } else
-                        player.sendMessage(Message.ERROR_NO_PERMS);
+                                }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
+                            } else {
+                                player.sendMessage(Message.ERROR_NO_MAIL);
+                            }
+                        } else
+                            player.sendMessage(Message.ERROR_NO_PERMS);
+                        break;
                 }
-                
             } else {
                 player.sendMessage(Message.ERROR_WORLD);
             }

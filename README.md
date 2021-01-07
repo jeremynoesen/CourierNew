@@ -32,7 +32,7 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 - `couriernew.reload` - Allows for reloading of configs
 
 ## Requirements
-- Spigot 1.13 - 1.16
+- Spigot 1.13.0 - 1.16.4
 - Java 8
 
 ## Installation
@@ -64,6 +64,9 @@ The third configuration file is actually used to store outgoing mail. Don't modi
 
 ## Demonstration
 ![Demonstration](demo.gif)
+
+## Building
+If you wish to build from source, a `build.gradle` is included to create the jar, as well as get dependencies if you import the project into your IDE. 
 
 ## Troubleshooting
 Courier not spawning? 

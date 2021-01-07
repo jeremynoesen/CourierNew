@@ -56,11 +56,15 @@ public class CommandExec implements CommandExecutor {
                     
                     case "cnreload":
                         if (player.hasPermission("couriernew.reload")) {
+                            Outgoing.saveAll();
+                            Courier.getCouriers().keySet().forEach(Entity::remove);
+                            Courier.getCouriers().clear();
                             Config.getMainConfig().reloadConfig();
                             Config.getOutgoingConfig().reloadConfig();
                             Config.getMessageConfig().reloadConfig();
-                            Courier.getCouriers().keySet().forEach(Entity::remove);
-                            Courier.getCouriers().clear();
+                            CourierOptions.load();
+                            Outgoing.loadAll();
+                            Message.reloadMessages();
                             player.sendMessage(Message.SUCCESS_RELOADED);
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);

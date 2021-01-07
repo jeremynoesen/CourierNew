@@ -1,18 +1,15 @@
 package jeremynoesen.couriernew.courier;
 
-import com.earth2me.essentials.Essentials;
-import de.myzelyam.supervanish.SuperVanish;
 import jeremynoesen.couriernew.CourierNew;
 import jeremynoesen.couriernew.Message;
 import jeremynoesen.couriernew.letter.Outgoing;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.kitteh.vanish.VanishPlugin;
 
 import java.util.HashMap;
 
@@ -167,26 +164,9 @@ public class Courier {
     public static boolean canSpawn(Player recipient) {
         if (!recipient.isOnline())
             return false;
-        
-        if (Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket")) {
-            if (((VanishPlugin) Bukkit.getPluginManager().getPlugin("VanishNoPacket")).getManager().isVanished
-                    (recipient)) {
-                recipient.sendMessage(Message.ERROR_VANISHED);
-                return false;
-            }
-        }
-        
-        if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
-            if (((Essentials) Bukkit.getPluginManager().getPlugin("Essentials"))
-                    .getVanishedPlayers().contains(recipient.getName())) {
-                recipient.sendMessage(Message.ERROR_VANISHED);
-                return false;
-            }
-        }
-        
-        if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish")) {
-            if (((SuperVanish) Bukkit.getPluginManager().getPlugin("SuperVanish"))
-                    .getVanishStateMgr().isVanished(recipient.getUniqueId())) {
+    
+        for (MetadataValue meta : recipient.getMetadata("vanished")) {
+            if (meta.asBoolean()) {
                 recipient.sendMessage(Message.ERROR_VANISHED);
                 return false;
             }

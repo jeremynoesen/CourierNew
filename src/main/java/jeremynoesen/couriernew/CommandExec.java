@@ -47,7 +47,6 @@ public class CommandExec implements CommandExecutor {
                                         !LetterChecker.wasSent(player.getInventory().getItemInMainHand()))
                                     LetterCreation.editBook(player, sb.toString());
                                 else LetterCreation.writeBook(player, sb.toString());
-                                //lc.writeMap(player, sb.toString());
                             } else
                                 player.sendMessage(Message.ERROR_NO_MSG);
                         } else

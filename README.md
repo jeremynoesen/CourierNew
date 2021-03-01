@@ -63,7 +63,12 @@ For the message configuration, you can use color codes. You can also use the pla
 The third configuration file is actually used to store outgoing mail. Don't modify this file unless you know exactly what you are doing!
 
 ## Demonstration
+
+<div align="center">
+
 ![Demonstration](demo.gif)
+
+</div>
 
 ## Building
 If you wish to build from source, a `build.gradle` is included to create the jar, as well as get dependencies if you import the project into your IDE. 

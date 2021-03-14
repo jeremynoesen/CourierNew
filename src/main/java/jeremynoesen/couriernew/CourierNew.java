@@ -47,7 +47,7 @@ public class CourierNew extends JavaPlugin {
         
         PluginManager pm = Bukkit.getPluginManager();
         
-        pm.registerEvents(new LetterSender(), this);
+        pm.registerEvents(new LetterSender(), plugin);
         
         pm.addPermission(new Permission("couriernew.letter"));
         pm.addPermission(new Permission("couriernew.post.one"));
@@ -60,13 +60,15 @@ public class CourierNew extends JavaPlugin {
         pm.addPermission(new Permission("couriernew.unread"));
         pm.addPermission(new Permission("couriernew.reload"));
         
-        getCommand("letter").setExecutor(new CommandExec());
-        getCommand("post").setExecutor(new CommandExec());
-        getCommand("cnhelp").setExecutor(new CommandExec());
-        getCommand("shred").setExecutor(new CommandExec());
-        getCommand("shredall").setExecutor(new CommandExec());
-        getCommand("unread").setExecutor(new CommandExec());
-        getCommand("cnreload").setExecutor(new CommandExec());
+        CommandExec commandExec = new CommandExec();
+        
+        getCommand("letter").setExecutor(commandExec);
+        getCommand("post").setExecutor(commandExec);
+        getCommand("cnhelp").setExecutor(commandExec);
+        getCommand("shred").setExecutor(commandExec);
+        getCommand("shredall").setExecutor(commandExec);
+        getCommand("unread").setExecutor(commandExec);
+        getCommand("cnreload").setExecutor(commandExec);
     }
     
     /**

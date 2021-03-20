@@ -1,4 +1,4 @@
-<img src="Logo.png" align="right" alt="Logo" title="Logo" width="200" height="200" />
+<img src="img/Logo.png" align="right" alt="Logo" title="Logo" width="200" height="200" />
 
 # CourierNew
 
@@ -64,7 +64,7 @@ The third configuration file is actually used to store outgoing mail. Don't modi
 
 ## Demonstration
 
-<div align="center" ><img src="demo.gif" alt="Demonstration" title="Demonstration" /></div>
+<div align="center" ><img src="img/demo.gif" alt="Demonstration" title="Demonstration" /></div>
 
 ## Building
 If you wish to build from source, a `build.gradle` is included to create the jar, as well as get dependencies if you import the project into your IDE. 

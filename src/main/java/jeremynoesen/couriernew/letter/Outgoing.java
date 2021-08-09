@@ -35,7 +35,6 @@ public class Outgoing {
     private static void savePlayer(OfflinePlayer player) {
         if(outgoing.containsKey(player) && outgoing.get(player).size() > 0)
         outgoingConfig.getConfig().set(player.getUniqueId().toString(), outgoing.get(player));
-        outgoingConfig.saveConfig();
     }
     
     /**
@@ -48,6 +47,7 @@ public class Outgoing {
         for (OfflinePlayer player : outgoing.keySet()) {
             savePlayer(player);
         }
+        outgoingConfig.saveConfig();
     }
     
     /**

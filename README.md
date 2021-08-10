@@ -19,8 +19,8 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 - `/cnreload` - Reload all configuration files.
 
 ## Requirements
-- Spigot 1.13.0 - 1.16.4
-- Java 8
+- Spigot or Paper 1.13 - 1.17
+- Java 8 or higher
 
 ## Installation
 To install the plugin, download the latest release, put it in your server plugins folder, and start or restart your server. This will generate the necessary files for configuration of the plugin, located in `plugins/CourierNew`.

@@ -10,7 +10,6 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 
 ## Usage
 
-### Commands
 - `/letter <message>` - Compose a new letter with the specified message. Minecraft color codes and \n linebreaks are allowed in the message. If holding a not-sent letter written by you, this command will append the specified message to the letter.
 - `/post <player>` - Send a letter to a specified player. You can list multiple players by separating their usernames with a comma. Use the command with only `*` to send to all online players, or `**` to send to all players who have ever joined the server.
 - `/unread` - Retrieve unread mail, if any.
@@ -18,18 +17,6 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 - `/shredall` - Delete all letters in your inventory.
 - `/cnhelp` - Show the help message.
 - `/cnreload` - Reload all configuration files.
-
-### Permissions
-- `couriernew.letter` - Allows players to write/edit letters
-- `couriernew.post.one` - Allows players to send letters to one player at a time 
-- `couriernew.post.multiple` - Allows players to send letters to multiple players at a time
-- `couriernew.post.allonline` - Allows players to send letters to all online players
-- `couriernew.post.all` - Allows players to send letters to all players who ever joined the server
-- `couriernew.help` - Allows players to use the help command
-- `couriernew.shred` - Allows players to shred a letter
-- `couriernew.shredall` - Allows players to shred all in their inventory
-- `couriernew.unread` - Allows players to retrieve unread mail
-- `couriernew.reload` - Allows for reloading of configs
 
 ## Requirements
 - Spigot 1.13.0 - 1.16.4
@@ -61,6 +48,18 @@ blocked-worlds: []
 For the message configuration, you can use color codes. You can also use the placeholder `$PLAYER$` in messages that have it by default to replace it with player name(s). The messages and their names should explain what they are used for.
 
 The third configuration file is actually used to store outgoing mail. Don't modify this file unless you know exactly what you are doing!
+
+### Permissions
+- `couriernew.letter` - Allows players to write/edit letters
+- `couriernew.post.one` - Allows players to send letters to one player at a time
+- `couriernew.post.multiple` - Allows players to send letters to multiple players at a time
+- `couriernew.post.allonline` - Allows players to send letters to all online players
+- `couriernew.post.all` - Allows players to send letters to all players who ever joined the server
+- `couriernew.help` - Allows players to use the help command
+- `couriernew.shred` - Allows players to shred a letter
+- `couriernew.shredall` - Allows players to shred all in their inventory
+- `couriernew.unread` - Allows players to retrieve unread mail
+- `couriernew.reload` - Allows for reloading of configs
 
 ## Demonstration
 

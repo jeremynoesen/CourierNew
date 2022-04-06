@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'jeremynoesen.couriernew'
-version '1.3.3'
+version '1.3.4'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    shadow 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    shadow 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
 }
 
 shadowJar {

@@ -102,8 +102,8 @@ public class Courier {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient) &&
-                                    Outgoing.getOutgoing().get(recipient).size() > 0)
+                            if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient.getUniqueId()) &&
+                                    Outgoing.getOutgoing().get(recipient.getUniqueId()).size() > 0)
                                 spawn();
                         }
                     }.runTaskLater(CourierNew.getInstance(), CourierOptions.RESEND_DELAY);

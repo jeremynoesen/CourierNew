@@ -105,7 +105,8 @@ public class CommandExec implements CommandExecutor {
                     
                     case "unread":
                         if (player.hasPermission("couriernew.unread")) {
-                            if (Outgoing.getOutgoing().containsKey(player) && Outgoing.getOutgoing().get(player).size() > 0) {
+                            if (Outgoing.getOutgoing().containsKey(player.getUniqueId()) &&
+                                    Outgoing.getOutgoing().get(player.getUniqueId()).size() > 0) {
                                 player.sendMessage(Message.SUCCESS_EXTRA_DELIVERIES);
                                 new BukkitRunnable() {
                                     @Override

@@ -120,9 +120,9 @@ public class LetterSender implements Listener {
                     
                     if (offlinePlayers.size() > 1 && op.equals(sender)) continue;
                     
-                    if (!Outgoing.getOutgoing().containsKey(op))
-                        Outgoing.getOutgoing().put(op, new ArrayList<>());
-                    Outgoing.getOutgoing().get(op).add(new ItemStack(letter));
+                    if (!Outgoing.getOutgoing().containsKey(op.getUniqueId()))
+                        Outgoing.getOutgoing().put(op.getUniqueId(), new ArrayList<>());
+                    Outgoing.getOutgoing().get(op.getUniqueId()).add(new ItemStack(letter));
                     
                     new BukkitRunnable() {
                         @Override
@@ -153,8 +153,8 @@ public class LetterSender implements Listener {
      * @param recipient player receiving the mail
      */
     public static void receive(Player recipient) {
-        if (Outgoing.getOutgoing().containsKey(recipient) && Outgoing.getOutgoing().get(recipient).size() > 0) {
-            CopyOnWriteArrayList<ItemStack> letters = new CopyOnWriteArrayList<>(Outgoing.getOutgoing().get(recipient));
+        if (Outgoing.getOutgoing().containsKey(recipient.getUniqueId()) && Outgoing.getOutgoing().get(recipient.getUniqueId()).size() > 0) {
+            CopyOnWriteArrayList<ItemStack> letters = new CopyOnWriteArrayList<>(Outgoing.getOutgoing().get(recipient.getUniqueId()));
             
             for (ItemStack letter : letters) {
                 if (recipient.getInventory().firstEmpty() < 0) {
@@ -171,7 +171,7 @@ public class LetterSender implements Listener {
             
             recipient.updateInventory();
             
-            Outgoing.getOutgoing().put(recipient, letters);
+            Outgoing.getOutgoing().put(recipient.getUniqueId(), letters);
         }
     }
     
@@ -219,8 +219,8 @@ public class LetterSender implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (player.isOnline() && Outgoing.getOutgoing().containsKey(player)
-                        && Outgoing.getOutgoing().get(player).size() > 0)
+                if (player.isOnline() && Outgoing.getOutgoing().containsKey(player.getUniqueId())
+                        && Outgoing.getOutgoing().get(player.getUniqueId()).size() > 0)
                     spawnCourier(player);
             }
         }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
@@ -240,8 +240,8 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient)
-                            && Outgoing.getOutgoing().get(recipient).size() > 0)
+                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient.getUniqueId())
+                            && Outgoing.getOutgoing().get(recipient.getUniqueId()).size() > 0)
                         spawnCourier(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
@@ -261,8 +261,8 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient)
-                            && Outgoing.getOutgoing().get(recipient).size() > 0)
+                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient.getUniqueId())
+                            && Outgoing.getOutgoing().get(recipient.getUniqueId()).size() > 0)
                         spawnCourier(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);

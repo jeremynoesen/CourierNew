@@ -19,7 +19,7 @@ public class Outgoing {
     /**
      * hashmap of outgoing letters for players
      */
-    private static HashMap<OfflinePlayer, List<ItemStack>> outgoing = new HashMap<>();
+    private static HashMap<UUID, List<ItemStack>> outgoing = new HashMap<>();
     
     /**
      * reference to outgoing config
@@ -32,9 +32,9 @@ public class Outgoing {
      *
      * @param player player to save outgoing data
      */
-    private static void savePlayer(OfflinePlayer player) {
+    private static void savePlayer(UUID player) {
         if(outgoing.containsKey(player) && outgoing.get(player).size() > 0)
-        outgoingConfig.getConfig().set(player.getUniqueId().toString(), outgoing.get(player));
+        outgoingConfig.getConfig().set(player.toString(), outgoing.get(player));
     }
     
     /**
@@ -44,7 +44,7 @@ public class Outgoing {
         for (String key : outgoingConfig.getConfig().getKeys(false)) {
             outgoingConfig.getConfig().set(key, null);
         }
-        for (OfflinePlayer player : outgoing.keySet()) {
+        for (UUID player : outgoing.keySet()) {
             savePlayer(player);
         }
         outgoingConfig.saveConfig();
@@ -55,8 +55,8 @@ public class Outgoing {
      *
      * @param player player to load data for
      */
-    private static void loadPlayer(OfflinePlayer player) {
-        outgoing.put(player, (List<ItemStack>) outgoingConfig.getConfig().getList(player.getUniqueId().toString()));
+    private static void loadPlayer(UUID player) {
+        outgoing.put(player, (List<ItemStack>) outgoingConfig.getConfig().getList(player.toString()));
     }
     
     /**
@@ -64,7 +64,7 @@ public class Outgoing {
      */
     public static void loadAll() {
         for (String key : outgoingConfig.getConfig().getKeys(false)) {
-            loadPlayer(Bukkit.getOfflinePlayer(UUID.fromString(key)));
+            loadPlayer(UUID.fromString(key));
         }
     }
     
@@ -73,7 +73,7 @@ public class Outgoing {
      *
      * @return outgoing letter hashmap
      */
-    public static HashMap<OfflinePlayer, List<ItemStack>> getOutgoing() {
+    public static HashMap<UUID, List<ItemStack>> getOutgoing() {
         return outgoing;
     }
 }

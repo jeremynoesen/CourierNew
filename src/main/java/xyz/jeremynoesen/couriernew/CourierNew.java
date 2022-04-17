@@ -1,9 +1,9 @@
-package jeremynoesen.couriernew;
+package xyz.jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.courier.CourierOptions;
-import jeremynoesen.couriernew.courier.Courier;
-import jeremynoesen.couriernew.letter.LetterSender;
-import jeremynoesen.couriernew.letter.Outgoing;
+import xyz.jeremynoesen.couriernew.courier.CourierOptions;
+import xyz.jeremynoesen.couriernew.courier.Courier;
+import xyz.jeremynoesen.couriernew.letter.LetterSender;
+import xyz.jeremynoesen.couriernew.letter.Outgoing;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.permissions.Permission;

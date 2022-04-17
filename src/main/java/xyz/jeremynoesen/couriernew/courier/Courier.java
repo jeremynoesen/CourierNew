@@ -1,8 +1,8 @@
-package jeremynoesen.couriernew.courier;
+package xyz.jeremynoesen.couriernew.courier;
 
-import jeremynoesen.couriernew.CourierNew;
-import jeremynoesen.couriernew.Message;
-import jeremynoesen.couriernew.letter.Outgoing;
+import xyz.jeremynoesen.couriernew.CourierNew;
+import xyz.jeremynoesen.couriernew.Message;
+import xyz.jeremynoesen.couriernew.letter.Outgoing;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;

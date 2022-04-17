@@ -1,6 +1,6 @@
-package jeremynoesen.couriernew.letter;
+package xyz.jeremynoesen.couriernew.letter;
 
-import jeremynoesen.couriernew.Message;
+import xyz.jeremynoesen.couriernew.Message;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

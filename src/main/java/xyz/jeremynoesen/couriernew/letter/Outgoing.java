@@ -1,8 +1,6 @@
-package jeremynoesen.couriernew.letter;
+package xyz.jeremynoesen.couriernew.letter;
 
-import jeremynoesen.couriernew.Config;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import xyz.jeremynoesen.couriernew.Config;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;

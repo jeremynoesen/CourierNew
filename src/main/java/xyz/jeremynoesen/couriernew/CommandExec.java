@@ -1,11 +1,11 @@
-package jeremynoesen.couriernew;
+package xyz.jeremynoesen.couriernew;
 
-import jeremynoesen.couriernew.courier.Courier;
-import jeremynoesen.couriernew.courier.CourierOptions;
-import jeremynoesen.couriernew.letter.LetterChecker;
-import jeremynoesen.couriernew.letter.LetterCreation;
-import jeremynoesen.couriernew.letter.LetterSender;
-import jeremynoesen.couriernew.letter.Outgoing;
+import xyz.jeremynoesen.couriernew.courier.Courier;
+import xyz.jeremynoesen.couriernew.courier.CourierOptions;
+import xyz.jeremynoesen.couriernew.letter.LetterChecker;
+import xyz.jeremynoesen.couriernew.letter.LetterCreation;
+import xyz.jeremynoesen.couriernew.letter.LetterSender;
+import xyz.jeremynoesen.couriernew.letter.Outgoing;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.command.Command;

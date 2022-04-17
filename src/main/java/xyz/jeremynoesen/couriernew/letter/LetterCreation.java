@@ -1,6 +1,6 @@
-package jeremynoesen.couriernew.letter;
+package xyz.jeremynoesen.couriernew.letter;
 
-import jeremynoesen.couriernew.Message;
+import xyz.jeremynoesen.couriernew.Message;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

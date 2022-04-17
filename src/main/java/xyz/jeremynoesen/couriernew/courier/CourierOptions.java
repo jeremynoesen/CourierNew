@@ -1,6 +1,6 @@
-package jeremynoesen.couriernew.courier;
+package xyz.jeremynoesen.couriernew.courier;
 
-import jeremynoesen.couriernew.Config;
+import xyz.jeremynoesen.couriernew.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;

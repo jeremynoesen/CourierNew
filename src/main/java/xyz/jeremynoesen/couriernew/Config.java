@@ -1,4 +1,4 @@
-package jeremynoesen.couriernew;
+package xyz.jeremynoesen.couriernew;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 

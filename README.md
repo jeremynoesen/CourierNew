@@ -23,7 +23,9 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 - Java 8 or higher
 
 ## Installation
-To install the plugin, download the latest release, put it in your server plugins folder, and start or restart your server. This will generate the necessary files for configuration of the plugin, located in `plugins/CourierNew`.
+1. Download the latest release.
+2. Put the jar in your plugins folder.
+3. Start or restart your server.
 
 ## Configuration
 After running for the first time, the default configs will be generated. The main configuration will look like this:
@@ -66,7 +68,11 @@ The third configuration file is actually used to store outgoing mail. Don't modi
 <div align="center" ><img src="img/demo.gif" alt="Demonstration" title="Demonstration" /></div>
 
 ## Building
-If you wish to build from source, a `build.gradle` is included to create the jar, as well as get dependencies if you import the project into your IDE. With this, you can run `./gradlew shadowJar` to generate `/build/libs/CourierNew.jar`.
+1. Clone or download this repository.
+2. Run `./gradlew shadowJar` in the directory of the project.
+3. `/build/libs/CourierNew.jar` should have been generated.
+
+You can also grab `CourierNew.jar` from the latest releases.
 
 ## Troubleshooting
 Courier not spawning? 

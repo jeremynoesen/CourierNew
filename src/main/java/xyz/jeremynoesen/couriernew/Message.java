@@ -74,7 +74,7 @@ public class Message {
         if (player.hasPermission("couriernew.reload"))
             help.add(ChatColor.GRAY + "/couriernew reload" + ChatColor.WHITE + ": Reload plugin and configs");
 
-        help.add(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------");
+        help.add(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "---------------------------------");
         help.add("");
 
         String[] out = new String[help.size()];

@@ -1,5 +1,7 @@
 package xyz.jeremynoesen.couriernew;
 
+import xyz.jeremynoesen.couriernew.command.CommandExec;
+import xyz.jeremynoesen.couriernew.command.CommandTabComplete;
 import xyz.jeremynoesen.couriernew.courier.CourierOptions;
 import xyz.jeremynoesen.couriernew.courier.Courier;
 import xyz.jeremynoesen.couriernew.letter.LetterSender;
@@ -64,11 +66,12 @@ public class CourierNew extends JavaPlugin {
         
         getCommand("letter").setExecutor(commandExec);
         getCommand("post").setExecutor(commandExec);
-        getCommand("cnhelp").setExecutor(commandExec);
         getCommand("shred").setExecutor(commandExec);
         getCommand("shredall").setExecutor(commandExec);
         getCommand("unread").setExecutor(commandExec);
-        getCommand("cnreload").setExecutor(commandExec);
+        getCommand("couriernew").setExecutor(commandExec);
+
+        getCommand("couriernew").setTabCompleter(new CommandTabComplete());
     }
     
     /**

@@ -57,10 +57,10 @@ The third configuration file is actually used to store outgoing mail. Don't modi
 - `couriernew.post.multiple` - Allows players to send letters to multiple players at a time
 - `couriernew.post.allonline` - Allows players to send letters to all online players
 - `couriernew.post.all` - Allows players to send letters to all players who ever joined the server
-- `couriernew.help` - Allows players to use the help command
+- `couriernew.unread` - Allows players to retrieve unread mail
 - `couriernew.shred` - Allows players to shred a letter
 - `couriernew.shredall` - Allows players to shred all in their inventory
-- `couriernew.unread` - Allows players to retrieve unread mail
+- `couriernew.help` - Allows players to use the help command
 - `couriernew.reload` - Allows for reloading of configs
 
 ## Demonstration

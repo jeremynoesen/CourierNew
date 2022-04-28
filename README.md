@@ -15,8 +15,8 @@ CourierNew is a built-from-scratch partial remake of an abandoned Bukkit plugin 
 - `/unread` - Retrieve unread mail, if any.
 - `/shred` - Delete the letter in your hand.
 - `/shredall` - Delete all letters in your inventory.
-- `/cnhelp` - Show the help message.
-- `/cnreload` - Reload all configuration files.
+- `/couriernew help` - Show the help message.
+- `/couriernew reload` - Reload all configuration files.
 
 ## Requirements
 - Spigot or Paper 1.14 - 1.18

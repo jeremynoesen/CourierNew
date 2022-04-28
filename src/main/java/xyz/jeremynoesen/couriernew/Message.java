@@ -39,7 +39,7 @@ public class Message {
     public static String COURIER_NAME_RECEIVED;
     public static String LETTER_FROM;
     
-    public static String[] HELP = { //todo permission based help, cn help reload
+    public static String[] HELP = { //todo permission based help
             "",
             format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
             ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
@@ -47,8 +47,8 @@ public class Message {
             ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters",
             ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
             ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
-            ChatColor.GRAY + "/cnhelp" + ChatColor.WHITE + ": List all CourierNew commands",
-            ChatColor.GRAY + "/cnreload" + ChatColor.WHITE + ": Reload config and messages",
+            ChatColor.GRAY + "/couriernew help" + ChatColor.WHITE + ": Show plugin help",
+            ChatColor.GRAY + "/couriernew reload" + ChatColor.WHITE + ": Reload plugin and configs",
             ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------",
             ""
     };

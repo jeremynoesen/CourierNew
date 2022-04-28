@@ -1,5 +1,7 @@
 package xyz.jeremynoesen.couriernew;
 
+import xyz.jeremynoesen.couriernew.command.CommandExec;
+import xyz.jeremynoesen.couriernew.command.CommandTabComplete;
 import xyz.jeremynoesen.couriernew.courier.CourierOptions;
 import xyz.jeremynoesen.couriernew.courier.Courier;
 import xyz.jeremynoesen.couriernew.letter.LetterSender;
@@ -48,27 +50,28 @@ public class CourierNew extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         
         pm.registerEvents(new LetterSender(), plugin);
-        
+
         pm.addPermission(new Permission("couriernew.letter"));
         pm.addPermission(new Permission("couriernew.post.one"));
         pm.addPermission(new Permission("couriernew.post.multiple"));
         pm.addPermission(new Permission("couriernew.post.allonline"));
         pm.addPermission(new Permission("couriernew.post.all"));
-        pm.addPermission(new Permission("couriernew.help"));
+        pm.addPermission(new Permission("couriernew.unread"));
         pm.addPermission(new Permission("couriernew.shred"));
         pm.addPermission(new Permission("couriernew.shredall"));
-        pm.addPermission(new Permission("couriernew.unread"));
+        pm.addPermission(new Permission("couriernew.help"));
         pm.addPermission(new Permission("couriernew.reload"));
         
         CommandExec commandExec = new CommandExec();
         
         getCommand("letter").setExecutor(commandExec);
         getCommand("post").setExecutor(commandExec);
-        getCommand("cnhelp").setExecutor(commandExec);
         getCommand("shred").setExecutor(commandExec);
         getCommand("shredall").setExecutor(commandExec);
         getCommand("unread").setExecutor(commandExec);
-        getCommand("cnreload").setExecutor(commandExec);
+        getCommand("couriernew").setExecutor(commandExec);
+
+        getCommand("couriernew").setTabCompleter(new CommandTabComplete());
     }
     
     /**

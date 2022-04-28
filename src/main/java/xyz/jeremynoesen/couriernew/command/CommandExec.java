@@ -1,5 +1,8 @@
-package xyz.jeremynoesen.couriernew;
+package xyz.jeremynoesen.couriernew.command;
 
+import xyz.jeremynoesen.couriernew.Config;
+import xyz.jeremynoesen.couriernew.CourierNew;
+import xyz.jeremynoesen.couriernew.Message;
 import xyz.jeremynoesen.couriernew.courier.Courier;
 import xyz.jeremynoesen.couriernew.courier.CourierOptions;
 import xyz.jeremynoesen.couriernew.letter.LetterChecker;
@@ -23,19 +26,19 @@ import java.util.Set;
  * @author Jeremy Noesen
  */
 public class CommandExec implements CommandExecutor {
-    
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            
+
             Player player = (Player) sender;
             Set<GameMode> modes = CourierOptions.BLOCKED_GAMEMODES;
             Set<World> worlds = CourierOptions.BLOCKED_WORLDS;
-            
+
             if (!worlds.contains(player.getWorld()) && !modes.contains(player.getGameMode())) {
-                
+
                 switch (label.toLowerCase()) {
-                    
+
                     case "letter":
                         if (player.hasPermission("couriernew.letter")) {
                             if (args.length >= 1) {
@@ -52,23 +55,7 @@ public class CommandExec implements CommandExecutor {
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
                         break;
-                    
-                    case "cnreload":
-                        if (player.hasPermission("couriernew.reload")) {
-                            Outgoing.saveAll();
-                            Courier.getCouriers().keySet().forEach(Entity::remove);
-                            Courier.getCouriers().clear();
-                            Config.getMainConfig().reloadConfig();
-                            Config.getOutgoingConfig().reloadConfig();
-                            Config.getMessageConfig().reloadConfig();
-                            CourierOptions.load();
-                            Outgoing.loadAll();
-                            Message.reloadMessages();
-                            player.sendMessage(Message.SUCCESS_RELOADED);
-                        } else
-                            player.sendMessage(Message.ERROR_NO_PERMS);
-                        break;
-                    
+
                     case "post":
                         if (args.length == 1) {
                             if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew" +
@@ -79,30 +66,23 @@ public class CommandExec implements CommandExecutor {
                             } else
                                 player.sendMessage(Message.ERROR_NO_PERMS);
                         } else
-                            player.sendMessage(Message.ERROR_TOO_MANY_ARGS);
+                            player.sendMessage(Message.ERROR_UNKNOWN_ARGS);
                         break;
-                    
-                    case "cnhelp":
-                        if (player.hasPermission("couriernew.help")) {
-                            player.sendMessage(Message.HELP);
-                        } else
-                            player.sendMessage(Message.ERROR_NO_PERMS);
-                        break;
-                    
+
                     case "shred":
                         if (player.hasPermission("couriernew.shred")) {
                             LetterCreation.delete(player);
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
                         break;
-                    
+
                     case "shredall":
                         if (player.hasPermission("couriernew.shredall")) {
                             LetterCreation.deleteAll(player);
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
                         break;
-                    
+
                     case "unread":
                         if (player.hasPermission("couriernew.unread")) {
                             if (Outgoing.getOutgoing().containsKey(player.getUniqueId()) &&
@@ -122,6 +102,44 @@ public class CommandExec implements CommandExecutor {
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
                         break;
+
+                    case "couriernew":
+                    case "cn":
+                        if (args.length == 1) {
+                            switch (args[0].toLowerCase()) {
+                                case "help":
+                                    if (player.hasPermission("couriernew.help")) {
+                                        player.sendMessage(Message.getHelpMessage(player));
+                                    } else
+                                        player.sendMessage(Message.ERROR_NO_PERMS);
+                                    break;
+
+                                case "reload":
+                                    if (player.hasPermission("couriernew.reload")) {
+                                        Outgoing.saveAll();
+                                        Courier.getCouriers().keySet().forEach(Entity::remove);
+                                        Courier.getCouriers().clear();
+                                        Config.getMainConfig().reloadConfig();
+                                        Config.getOutgoingConfig().reloadConfig();
+                                        Config.getMessageConfig().reloadConfig();
+                                        CourierOptions.load();
+                                        Outgoing.loadAll();
+                                        Message.reloadMessages();
+                                        player.sendMessage(Message.SUCCESS_RELOADED);
+                                    } else
+                                        player.sendMessage(Message.ERROR_NO_PERMS);
+                                    break;
+
+                                default:
+                                    player.sendMessage(Message.ERROR_UNKNOWN_ARGS);
+                            }
+                        } else
+                            player.sendMessage(Message.ERROR_UNKNOWN_ARGS);
+                        break;
+
+                    default:
+                        player.sendMessage(Message.ERROR_UNKNOWN_ARGS);
+
                 }
             } else {
                 player.sendMessage(Message.ERROR_WORLD);

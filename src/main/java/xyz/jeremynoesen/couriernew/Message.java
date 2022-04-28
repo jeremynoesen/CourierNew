@@ -1,6 +1,9 @@
 package xyz.jeremynoesen.couriernew;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 /**
  * All messages used within the plugin
@@ -8,9 +11,9 @@ import org.bukkit.ChatColor;
  * @author Jeremy Noesen
  */
 public class Message {
-    
+
     private static final Config config = Config.getMessageConfig();
-    
+
     public static String PREFIX;
     public static String SUCCESS_CREATED_HAND;
     public static String SUCCESS_CREATED_DROPPED;
@@ -38,21 +41,46 @@ public class Message {
     public static String COURIER_NAME;
     public static String COURIER_NAME_RECEIVED;
     public static String LETTER_FROM;
-    
-    public static String[] HELP = { //todo permission based help
-            "",
-            format("\n&8&l---------[&a&lCourier&2&lNew &7&lHelp&8&l]---------"),
-            ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter",
-            ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player",
-            ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters",
-            ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand",
-            ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory",
-            ChatColor.GRAY + "/couriernew help" + ChatColor.WHITE + ": Show plugin help",
-            ChatColor.GRAY + "/couriernew reload" + ChatColor.WHITE + ": Reload plugin and configs",
-            ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------",
-            ""
-    };
-    
+
+    /**
+     * get the help message to send to a player, only showing what they are allowed to run
+     *
+     * @param player player viewing help message
+     * @return help message
+     */
+    public static String[] getHelpMessage(Player player) {
+        ArrayList<String> help = new ArrayList<>();
+
+        help.add("");
+        help.add(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "---------[" + ChatColor.GREEN +
+                "" + ChatColor.BOLD + "Courier" + ChatColor.DARK_GREEN +
+                "" + ChatColor.BOLD + "New " + ChatColor.GRAY +
+                "" + ChatColor.BOLD + "Help"
+                + ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "]---------");
+
+        if (player.hasPermission("couriernew.letter"))
+            help.add(ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter");
+        if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew.post.multiple") ||
+                player.hasPermission("couriernew.post.allonline") || player.hasPermission("couriernew.post.all"))
+            help.add(ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player");
+        if (player.hasPermission("couriernew.unread"))
+            help.add(ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters");
+        if (player.hasPermission("couriernew.shred"))
+            help.add(ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand");
+        if (player.hasPermission("couriernew.shredall"))
+            help.add(ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory");
+        if (player.hasPermission("couriernew.help"))
+            help.add(ChatColor.GRAY + "/couriernew help" + ChatColor.WHITE + ": Show plugin help");
+        if (player.hasPermission("couriernew.reload"))
+            help.add(ChatColor.GRAY + "/couriernew reload" + ChatColor.WHITE + ": Reload plugin and configs");
+
+        help.add(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "----------------------------------");
+        help.add("");
+
+        String[] out = new String[help.size()];
+        return help.toArray(out);
+    }
+
     /**
      * Reloads all plugin messages
      */
@@ -85,8 +113,8 @@ public class Message {
         COURIER_NAME_RECEIVED = format(config.getConfig().getString("COURIER_NAME_RECEIVED"));
         LETTER_FROM = format(config.getConfig().getString("LETTER_FROM"));
     }
-    
-    
+
+
     /**
      * Apply color codes and line breaks to a message
      *
@@ -96,7 +124,7 @@ public class Message {
     public static String format(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg.replace("\\n", "\n"));
     }
-    
+
     /**
      * Used to remove all minecraft color codes and line breaks from a message
      *
@@ -117,5 +145,5 @@ public class Message {
                 .replace("&n", "").replace("&o", "")
                 .replace("&r", "");
     }
-    
+
 }

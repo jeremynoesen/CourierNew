@@ -50,15 +50,15 @@ public class CourierNew extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         
         pm.registerEvents(new LetterSender(), plugin);
-        
+
         pm.addPermission(new Permission("couriernew.letter"));
         pm.addPermission(new Permission("couriernew.post.one"));
         pm.addPermission(new Permission("couriernew.post.multiple"));
         pm.addPermission(new Permission("couriernew.post.allonline"));
         pm.addPermission(new Permission("couriernew.post.all"));
+        pm.addPermission(new Permission("couriernew.unread"));
         pm.addPermission(new Permission("couriernew.shred"));
         pm.addPermission(new Permission("couriernew.shredall"));
-        pm.addPermission(new Permission("couriernew.unread"));
         pm.addPermission(new Permission("couriernew.help"));
         pm.addPermission(new Permission("couriernew.reload"));
         

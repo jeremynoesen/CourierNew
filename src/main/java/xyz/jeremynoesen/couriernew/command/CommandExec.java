@@ -109,7 +109,7 @@ public class CommandExec implements CommandExecutor {
                             switch (args[0].toLowerCase()) {
                                 case "help":
                                     if (player.hasPermission("couriernew.help")) {
-                                        player.sendMessage(Message.HELP);
+                                        player.sendMessage(Message.getHelpMessage(player));
                                     } else
                                         player.sendMessage(Message.ERROR_NO_PERMS);
                                     break;
@@ -135,6 +135,7 @@ public class CommandExec implements CommandExecutor {
                             }
                         } else
                             player.sendMessage(Message.ERROR_UNKNOWN_ARGS);
+                        break;
 
                     default:
                         player.sendMessage(Message.ERROR_UNKNOWN_ARGS);

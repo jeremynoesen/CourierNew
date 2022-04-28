@@ -53,22 +53,6 @@ public class CommandExec implements CommandExecutor {
                             player.sendMessage(Message.ERROR_NO_PERMS);
                         break;
                     
-                    case "cnreload":
-                        if (player.hasPermission("couriernew.reload")) {
-                            Outgoing.saveAll();
-                            Courier.getCouriers().keySet().forEach(Entity::remove);
-                            Courier.getCouriers().clear();
-                            Config.getMainConfig().reloadConfig();
-                            Config.getOutgoingConfig().reloadConfig();
-                            Config.getMessageConfig().reloadConfig();
-                            CourierOptions.load();
-                            Outgoing.loadAll();
-                            Message.reloadMessages();
-                            player.sendMessage(Message.SUCCESS_RELOADED);
-                        } else
-                            player.sendMessage(Message.ERROR_NO_PERMS);
-                        break;
-                    
                     case "post":
                         if (args.length == 1) {
                             if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew" +
@@ -79,16 +63,9 @@ public class CommandExec implements CommandExecutor {
                             } else
                                 player.sendMessage(Message.ERROR_NO_PERMS);
                         } else
-                            player.sendMessage(Message.ERROR_TOO_MANY_ARGS);
+                            player.sendMessage(Message.ERROR_UNKNOWN_ARGS);
                         break;
-                    
-                    case "cnhelp":
-                        if (player.hasPermission("couriernew.help")) {
-                            player.sendMessage(Message.HELP);
-                        } else
-                            player.sendMessage(Message.ERROR_NO_PERMS);
-                        break;
-                    
+
                     case "shred":
                         if (player.hasPermission("couriernew.shred")) {
                             LetterCreation.delete(player);
@@ -122,6 +99,33 @@ public class CommandExec implements CommandExecutor {
                         } else
                             player.sendMessage(Message.ERROR_NO_PERMS);
                         break;
+
+                    case "cnhelp":
+                        if (player.hasPermission("couriernew.help")) {
+                            player.sendMessage(Message.HELP);
+                        } else
+                            player.sendMessage(Message.ERROR_NO_PERMS);
+                        break;
+
+                    case "cnreload":
+                        if (player.hasPermission("couriernew.reload")) {
+                            Outgoing.saveAll();
+                            Courier.getCouriers().keySet().forEach(Entity::remove);
+                            Courier.getCouriers().clear();
+                            Config.getMainConfig().reloadConfig();
+                            Config.getOutgoingConfig().reloadConfig();
+                            Config.getMessageConfig().reloadConfig();
+                            CourierOptions.load();
+                            Outgoing.loadAll();
+                            Message.reloadMessages();
+                            player.sendMessage(Message.SUCCESS_RELOADED);
+                        } else
+                            player.sendMessage(Message.ERROR_NO_PERMS);
+                        break;
+
+                    default:
+                        player.sendMessage(Message.ERROR_UNKNOWN_ARGS);
+
                 }
             } else {
                 player.sendMessage(Message.ERROR_WORLD);

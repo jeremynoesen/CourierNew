@@ -54,10 +54,10 @@ public class CourierNew extends JavaPlugin {
         pm.addPermission(new Permission("couriernew.post.multiple"));
         pm.addPermission(new Permission("couriernew.post.allonline"));
         pm.addPermission(new Permission("couriernew.post.all"));
-        pm.addPermission(new Permission("couriernew.help"));
         pm.addPermission(new Permission("couriernew.shred"));
         pm.addPermission(new Permission("couriernew.shredall"));
         pm.addPermission(new Permission("couriernew.unread"));
+        pm.addPermission(new Permission("couriernew.help"));
         pm.addPermission(new Permission("couriernew.reload"));
         
         CommandExec commandExec = new CommandExec();

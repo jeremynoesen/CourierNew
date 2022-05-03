@@ -33,7 +33,7 @@ public class LetterCreation {
         BookMeta bm = (BookMeta) book.getItemMeta();
         
         bm.setAuthor(player.getName());
-        bm.setTitle(Message.LETTER_FROM.replace("$PLAYER", player.getName()));
+        bm.setTitle(Message.LETTER_FROM.replace("$PLAYER$", player.getName()));
         ArrayList<String> pages = new ArrayList<>();
         pages.add(finalMessage);
         bm.setPages(pages);

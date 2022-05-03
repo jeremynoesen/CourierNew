@@ -3,6 +3,7 @@ package xyz.jeremynoesen.couriernew.letter;
 import xyz.jeremynoesen.couriernew.Config;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -54,7 +55,7 @@ public class Outgoing {
      * @param player player to load data for
      */
     private static void loadPlayer(UUID player) {
-        outgoing.put(player, (LinkedList<ItemStack>) outgoingConfig.getConfig().getList(player.toString()));
+        outgoing.put(player, new LinkedList<>((Collection<ItemStack>) outgoingConfig.getConfig().getList(player.toString())));
     }
 
     /**

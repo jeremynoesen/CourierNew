@@ -103,10 +103,10 @@ public class Message {
         SUCCESS_PAGE_EDITED = PREFIX + format(config.getConfig().getString("SUCCESS_PAGE_EDITED"));
         SUCCESS_DELETED = PREFIX + format(config.getConfig().getString("SUCCESS_DELETED"));
         SUCCESS_DELETED_ALL = PREFIX + format(config.getConfig().getString("SUCCESS_DELETED_ALL"));
-        SUCCESS_SENT_ONE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
-        SUCCESS_SENT_MULTIPLE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
-        SUCCESS_SENT_ALL = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
-        SUCCESS_SENT_ALLONLINE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
+        SUCCESS_SENT_ONE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT_ONE"));
+        SUCCESS_SENT_MULTIPLE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT_MULTIPLE"));
+        SUCCESS_SENT_ALL = PREFIX + format(config.getConfig().getString("SUCCESS_SENT_ALL"));
+        SUCCESS_SENT_ALLONLINE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT_ALLONLINE"));
         SUCCESS_COURIER_ARRIVED = PREFIX + format(config.getConfig().getString("SUCCESS_COURIER_ARRIVED"));
         SUCCESS_EXTRA_DELIVERIES = PREFIX + format(config.getConfig().getString("SUCCESS_EXTRA_DELIVERIES"));
         SUCCESS_IGNORED = PREFIX + format(config.getConfig().getString("SUCCESS_IGNORED"));

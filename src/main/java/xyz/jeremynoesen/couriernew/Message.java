@@ -51,6 +51,15 @@ public class Message {
     public static String LETTER_TO_MULTIPLE;
     public static String LETTER_TO_ALL;
     public static String LETTER_TO_ALLONLINE;
+    public static String HELP_HEADER;
+    public static String HELP_LETTER;
+    public static String HELP_POST;
+    public static String HELP_UNREAD;
+    public static String HELP_SHRED;
+    public static String HELP_SHREDALL;
+    public static String HELP_HELP;
+    public static String HELP_RELOAD;
+    public static String HELP_FOOTER;
 
     /**
      * get the help message to send to a player, only showing what they are allowed to run
@@ -62,29 +71,20 @@ public class Message {
         ArrayList<String> help = new ArrayList<>();
 
         help.add("");
-        help.add(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "---------[" + ChatColor.GREEN +
-                "" + ChatColor.BOLD + "Courier" + ChatColor.DARK_GREEN +
-                "" + ChatColor.BOLD + "New " + ChatColor.GRAY +
-                "" + ChatColor.BOLD + "Help"
-                + ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "]---------");
+        help.add(HELP_HEADER);
 
-        if (player.hasPermission("couriernew.letter"))
-            help.add(ChatColor.GRAY + "/letter <message>" + ChatColor.WHITE + ": Write or edit a letter");
-        if (player.hasPermission("couriernew.post.one") || player.hasPermission("couriernew.post.multiple") ||
-                player.hasPermission("couriernew.post.allonline") || player.hasPermission("couriernew.post.all"))
-            help.add(ChatColor.GRAY + "/post <player>" + ChatColor.WHITE + ": Send a letter to a player");
-        if (player.hasPermission("couriernew.unread"))
-            help.add(ChatColor.GRAY + "/unread" + ChatColor.WHITE + ": Retrieve unread letters");
-        if (player.hasPermission("couriernew.shred"))
-            help.add(ChatColor.GRAY + "/shred" + ChatColor.WHITE + ": Delete the letter in your hand");
-        if (player.hasPermission("couriernew.shredall"))
-            help.add(ChatColor.GRAY + "/shredall" + ChatColor.WHITE + ": Delete letters in your inventory");
-        if (player.hasPermission("couriernew.help"))
-            help.add(ChatColor.GRAY + "/couriernew help" + ChatColor.WHITE + ": Show plugin help");
-        if (player.hasPermission("couriernew.reload"))
-            help.add(ChatColor.GRAY + "/couriernew reload" + ChatColor.WHITE + ": Reload plugin and configs");
+        if (player.hasPermission("couriernew.letter")) help.add(HELP_LETTER);
+        if (player.hasPermission("couriernew.post.one") ||
+                player.hasPermission("couriernew.post.multiple") ||
+                player.hasPermission("couriernew.post.allonline") ||
+                player.hasPermission("couriernew.post.all")) help.add(HELP_POST);
+        if (player.hasPermission("couriernew.unread")) help.add(HELP_UNREAD);
+        if (player.hasPermission("couriernew.shred")) help.add(HELP_SHRED);
+        if (player.hasPermission("couriernew.shredall")) help.add(HELP_SHREDALL);
+        if (player.hasPermission("couriernew.help")) help.add(HELP_HELP);
+        if (player.hasPermission("couriernew.reload")) help.add(HELP_RELOAD);
 
-        help.add(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "---------------------------------");
+        help.add(HELP_FOOTER);
         help.add("");
 
         String[] out = new String[help.size()];
@@ -132,6 +132,15 @@ public class Message {
         LETTER_TO_MULTIPLE = format(config.getConfig().getString("LETTER_TO_MULTIPLE"));
         LETTER_TO_ALL = format(config.getConfig().getString("LETTER_TO_ALL"));
         LETTER_TO_ALLONLINE = format(config.getConfig().getString("LETTER_TO_ALLONLINE"));
+        HELP_HEADER = format(config.getConfig().getString("HELP_HEADER"));
+        HELP_LETTER = format(config.getConfig().getString("HELP_LETTER"));
+        HELP_POST = format(config.getConfig().getString("HELP_POST"));
+        HELP_UNREAD = format(config.getConfig().getString("HELP_UNREAD"));
+        HELP_SHRED = format(config.getConfig().getString("HELP_SHRED"));
+        HELP_SHREDALL = format(config.getConfig().getString("HELP_SHREDALL"));
+        HELP_HELP = format(config.getConfig().getString("HELP_HELP"));
+        HELP_RELOAD = format(config.getConfig().getString("HELP_RELOAD"));
+        HELP_FOOTER = format(config.getConfig().getString("HELP_FOOTER"));
     }
 
 

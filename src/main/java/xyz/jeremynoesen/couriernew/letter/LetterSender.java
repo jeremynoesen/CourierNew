@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Send the letters to players
@@ -121,7 +120,7 @@ public class LetterSender implements Listener {
                     if (offlinePlayers.size() > 1 && op.equals(sender)) continue;
                     
                     if (!Outgoing.getOutgoing().containsKey(op.getUniqueId()))
-                        Outgoing.getOutgoing().put(op.getUniqueId(), new ArrayList<>());
+                        Outgoing.getOutgoing().put(op.getUniqueId(), new LinkedList<>());
                     Outgoing.getOutgoing().get(op.getUniqueId()).add(new ItemStack(letter));
                     
                     new BukkitRunnable() {
@@ -154,24 +153,20 @@ public class LetterSender implements Listener {
      */
     public static void receive(Player recipient) {
         if (Outgoing.getOutgoing().containsKey(recipient.getUniqueId()) && Outgoing.getOutgoing().get(recipient.getUniqueId()).size() > 0) {
-            CopyOnWriteArrayList<ItemStack> letters = new CopyOnWriteArrayList<>(Outgoing.getOutgoing().get(recipient.getUniqueId()));
-            
-            for (ItemStack letter : letters) {
+            LinkedList<ItemStack> letters = Outgoing.getOutgoing().get(recipient.getUniqueId());
+
+            while (!letters.isEmpty()) {
                 if (recipient.getInventory().firstEmpty() < 0) {
                     recipient.sendMessage(Message.ERROR_CANT_HOLD);
                     break;
                 } else if (recipient.getInventory().getItemInMainHand().getAmount() == 0) {
-                    recipient.getInventory().setItemInMainHand(letter);
-                    letters.remove(0);
+                    recipient.getInventory().setItemInMainHand(letters.pop());
                 } else {
-                    recipient.getInventory().addItem(letter);
-                    letters.remove(0);
+                    recipient.getInventory().addItem(letters.pop());
                 }
             }
             
             recipient.updateInventory();
-            
-            Outgoing.getOutgoing().put(recipient.getUniqueId(), letters);
         }
     }
     

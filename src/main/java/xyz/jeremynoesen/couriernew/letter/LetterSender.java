@@ -46,11 +46,10 @@ public class LetterSender implements Listener {
                 
                 if (sender.hasPermission("couriernew.post.allonline")) {
                     
-                    lore.add(ChatColor.DARK_GRAY + "§TTo Everyone Online");
+                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_ALLONLINE);
                     offlinePlayers = new ArrayList<>();
                     offlinePlayers.addAll(Bukkit.getOnlinePlayers());
-                    sender.sendMessage(Message.SUCCESS_SENT
-                            .replace("$PLAYER$", "Everyone Online"));
+                    sender.sendMessage(Message.SUCCESS_SENT_ALLONLINE);
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
                 
@@ -58,11 +57,10 @@ public class LetterSender implements Listener {
                 
                 if (sender.hasPermission("couriernew.post.all")) {
                     
-                    lore.add(ChatColor.DARK_GRAY + "§TTo Everyone");
+                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_ALL);
                     offlinePlayers = new ArrayList<>();
                     offlinePlayers.addAll(Arrays.asList(Bukkit.getOfflinePlayers()));
-                    sender.sendMessage(Message.SUCCESS_SENT
-                            .replace("$PLAYER$", "Everyone"));
+                    sender.sendMessage(Message.SUCCESS_SENT_ALL);
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
                 
@@ -84,9 +82,8 @@ public class LetterSender implements Listener {
                         offlinePlayers.add(op);
                     }
                     
-                    lore.add(ChatColor.DARK_GRAY + "§TTo Multiple Players");
-                    sender.sendMessage(Message.SUCCESS_SENT
-                            .replace("$PLAYER$", "Multiple Players"));
+                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_MULTIPLE);
+                    sender.sendMessage(Message.SUCCESS_SENT_MULTIPLE);
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
                 
@@ -103,9 +100,8 @@ public class LetterSender implements Listener {
                     }
                     offlinePlayers = new ArrayList<>();
                     offlinePlayers.add(op);
-                    lore.add(ChatColor.DARK_GRAY + "§TTo " + op.getName());
-                    sender.sendMessage(Message.SUCCESS_SENT
-                            .replace("$PLAYER$", op.getName()));
+                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_ONE.replace("$PLAYER$", op.getName()));
+                    sender.sendMessage(Message.SUCCESS_SENT_ONE.replace("$PLAYER$", op.getName()));
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
             }

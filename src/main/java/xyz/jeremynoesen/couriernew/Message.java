@@ -22,7 +22,10 @@ public class Message {
     public static String SUCCESS_PAGE_EDITED;
     public static String SUCCESS_DELETED;
     public static String SUCCESS_DELETED_ALL;
-    public static String SUCCESS_SENT;
+    public static String SUCCESS_SENT_ONE;
+    public static String SUCCESS_SENT_MULTIPLE;
+    public static String SUCCESS_SENT_ALL;
+    public static String SUCCESS_SENT_ALLONLINE;
     public static String SUCCESS_COURIER_ARRIVED;
     public static String SUCCESS_EXTRA_DELIVERIES;
     public static String SUCCESS_IGNORED;
@@ -41,6 +44,13 @@ public class Message {
     public static String COURIER_NAME;
     public static String COURIER_NAME_RECEIVED;
     public static String LETTER_FROM;
+    public static String PREVIEW_FORMAT;
+    public static String PREVIEW_FOOTER;
+    public static String DATE_TIME_FORMAT;
+    public static String LETTER_TO_ONE;
+    public static String LETTER_TO_MULTIPLE;
+    public static String LETTER_TO_ALL;
+    public static String LETTER_TO_ALLONLINE;
 
     /**
      * get the help message to send to a player, only showing what they are allowed to run
@@ -93,7 +103,10 @@ public class Message {
         SUCCESS_PAGE_EDITED = PREFIX + format(config.getConfig().getString("SUCCESS_PAGE_EDITED"));
         SUCCESS_DELETED = PREFIX + format(config.getConfig().getString("SUCCESS_DELETED"));
         SUCCESS_DELETED_ALL = PREFIX + format(config.getConfig().getString("SUCCESS_DELETED_ALL"));
-        SUCCESS_SENT = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
+        SUCCESS_SENT_ONE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
+        SUCCESS_SENT_MULTIPLE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
+        SUCCESS_SENT_ALL = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
+        SUCCESS_SENT_ALLONLINE = PREFIX + format(config.getConfig().getString("SUCCESS_SENT"));
         SUCCESS_COURIER_ARRIVED = PREFIX + format(config.getConfig().getString("SUCCESS_COURIER_ARRIVED"));
         SUCCESS_EXTRA_DELIVERIES = PREFIX + format(config.getConfig().getString("SUCCESS_EXTRA_DELIVERIES"));
         SUCCESS_IGNORED = PREFIX + format(config.getConfig().getString("SUCCESS_IGNORED"));
@@ -112,6 +125,13 @@ public class Message {
         COURIER_NAME = format(config.getConfig().getString("COURIER_NAME"));
         COURIER_NAME_RECEIVED = format(config.getConfig().getString("COURIER_NAME_RECEIVED"));
         LETTER_FROM = format(config.getConfig().getString("LETTER_FROM"));
+        PREVIEW_FORMAT = format(config.getConfig().getString("PREVIEW_FORMAT"));
+        PREVIEW_FOOTER = format(config.getConfig().getString("PREVIEW_FOOTER"));
+        DATE_TIME_FORMAT = config.getConfig().getString("DATE_TIME_FORMAT");
+        LETTER_TO_ONE = format(config.getConfig().getString("LETTER_TO_ONE"));
+        LETTER_TO_MULTIPLE = format(config.getConfig().getString("LETTER_TO_MULTIPLE"));
+        LETTER_TO_ALL = format(config.getConfig().getString("LETTER_TO_ALL"));
+        LETTER_TO_ALLONLINE = format(config.getConfig().getString("LETTER_TO_ALLONLINE"));
     }
 
 

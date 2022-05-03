@@ -33,7 +33,7 @@ public class LetterCreation {
         BookMeta bm = (BookMeta) book.getItemMeta();
         
         bm.setAuthor(player.getName());
-        bm.setTitle(Message.LETTER_FROM + player.getName());
+        bm.setTitle(Message.LETTER_FROM.replace("$PLAYER", player.getName()));
         ArrayList<String> pages = new ArrayList<>();
         pages.add(finalMessage);
         bm.setPages(pages);
@@ -48,12 +48,15 @@ public class LetterCreation {
         
         ArrayList<String> lore = new ArrayList<>();
         Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss MM/dd/yy");
+        SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
         String dateNow = formatter.format(currentDate.getTime());
-        lore.add(lines[0]);
-        if (lines.length >= 2) lore.add(lines[1]);
-        if (lines.length >= 3) lore.add(lines[2]);
-        lore.add(ChatColor.DARK_GRAY + dateNow + " (" + bm.getPages().size() + ")");
+        lore.add("");
+        lore.add(Message.PREVIEW_FORMAT + lines[0]);
+        if (lines.length >= 2) lore.add(Message.PREVIEW_FORMAT + lines[1]);
+        if (lines.length >= 3) lore.add(Message.PREVIEW_FORMAT + lines[2]);
+        lore.add("");
+        lore.add(Message.PREVIEW_FOOTER.replace("$DATE$", dateNow)
+                .replace("$PAGES$", Integer.toString(bm.getPages().size())));
         bm.setLore(lore);
         book.setItemMeta(bm);
         
@@ -83,7 +86,7 @@ public class LetterCreation {
         
         ArrayList<String> lore = new ArrayList<>(wbm.getLore());
         Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss MM/dd/yy");
+        SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
         String dateNow = formatter.format(currentDate.getTime());
         
         ArrayList<String> pages = new ArrayList<>(wbm.getPages());
@@ -96,7 +99,8 @@ public class LetterCreation {
         } else {
             pages.add(finalMessage);
             player.sendMessage(Message.SUCCESS_PAGE_ADDED);
-            lore.set((wbm.getLore().size() - 1), ChatColor.DARK_GRAY + dateNow + " (" + (wbm.getPages().size() + 1) + ")");
+            lore.set((wbm.getLore().size() - 1), Message.PREVIEW_FOOTER.replace("$DATE$", dateNow)
+                    .replace("$PAGES$", Integer.toString(wbm.getPages().size())));
             wbm.setLore(lore);
         }
         wbm.setPages(pages);

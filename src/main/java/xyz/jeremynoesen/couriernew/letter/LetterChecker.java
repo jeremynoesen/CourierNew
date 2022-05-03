@@ -25,7 +25,7 @@ public class LetterChecker {
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta())
                         .getAuthor().equals(player.getName()) &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta())
-                        .getTitle().equals(Message.LETTER_FROM + player.getName());
+                        .getTitle().equals(Message.LETTER_FROM.replace("$PLAYER", player.getName()));
     }
     
     /**
@@ -38,7 +38,7 @@ public class LetterChecker {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle()
-                        .contains(Message.LETTER_FROM);
+                        .contains(Message.LETTER_FROM.replace("$PLAYER", ""));
     }
     
     /**
@@ -49,7 +49,8 @@ public class LetterChecker {
      */
     public static boolean isLetter(ItemStack item) {
         return item != null && item.getType() == Material.WRITTEN_BOOK &&
-                ((BookMeta) item.getItemMeta()).getTitle().contains(Message.LETTER_FROM);
+                ((BookMeta) item.getItemMeta()).getTitle().contains(Message.LETTER_FROM
+                        .replace("$PLAYER", ""));
     }
     
     /**
@@ -58,6 +59,9 @@ public class LetterChecker {
      */
     public static boolean wasSent(ItemStack item) {
         return item.getType() == Material.WRITTEN_BOOK && item.getItemMeta().getLore() != null &&
-                item.getItemMeta().getLore().toString().contains("§TTo ");
+                (item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_ONE.replace("$PLAYER$", "")) ||
+                        item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_MULTIPLE) ||
+                        item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_ALL) ||
+                        item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_ALLONLINE));
     }
 }

@@ -267,24 +267,4 @@ public class LetterSender implements Listener {
     public void onVillagerProfession(VillagerCareerChangeEvent e) {
         if (Courier.getCouriers().keySet().contains(e.getEntity())) e.setCancelled(true);
     }
-    
-    /**
-     * prevent players from running non-couriernew commands while holding a letter
-     */
-    @EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent e) {
-        if (LetterChecker.isHoldingLetter(e.getPlayer()) &&
-                !e.getMessage().contains("letter") &&
-                !e.getMessage().contains("cn reload") &&
-                !e.getMessage().contains("couriernew reload") &&
-                !e.getMessage().contains("post") &&
-                !e.getMessage().contains("cn help") &&
-                !e.getMessage().contains("couriernew help") &&
-                !e.getMessage().contains("shred") &&
-                !e.getMessage().contains("shredall") &&
-                !e.getMessage().contains("unread")) {
-            e.setCancelled(true);
-            e.getPlayer().sendMessage(Message.ERROR_NO_PERMS);
-        }
-    }
 }

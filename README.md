@@ -80,6 +80,3 @@ Courier not spawning?
 - Set `allow-npcs` to true in `server.properties`.
 - If you are using EssentialsProtect, make sure to not block villager spawning. 
 - Also check to make sure that no other plugins block mob spawning.
-
-## Notice
-This project is no longer in development.

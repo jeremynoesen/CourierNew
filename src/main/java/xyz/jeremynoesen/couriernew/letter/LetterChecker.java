@@ -25,7 +25,8 @@ public class LetterChecker {
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta())
                         .getAuthor().equals(player.getName()) &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta())
-                        .getTitle().equals(Message.LETTER_FROM.replace("$PLAYER$", player.getName()));
+                        .getTitle().equals(Message.LETTER_FROM.replace("$PLAYER$", player.getName())) &&
+                !player.getInventory().getItemInMainHand().getItemMeta().hasEnchants();
     }
     
     /**
@@ -38,7 +39,8 @@ public class LetterChecker {
         return player.getInventory().getItemInMainHand() != null &&
                 player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle()
-                        .contains(Message.LETTER_FROM.replace("$PLAYER$", ""));
+                        .contains(Message.LETTER_FROM.replace("$PLAYER$", "")) &&
+                !player.getInventory().getItemInMainHand().getItemMeta().hasEnchants();
     }
     
     /**
@@ -50,7 +52,8 @@ public class LetterChecker {
     public static boolean isLetter(ItemStack item) {
         return item != null && item.getType() == Material.WRITTEN_BOOK &&
                 ((BookMeta) item.getItemMeta()).getTitle().contains(Message.LETTER_FROM
-                        .replace("$PLAYER$", ""));
+                        .replace("$PLAYER$", "")) &&
+                !item.getItemMeta().hasEnchants();
     }
     
     /**
@@ -62,6 +65,7 @@ public class LetterChecker {
                 (item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_ONE.replace("$PLAYER$", "")) ||
                         item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_MULTIPLE) ||
                         item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_ALL) ||
-                        item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_ALLONLINE));
+                        item.getItemMeta().getLore().toString().contains("§T" + Message.LETTER_TO_ALLONLINE)) &&
+                !item.getItemMeta().hasEnchants();
     }
 }

@@ -1,5 +1,7 @@
 package xyz.jeremynoesen.couriernew.letter;
 
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.inventory.meta.BookMeta;
 import xyz.jeremynoesen.couriernew.CourierNew;
 import xyz.jeremynoesen.couriernew.Message;
 import xyz.jeremynoesen.couriernew.courier.Courier;
@@ -12,9 +14,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.VillagerCareerChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -36,17 +38,36 @@ public class LetterSender implements Listener {
     public static void send(Player sender, String recipient) {
         if (LetterChecker.isHoldingOwnLetter(sender) &&
                 !LetterChecker.wasSent(sender.getInventory().getItemInMainHand())) {
-            
-            ItemStack letter = new ItemStack(sender.getInventory().getItemInMainHand());
+
+            ItemStack letter = new ItemStack(Material.WRITTEN_BOOK, 1);
+            BookMeta letterMeta = (BookMeta) letter.getItemMeta();
+
+            letterMeta.setAuthor(sender.getName());
+            letterMeta.setTitle(Message.LETTER_FROM.replace("$PLAYER$", sender.getName()));
+            letterMeta.setPages(((BookMeta) sender.getInventory().getItemInMainHand()).getPages());
+
+            ArrayList<String> lore = new ArrayList<>();
+            Calendar currentDate = Calendar.getInstance();
+            SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
+            String dateNow = formatter.format(currentDate.getTime());
+            String wrapped = WordUtils.wrap(Message.unformat(letterMeta.getPage(1)), 30, "<split>", true);
+            while (wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
+            String[] lines = wrapped.split("<split>");
+            lore.add("");
+            lore.add(Message.PREVIEW_FORMAT + lines[0]);
+            if (lines.length >= 2) lore.add(Message.PREVIEW_FORMAT + lines[1]);
+            if (lines.length >= 3) lore.add(Message.PREVIEW_FORMAT + lines[2]);
+            lore.add("");
+            lore.add(Message.PREVIEW_FOOTER.replace("$DATE$", dateNow)
+                    .replace("$PAGES$", Integer.toString(letterMeta.getPages().size())));
+
             Collection<OfflinePlayer> offlinePlayers = null;
-            ItemMeta im = letter.getItemMeta();
-            List<String> lore = im.getLore();
-            
+
             if (recipient.equals("*")) {
                 
                 if (sender.hasPermission("couriernew.post.allonline")) {
                     
-                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_ALLONLINE);
+                    lore.add("§T" + Message.LETTER_TO_ALLONLINE);
                     offlinePlayers = new ArrayList<>();
                     offlinePlayers.addAll(Bukkit.getOnlinePlayers());
                     sender.sendMessage(Message.SUCCESS_SENT_ALLONLINE);
@@ -57,7 +78,7 @@ public class LetterSender implements Listener {
                 
                 if (sender.hasPermission("couriernew.post.all")) {
                     
-                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_ALL);
+                    lore.add("§T" + Message.LETTER_TO_ALL);
                     offlinePlayers = new ArrayList<>();
                     offlinePlayers.addAll(Arrays.asList(Bukkit.getOfflinePlayers()));
                     sender.sendMessage(Message.SUCCESS_SENT_ALL);
@@ -82,7 +103,7 @@ public class LetterSender implements Listener {
                         offlinePlayers.add(op);
                     }
                     
-                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_MULTIPLE);
+                    lore.add("§T" + Message.LETTER_TO_MULTIPLE);
                     sender.sendMessage(Message.SUCCESS_SENT_MULTIPLE);
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
@@ -100,7 +121,7 @@ public class LetterSender implements Listener {
                     }
                     offlinePlayers = new ArrayList<>();
                     offlinePlayers.add(op);
-                    lore.add(ChatColor.DARK_GRAY + "§T" + Message.LETTER_TO_ONE.replace("$PLAYER$", op.getName()));
+                    lore.add("§T" + Message.LETTER_TO_ONE.replace("$PLAYER$", op.getName()));
                     sender.sendMessage(Message.SUCCESS_SENT_ONE.replace("$PLAYER$", op.getName()));
                     
                 } else sender.sendMessage(Message.ERROR_NO_PERMS);
@@ -108,8 +129,8 @@ public class LetterSender implements Listener {
             
             if (offlinePlayers != null && offlinePlayers.size() > 0) {
                 
-                im.setLore(lore);
-                letter.setItemMeta(im);
+                letterMeta.setLore(lore);
+                letter.setItemMeta(letterMeta);
                 
                 for (OfflinePlayer op : offlinePlayers) {
                     

@@ -2,7 +2,6 @@ package xyz.jeremynoesen.couriernew.letter;
 
 import xyz.jeremynoesen.couriernew.Message;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,19 +36,14 @@ public class LetterCreation {
         ArrayList<String> pages = new ArrayList<>();
         pages.add(finalMessage);
         bm.setPages(pages);
-        
-        String plainMessage = Message.unformat(message);
-        
-        String wrapped = WordUtils.wrap(plainMessage, 30, "<split>", true);
-        
-        while (wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
-        
-        String[] lines = wrapped.split("<split>");
-        
+
         ArrayList<String> lore = new ArrayList<>();
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
         String dateNow = formatter.format(currentDate.getTime());
+        String wrapped = WordUtils.wrap(Message.unformat(message), 30, "<split>", true);
+        while (wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
+        String[] lines = wrapped.split("<split>");
         lore.add("");
         lore.add(Message.PREVIEW_FORMAT + lines[0]);
         if (lines.length >= 2) lore.add(Message.PREVIEW_FORMAT + lines[1]);
@@ -84,11 +78,6 @@ public class LetterCreation {
         ItemStack writtenBook = player.getInventory().getItemInMainHand();
         BookMeta wbm = (BookMeta) writtenBook.getItemMeta();
         
-        ArrayList<String> lore = new ArrayList<>(wbm.getLore());
-        Calendar currentDate = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
-        String dateNow = formatter.format(currentDate.getTime());
-        
         ArrayList<String> pages = new ArrayList<>(wbm.getPages());
         if (pages.get(pages.size() - 1).length() < 256 && pages.get(pages.size() - 1).length() > 0) {
             StringBuilder sb = new StringBuilder();
@@ -99,11 +88,24 @@ public class LetterCreation {
         } else {
             pages.add(finalMessage);
             player.sendMessage(Message.SUCCESS_PAGE_ADDED);
-            lore.set((wbm.getLore().size() - 1), Message.PREVIEW_FOOTER.replace("$DATE$", dateNow)
-                    .replace("$PAGES$", Integer.toString(wbm.getPages().size())));
-            wbm.setLore(lore);
         }
         wbm.setPages(pages);
+
+        ArrayList<String> lore = new ArrayList<>();
+        Calendar currentDate = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
+        String dateNow = formatter.format(currentDate.getTime());
+        String wrapped = WordUtils.wrap(Message.unformat(wbm.getPage(1)), 30, "<split>", true);
+        while (wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
+        String[] lines = wrapped.split("<split>");
+        lore.add("");
+        lore.add(Message.PREVIEW_FORMAT + lines[0]);
+        if (lines.length >= 2) lore.add(Message.PREVIEW_FORMAT + lines[1]);
+        if (lines.length >= 3) lore.add(Message.PREVIEW_FORMAT + lines[2]);
+        lore.add("");
+        lore.add(Message.PREVIEW_FOOTER.replace("$DATE$", dateNow)
+                .replace("$PAGES$", Integer.toString(wbm.getPages().size())));
+        wbm.setLore(lore);
         writtenBook.setItemMeta(wbm);
         
         player.getInventory().setItemInMainHand(writtenBook);

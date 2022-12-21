@@ -35,10 +35,7 @@ public class LetterChecker {
      * @return true if player is holding a letter
      */
     public static boolean isHoldingLetter(Player player) {
-        return player.getInventory().getItemInMainHand() != null &&
-                player.getInventory().getItemInMainHand().getType() == Material.WRITTEN_BOOK &&
-                ((BookMeta) player.getInventory().getItemInMainHand().getItemMeta()).getTitle()
-                        .contains(Message.LETTER_FROM.replace("$PLAYER$", ""));
+        return isLetter(player.getInventory().getItemInMainHand());
     }
     
     /**

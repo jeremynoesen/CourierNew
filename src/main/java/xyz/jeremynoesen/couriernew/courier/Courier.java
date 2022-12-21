@@ -63,11 +63,7 @@ public class Courier {
      * spawn the courier entity
      */
     public void spawn() {
-        double dist = CourierOptions.SPAWN_DISTANCE * 2;
-        for (Entity entity : recipient.getNearbyEntities(dist, dist, dist))
-            if (couriers.containsKey(entity)) return;
-    
-        Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(dist * 0.5));
+        Location loc = recipient.getLocation().add(recipient.getLocation().getDirection().setY(0).multiply(CourierOptions.SPAWN_DISTANCE));
         courier = recipient.getWorld().spawnEntity(loc, CourierOptions.COURIER_ENTITY_TYPE);
         couriers.put(courier, this);
     
@@ -162,6 +158,12 @@ public class Courier {
      * @return true if the courier is allowed to spawn
      */
     public static boolean canSpawn(Player recipient) {
+        double dist = CourierOptions.SPAWN_DISTANCE * 2;
+        for (Entity entity : recipient.getNearbyEntities(dist, dist, dist))
+            if (couriers.containsKey(entity) &&
+                    (!CourierOptions.PROTECTED_COURIER ||
+                            couriers.get(entity).getRecipient().equals(recipient))) return false;
+
         if (!recipient.isOnline())
             return false;
     

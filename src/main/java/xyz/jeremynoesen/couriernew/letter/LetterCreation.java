@@ -42,7 +42,6 @@ public class LetterCreation {
         SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
         String dateNow = formatter.format(currentDate.getTime());
         String wrapped = WordUtils.wrap(Message.unformat(message), 30, "<split>", true);
-        while (wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
         String[] lines = wrapped.split("<split>");
         lore.add("");
         lore.add(Message.PREVIEW_FORMAT + lines[0]);
@@ -96,7 +95,6 @@ public class LetterCreation {
         SimpleDateFormat formatter = new SimpleDateFormat(Message.DATE_TIME_FORMAT);
         String dateNow = formatter.format(currentDate.getTime());
         String wrapped = WordUtils.wrap(Message.unformat(wbm.getPage(1)), 30, "<split>", true);
-        while (wrapped.startsWith("/")) wrapped = wrapped.replaceFirst("/", "");
         String[] lines = wrapped.split("<split>");
         lore.add("");
         lore.add(Message.PREVIEW_FORMAT + lines[0]);

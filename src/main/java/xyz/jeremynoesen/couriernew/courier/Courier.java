@@ -174,12 +174,12 @@ public class Courier {
         }
 
         double dist = CourierOptions.SPAWN_DISTANCE * 2;
-        for (Entity entity : recipient.getNearbyEntities(dist, dist, dist))
+        for (Entity entity : recipient.getNearbyEntities(dist, dist, dist)) {
             if (couriers.containsKey(entity) &&
-                    couriers.get(entity).getRecipient().equals(recipient)) return false;
-
-        if (!recipient.isOnline())
-            return false;
+                    couriers.get(entity).getRecipient().equals(recipient)) {
+                return false;
+            }
+        }
 
         for (MetadataValue meta : recipient.getMetadata("vanished")) {
             if (meta.asBoolean()) {
@@ -193,6 +193,7 @@ public class Courier {
             recipient.sendMessage(Message.ERROR_WORLD);
             return false;
         }
+
         return true;
     }
 }

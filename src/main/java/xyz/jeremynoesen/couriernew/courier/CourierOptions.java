@@ -39,12 +39,6 @@ public class CourierOptions {
     public static int SPAWN_DISTANCE;
     
     /**
-     * whether the courier should be protected to the recipient or not, allowing others to receive mail from a courier
-     * that is not theirs
-     */
-    public static boolean PROTECTED_COURIER;
-    
-    /**
      * entity type to use as the courier
      */
     public static EntityType COURIER_ENTITY_TYPE;
@@ -68,7 +62,6 @@ public class CourierOptions {
         RESEND_DELAY = config.getInt("resend-delay");
         REMOVE_DELAY = config.getInt("remove-delay");
         SPAWN_DISTANCE = config.getInt("spawn-distance");
-        PROTECTED_COURIER = config.getBoolean("protected-courier");
         COURIER_ENTITY_TYPE = EntityType.valueOf(config.getString("courier-entity-type"));
         BLOCKED_GAMEMODES = new HashSet<>();
         BLOCKED_WORLDS = new HashSet<>();

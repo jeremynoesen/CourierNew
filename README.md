@@ -34,7 +34,6 @@ receive-delay: 100
 resend-delay: 2400
 remove-delay: 200
 spawn-distance: 5
-protected-courier: true
 courier-entity-type: VILLAGER
 blocked-gamemodes: []
 blocked-worlds: []
@@ -43,7 +42,6 @@ blocked-worlds: []
 - `resend-delay` - How long to wait, in ticks, before trying to resend a letter when the mail was not taken
 - `remove-delay` - How long to wait, in ticks, after the courier spawns before removing it
 - `spawn-distance` - How far away to spawn the courier from the player in blocks
-- `protected-courier` - This will determine whether other players can grab their mail from a courier that isn't theirs.
 - `blocked-gamemodes` - Gamemodes that receiving mail isn't allowed in. (SURVIVAL, CREATIVE, ADVENTURE, SPECTATOR)
 - `blocked-worlds` - Names of worlds that receiving is blocked in
 

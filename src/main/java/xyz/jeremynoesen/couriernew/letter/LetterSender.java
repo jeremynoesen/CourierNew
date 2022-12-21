@@ -192,8 +192,8 @@ public class LetterSender implements Listener {
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity en = e.getRightClicked();
         if (Courier.getCouriers().containsKey(en)) {
-            if (!CourierOptions.PROTECTED_COURIER || (Courier.getCouriers().get(en).getRecipient().equals(e.getPlayer())
-                    && !Courier.getCouriers().get(en).isDelivered())) {
+            if (Courier.getCouriers().get(en).getRecipient().equals(e.getPlayer())
+                    && !Courier.getCouriers().get(en).isDelivered()) {
                 Courier.getCouriers().get(en).setDelivered();
                 e.setCancelled(true);
                 receive(e.getPlayer());

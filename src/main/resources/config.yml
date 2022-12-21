@@ -2,7 +2,6 @@ receive-delay: 100
 resend-delay: 2400
 remove-delay: 200
 spawn-distance: 5
-protected-courier: true
 courier-entity-type: VILLAGER
 blocked-gamemodes: []
 blocked-worlds: []

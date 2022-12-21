@@ -122,9 +122,7 @@ public class LetterSender implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (op.isOnline()) {
-                                spawnCourier((Player) op);
-                            }
+                            Courier.spawn((Player) op);
                         }
                     }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                 }
@@ -167,18 +165,6 @@ public class LetterSender implements Listener {
     }
     
     /**
-     * Create the courier entity for a player if they are not vanished or in blocked gamemodes or worlds
-     *
-     * @param recipient player receiving letters
-     */
-    public static void spawnCourier(Player recipient) {
-        if (Courier.canSpawn(recipient)) {
-            Courier courier = new Courier(recipient);
-            courier.spawn();
-        }
-    }
-    
-    /**
      * Check when a player right clicks their courier entity
      */
     @EventHandler
@@ -210,9 +196,7 @@ public class LetterSender implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (player.isOnline() && Outgoing.getOutgoing().containsKey(player.getUniqueId())
-                        && Outgoing.getOutgoing().get(player.getUniqueId()).size() > 0)
-                    spawnCourier(player);
+                Courier.spawn(player);
             }
         }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
     }
@@ -231,9 +215,7 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient.getUniqueId())
-                            && Outgoing.getOutgoing().get(recipient.getUniqueId()).size() > 0)
-                        spawnCourier(recipient);
+                    Courier.spawn(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
         }
@@ -252,9 +234,7 @@ public class LetterSender implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (recipient.isOnline() && Outgoing.getOutgoing().containsKey(recipient.getUniqueId())
-                            && Outgoing.getOutgoing().get(recipient.getUniqueId()).size() > 0)
-                        spawnCourier(recipient);
+                    Courier.spawn(recipient);
                 }
             }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
         }

@@ -91,9 +91,7 @@ public class CommandExec implements CommandExecutor {
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
-                                        if (player.isOnline()) {
-                                            LetterSender.spawnCourier(player);
-                                        }
+                                        Courier.spawn(player);
                                     }
                                 }.runTaskLater(CourierNew.getInstance(), CourierOptions.RECEIVE_DELAY);
                             } else {

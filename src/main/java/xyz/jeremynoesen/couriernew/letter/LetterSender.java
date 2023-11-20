@@ -44,7 +44,7 @@ public class LetterSender implements Listener {
 
             letterMeta.setAuthor(sender.getName());
             letterMeta.setTitle(Message.LETTER_FROM.replace("$PLAYER$", sender.getName()));
-            letterMeta.setPages(((BookMeta) sender.getInventory().getItemInMainHand()).getPages());
+            letterMeta.setPages(((BookMeta) sender.getInventory().getItemInMainHand().getItemMeta()).getPages());
 
             ArrayList<String> lore = new ArrayList<>();
             Calendar currentDate = Calendar.getInstance();
